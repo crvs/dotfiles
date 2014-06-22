@@ -5,20 +5,21 @@ set realname="João Carvalho"
 
 set index_format = "%4C %Z %[%a %b %d %I:%M] %-15.15L %s"
 
+folder-hook 'gmail' 'source ~/.dotfiles/mutt/account.gmail' 
+folder-hook 'ist' 'source ~/.dotfiles/mutt/account.tecnico.ulisboa'
+
 # macro for gmail
 macro index <f2> 'cimaps://imap.gmail.com:993<enter>'
 # macro for my other email account
 # macro index <f3> 'cimaps://mail.tecnico.ulisboa.pt:993<enter>'
 
-folder-hook 'gmail' 'source ~/.dotfiles/mutt/account.gmail' 
-folder-hook 'ist' 'source ~/.dotfiles/mutt/account.tecnico.ulisboa'
+# switch to default account
+source ~/.dotfiles/mutt/account.gmail
 
 # stuff to manage attachments
 set mailcap_path=~/.dotfiles/mutt/mailcap 
 set implicit_autoview
 auto_view text/html text/plain
-
-# switch to default account on startup
 
 set header_cache =~/.dotfiles/mutt/cache/headers
 set message_cachedir =~/.dotfiles/mutt/cache/bodies
