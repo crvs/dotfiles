@@ -1,0 +1,47 @@
+# color terminals:
+# (default, white, black, green, magenta, blue, cyan, yellow, red)
+# (bright...)
+# (color1,color2..,colorN-1)
+# format:
+# color object foreground background [regexp]
+color normal    default    default # normal text
+color indicator yellow   red # actual message
+color tree  brightmagenta  default # thread arrows
+color status    brightgreen    blue    # status line
+color error     red  default # errors
+color message   red        default # info messages
+color signature red        default # signature
+color attachment    brightyellow  red # MIME attachments
+color search    brightyellow   red # search matches
+color tilde     brightmagenta  default # ~ at bottom of msg
+color markers   red        default # + at beginning of wrapped lines
+color hdrdefault brightblue default # default header lines
+color bold  brightred default # hiliting bold patterns in body
+color underline brightgreen      default # hiliting underlined patternsin body
+color quoted    brightblue       default # quoted text
+color quoted1   magenta    default
+color quoted2   red        default
+color quoted3   green      default
+color quoted4   cyan       default
+color quoted5   brightblue       default
+color quoted6   magenta    default
+color quoted7   red        default
+color quoted8   green      default
+color quoted9   cyan       default
+color header    red        default  "^(from|subject):"
+#color links, urls and stuff like that on the body
+color body  cyan       default  "((ftp|http|https)://|(file|news):|www\\.)[-a-z0-9_.:]*[a-z0-9](/[^][{}\t\n\r\"<>()]*[^][{} \t\n\r\"<>().,:!])?/?"
+color body  cyan       default  "[-a-z_0-9.+]+@[-a-z_0-9.]+"
+color body  red        default  "(^| )\\*[-a-z0-9*]+\\*[?]?[ \n]"
+color body  green      default  "(^| )_[-a-z0-9_]+_[?]?[ \n]"
+color body       magenta    default  "(PROTO=[A-Z]+)|(DPT=[0-9]+)|(SRC=[0-9.]+)"
+#color signatures
+color body  green default  "(Korrekte Unterschrift|Goodsignature)"
+color body  brightyellow black  "(Öffentlicher Schlüssel nichtgefunden|keine vertrauenswürdige Signatur|Dieser Schlüssel istverfallen)"
+color body  brightred   black   "FALSCHE Unterschrift"
+color body  brightgreen black   "nicht durch hinreichendvertrauenswürdige Signaturen zertifiziert"
+uncolor index *                    # unset all color index entries
+color index     blue       white ~F     # Flagged
+color index     red        white ~N     # New
+color index     magenta    default  ~T     # Tagged
+color index     yellow     default  ~D     # Deleted

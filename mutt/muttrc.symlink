@@ -1,159 +1,31 @@
-# mailcap is not functioning properly, at least with html files...
-set implicit_autoview
-auto_view text/html
+# call urlscan on the mutt pager. the urlscan is like urlview but supplying context
+macro pager \Cu "|urlscan<enter>" "call urlscan to open links"
 
-set beep_new
+set realname="JoÃ£o Carvalho"
 
-## you need to install this one!!!
-macro pager \Cu "|urlview<enter>" "call urlview to open links"
-
-set mailcap_path=~/.mutt/mailcap
-set alias_file=~/.mutt/aliases
-source ~/.mutt/aliases
-
-set realname="Riccardo Sven Risuleo"
-
-# %a address of the author
-# %b filename of the original message folder (think mailBox)
-# %B the list to which the letter was sent, or else the folder name (%b).
-# %c number of characters (bytes) in the message
-# %C current message number
-# %d date and time of the message in the format specified by ``date_format'' converted to sender's time zone
-# %D date and time of the message in the format specified by ``date_format'' converted to the local time zone
-# %e current message number in thread
-# %E number of messages in current thread
-# %f entire From: line (address + real name)
-# %F author name, or recipient name if the message is from you
-# %i message-id of the current message
-# %l number of lines in the message
-# %L If an address in the To or CC header field matches an address defined by the users ``lists'' command, this displays "To <list-name>", otherwise the same as %F.
-# %m total number of message in the mailbox
-# %M number of hidden messages if the thread is collapsed.
-# %N message score
-# %n author's real name (or address if missing)
-# %O (_O_riginal save folder) Where mutt would formerly have stashed the message: list name or recipient name if no list
-# %s subject of the message
-# %S status of the message (N/D/d/!/r/*)
-# %t `to:' field (recipients)
-# %T the appropriate character from the $to_chars string
-# %u user (login) name of the author
-# %v first name of the author, or the recipient if the message is from you
-# %y `x-label:' field, if present
-# %Y `x-label' field, if present, and (1) not at part of a thread tree, (2) at the top of a thread, or (3) `x-label' is different from preceding message's `x-label'.
-# %Z message status flags
-# %{fmt} the date and time of the message is converted to sender's time zone, and ``fmt'' is expanded by the library function ``strftime''; a leading bang disables locales
-# %[fmt] the date and time of the message is converted to the local time zone, and ``fmt'' is expanded by the library function ``strftime''; a leading bang disables locales
-# %(fmt) the local date and time when the message was received. ``fmt'' is expanded by the library function ``strftime''; a leading bang disables locales
-# %<fmt> the current local time. ``fmt'' is expanded by the library function ``strftime''; a leading bang disables locales.
-# %>X right justify the rest of the string and pad with character "X"
-# %|X pad to the end of the line with character "X"
-# set index_format="%C %Z %a "
 set index_format = "%4C %Z %[%a %b %d %I:%M] %-15.15L %s"
 
-
+# macro for gmail
 macro index <f2> 'cimaps://imap.gmail.com:993<enter>'
+# macro for my other email account
+# macro index <f3> 'cimaps://mail.tecnico.ulisboa.pt:993<enter>'
 
-folder-hook 'gmail' 'source ~/.mutt/account.gmail' 
+folder-hook 'gmail' 'source ~/.dotfiles/mutt/account.gmail' 
+folder-hook 'ist' 'source ~/.dotfiles/mutt/account.tecnico.ulisboa'
+
+# stuff to manage attachments
+set mailcap_path=~/.dotfiles/mutt/mailcap 
+set implicit_autoview
+auto_view text/html text/plain
 
 # switch to default account on startup
-source ~/.mutt/account.gmail
 
-set header_cache =~/.mutt/cache/headers
-set message_cachedir =~/.mutt/cache/bodies
-set certificate_file =~/.mutt/certificates
+set header_cache =~/.dotfiles/mutt/cache/headers
+set message_cachedir =~/.dotfiles/mutt/cache/bodies
+set certificate_file =~/.dotfiles/mutt/certificates
 
 set move = no
 set imap_keepalive = 900
-
-# monochrom terminals:
-# (none, bold, underline, reverse, standout)
-
-#    object        attribute
-
-mono normal        none        # normal text
-mono indicator     reverse     # actual message
-mono tree      none        # thread arrows
-mono status        reverse     # status line
-mono error     bold        # errors
-mono message       none        # info messages
-mono quoted        bold        # quoted text
-mono signature     none        # signature
-mono attachment        underline   # MIME attachments
-mono search        reverse     # search matches
-mono tilde     none        # ~ at bottom of msg
-mono markers       bold        # + at beginning of wrapped lines
-mono hdrdefault        none        # default header lines
-mono bold      bold        # hiliting bold patterns in body
-mono underline     underline   # hiliting underlined patterns in body
-
-#    object     attribute  RegExp
-
-mono header     bold       "^(from|subject):"
-#mono body  underline  "((ftp|http|https)://|news:)[^ >)\"\t]+"
-mono body   underline  "((ftp|http|https)://|(file|news):|www\\.)[-a-z0-9_.:]*[a-z0-9](/[^][{}\t\n\r\"<>()]*[^][{} \t\n\r\"<>().,:!])?/?"
-mono body   underline  "[-a-z_0-9.]+@[-a-z_0-9.]+"
-mono body   bold       "(^| )\\*[-a-z0-9äöüß*]+\\*[?]?[ \n]"
-mono body   underline  "(^| )_[-a-z0-9äöüß_]+_[?]?[ \n]"
-
-unmono index *                # unset all mono index entries
-
-# color terminals:
-# (default, white, black, green, magenta, blue, cyan, yellow, red)
-# (bright...)
-# (color1,color2..,colorN-1)
-
-#     object    foreground background
-
-color normal    default    default # normal text
-color indicator     brightyellow   red # actual message
-color tree  brightmagenta  default # thread arrows
-color status    brightgreen    blue    # status line
-color error     brightred  default # errors
-color message   red        default # info messages
-color signature     red        default # signature
-color attachment brightyellow  red # MIME attachments
-color search    brightyellow   red # search matches
-color tilde     brightmagenta  default # ~ at bottom of msg
-color markers   red        default # + at beginning of wrapped lines
-color hdrdefault blue      default # default header lines
-color bold  red        default # hiliting bold patterns in body
-color underline     green      default # hiliting underlined patternsin body
-color quoted    blue       default # quoted text
-color quoted1   magenta    default
-color quoted2   red        default
-color quoted3   green      default
-color quoted4   cyan       default
-color quoted5   blue       default
-color quoted6   magenta    default
-color quoted7   red        default
-color quoted8   green      default
-color quoted9   cyan       default
-
-#     object    foreground backg.   RegExp
-
-color header    red        default  "^(from|subject):"
-#color body     cyan       default  "((ftp|http|https)://|news:)[^>)\"\t]+"
-color body  cyan       default  "((ftp|http|https)://|(file|news):|www\\.)[-a-z0-9_.:]*[a-z0-9](/[^][{}\t\n\r\"<>()]*[^][{} \t\n\r\"<>().,:!])?/?"
-color body  cyan       default  "[-a-z_0-9.+]+@[-a-z_0-9.]+"
-#color body     red        default  "(^| )\\*[-a-z0-9äöüß*]+\\*[?]?[ \n]"
-#color body     green      default  "(^| )_[-a-z0-9äöüß_]+_[?]?[ \n]"
-color body  red        default  "(^| )\\*[-a-z0-9*]+\\*[?]?[ \n]"
-color body  green      default  "(^| )_[-a-z0-9_]+_[?]?[ \n]"
-
-# Firewall (iptables) logs:
-color body       magenta    default  "(PROTO=[A-Z]+)|(DPT=[0-9]+)|(SRC=[0-9.]+)"
-
-# Colorize (German) GnuPG messages:
-color body  red        default  "(Korrekte Unterschrift|Goodsignature)"
-color body  brightyellow black  "(Öffentlicher Schlüssel nichtgefunden|keine vertrauenswürdige Signatur|Dieser Schlüssel istverfallen)"
-color body  brightred   black   "FALSCHE Unterschrift"
-color body  brightgreen black   "nicht durch hinreichendvertrauenswürdige Signaturen zertifiziert"
-
-uncolor index *                    # unset all color index entries
-color index     blue       white ~F     # Flagged
-color index     red        white ~N     # New
-color index     magenta    default  ~T     # Tagged
-color index     yellow     default  ~D     # Deleted
 
 # thread me amadeus
 set sort="threads"
@@ -164,5 +36,14 @@ set sort_aux="last-date-received"
 
 unset collapse_unread
 
+bind index gg first-entry
+bind index G last-entry
 bind index - collapse-thread
 bind index _ collapse-all
+
+# "adress book"
+set alias_file="~/.dotfiles/mutt/aliases"
+# palette for monochrome terminals... ssh and whatnot
+source ~/.dotfiles/mutt/paletteMono
+# default-ish palette for pretty colored terminals
+source ~/.dotfiles/mutt/palette1
