@@ -1,4 +1,7 @@
-# rsrsl's dotfile collection
+# crvs's dotfile collection
+
+as of now this is just a clone of [rsrsl](http://github.com/rsrsl)'s dotfile
+collection
 
 ## dotfiles
 
@@ -52,5 +55,8 @@ There's a few special files in the hierarchy.
 
 ## thanks
 
-All my thanks go to [Zach Holman](http://github.com/holman) and, by extesion,
-to [Ryan Bates](http://github.com/ryanb)
+An onormous thanks to [rsrsl](http://github.com/rsrsl) for mentioning this and
+for introducing me to vim, and by extension a huge thanks to a lot of people
+that I don't have time to mention, but regarding the current project they
+should be directed at [Zach Holman](http://github.com/holman) and [Ryan
+Bates](http://github.com/ryanb)
