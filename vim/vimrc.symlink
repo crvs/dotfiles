@@ -3,7 +3,7 @@ filetype on
 let mapleader=','
 
 " send swapfiles to temp
-set dir =~/tmp
+set dir =/tmp
 
 " use pathogen to manage vim plugins
 execute pathogen#infect()

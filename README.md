@@ -1,7 +1,8 @@
 # crvs's dotfile collection
 
-as of now this is just a clone of [rsrsl](http://github.com/rsrsl)'s dotfile
-collection
+as of now this is mostly just a clone of [rsrsl](http://github.com/rsrsl)'s
+dotfile collection. Some files are different however... And eventually all
+files will be different 
 
 ## dotfiles
 
