@@ -1,86 +1,138 @@
-:colorscheme darkblue
-:let maplocalleader = ","
+" allow detection of file types
+filetype on
+let mapleader=','
 
-"Show trailing whitespaces and end of line character
-:set list listchars=tab:>-,trail:-,extends:>,eol:«
-"¬
+" send swapfiles to temp
+set dir =~/tmp
 
-"Open and edit vimrc, then source it at the end of the hacks
-:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-:nnoremap <leader>sv :source $MYVIMRC<cr>
-
-"Remove highlighting with escape in normal mode
-":autocmd BufRead * :<esc>
-":nnoremap <silent> <esc> :noh <cr>
-
-"Move swapfiles to a temp folder
-:set dir =~/tmp
-
-:filetype plugin on
-:filetype indent on
-:syntax on
-
-"Surround selected word with double quotes
-:nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
-
-"Beggining of line with H
-:nnoremap H ^
-:nnoremap L $
-
-:setlocal iskeyword+=:,-
-
-":inoremap <buffer> { {}<++><esc>F}i
-":inoremap <buffer> [ []<++><esc>F]i
-":inoremap <buffer> { {}<esc>i
-":inoremap <buffer> [ []<esc>i
-
-:set nocompatible ruler laststatus=2 showcmd showmode number
-
-:set relativenumber
-:set incsearch hlsearch
-
-"Abbreviations for common typos
-:iabbrev adn and
-:iabbrev hte the
-:iabbrev teh the
-
-"Scroll offset
-":set scrolloff=20
-
-"FileType Events
-:autocmd FileType python :nnoremap <buffer> <localleader>c I#<esc>
-:autocmd FileType python :nnoremap <buffer> <localleader>C ^x
-:autocmd FileType python :set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-
-:autocmd FileType *.txt :set ts = 4 sts=4 sw=4 nolist
-:autocmd FileType *.tex :set ts = 2 sts=2 sw=2
-
-:autocmd FileType *.lua :set ts=4 sts=4 sw=4 et
-
-":inoremap <buffer> ,b \begin{}<esc>i
-":inoremap <buffer> ,e \end{}<esc>i
-":inoremap <C-j> <esc>o
-":inoremap <C-k> <esc>O
-
-:autocmd FileType latex :nnoremap <buffer> <localleader>c I#<esc>
-:autocmd FileType python :nnoremap <buffer> <localleader>C ^x
-
-" :autocmd BufReadPost * :echom ">^.^< Hello Supervisor" 
-
-" VimLatex settings
-:set grepprg=grep\ -nH\$*
-:let g:tex_flavor='latex'
-
-" map NERDTree command to F2
-:map <F2> :NERDTreeToggle<CR>
-:imap <F2> <ESC>:NERDTreeToggle<CR>i
-:let g:NERDTreeChDirMode=2
-
-
-:let g:calendar_google_calendar = 1
-:let g:calendar_google_task = 1
-
-:helptags ~/.vim/bundle/vim-nerdtree/doc
+" use pathogen to manage vim plugins
 execute pathogen#infect()
 
+" making folding and unfolding easier
+nnoremap <silent> Bn :bn<cr>
+
+let g:tmux_navigator_no_mappings = 1
+
+" keep 10 lines visible under the cursor
+set scrolloff=10
+
+" tmux navigation keys
+autocmd BufRead * nunmap <c-j>
+autocmd BufRead * nnoremap <silent> <c-f> :TmuxNavigateLeft<cr>
+autocmd BufRead * nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+autocmd BufRead * nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+autocmd BufRead * nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+autocmd BufRead * nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+
+" no more arrows
+inoremap <left> <nop>
+inoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap ,. <CR>
+
+nnoremap <f2> :NERDTreeToggle<cr>
+inoremap <f2> <esc>:NERDTreeToggle<cr>
+
+inoremap bb <C-W>
+set listchars=eol:�,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
+set list
+
+let g:Tex_DefaultTargetFormat='pdf'
+
+if &ft == 'org'
+	let maplocalleader='\'
+endif
+
+autocmd BufRead *.tex :nnoremap ZM :w<CR>:call Tex_RunLaTeX()<CR>
+autocmd BufRead *.tex :iabbrev nuoh ^{}<++><esc>T{i
+
+" make a plugin out of this you lazy bum!!
+" date and time stamp function
+command Datestamp read ! date +"\%A \%B \%d \%Y"
+command Timestamp read ! date +"\%a \%b \%d \%Y - \%H:\%M"
+
+" get rid of search highlights quickly
+nnoremap <silent> <esc><esc> :noh<cr>
+
+nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <silent> <leader>sv :silent! :source $MYVIMRC<cr>
+
+" vim calendar options for google calendar
+let g:calendar_google_calendar=1
+let g:calendar_google_task=1
+
+set rnu " turn on relative numbering of lines
+set number " show the current line number on the left ruler
+
+
+noremap <leader>o o<Esc>k
+noremap <leader>O O<Esc>j
+
+colorscheme delek
+
+" make statusline persistent
+set laststatus=2
+
+" while searching center the results on the screen
+nnoremap n nzz
+nnoremap N Nzz
+
+" expand tabs to spaces
+set tabstop=4 shiftwidth=4 expandtab
+
+" allow to use hidden buffers more liberally
+set hidden
+
+set grepprg=grep\ -nH\ $*
+filetype plugin on
+filetype indent on
+
+let g:tex_flavor="latex"
+
+" custom modes documentation
+helptags ~/.vim/doc
+
+" Use Vim settings, rather than Vi settings (much better!).  This must
+" be first, because it changes other options as a side effect.
+set nocompatible
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+if has("vms")
+    set nobackup      " do not keep a backup file, use versions instead
+else
+    set backup        " keep a backup file (restore to previous version)
+    set undofile      " keep an undo file (undo changes after closing)
+endif
+set history=50      " keep 50 lines of command line history
+set ruler       " show the cursor position all the time
+set showcmd     " display incomplete commands
+set incsearch       " do incremental searching
+
+" Don't use Ex mode, use Q for formatting
+nnoremap Q gq
+
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
+" undo, so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+
+" In many terminal emulators the mouse works just fine, thus enable
+" it.
+set mouse=a
+
+" Switch syntax highlighting on, when the terminal has colors Also
+" switch on highlighting the last used search pattern.
+syntax on
+set hlsearch
+nohl
+
+" Convenient command to see the difference between the current buffer
+" and the file it was loaded from, thus the changes you made.  Only
+" define it when not defined already.
+if !exists(":DiffOrig")
+    command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+                \ | wincmd p | diffthis
+endif
 
