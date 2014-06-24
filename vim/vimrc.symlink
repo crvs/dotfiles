@@ -3,7 +3,7 @@ filetype on
 let mapleader=','
 
 " send swapfiles to temp
-set dir =/tmp
+set dir=/tmp
 
 " use pathogen to manage vim plugins
 execute pathogen#infect()
@@ -46,7 +46,7 @@ endif
 
 autocmd BufRead *.tex :nnoremap ZM :w<CR>:call Tex_RunLaTeX()<CR>
 autocmd BufRead *.tex :iabbrev nuoh ^{}<++><esc>T{i
-
+autocmd BufRead *.tex :nnoremap <silent> <leader>c I% <esc>
 " make a plugin out of this you lazy bum!!
 " date and time stamp function
 command Datestamp read ! date +"\%A \%B \%d \%Y"

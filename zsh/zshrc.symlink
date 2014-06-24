@@ -1,21 +1,29 @@
 # Path to your oh-my-zsh configuration.
 ZSH=/opt/oh-my-zsh
-ZSH_CUSTOM=$HOME/dotfiles
+ZSH_CUSTOM=$HOME/.dotfiles
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="nanotech"
+ZSH_THEME="dieter"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias pms=/opt/pms/mps
+alias mps=/opt/mps/mps
+alias pms=/opt/mps/mps
 
 # Google Search function
 function search {
 w3m "www.google.com/search?q=$(echo $@ | sed 's/ /+/g')"}
+
+# command completion
+autoload -U compinit
+compinit
+zstyle ':completion:*' menu select
+setopt completealiases
+setopt HIST_IGNORE_DUPS
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -46,7 +54,7 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment following line if you want to  shown in the command execution time stamp 
 # in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
 # yyyy-mm-dd
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="mm/dd/yyyy"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -63,7 +71,7 @@ setopt vi
 export EDITOR="vim"
 export PAGER="less"
 export BROWSER="firefox"
-export MOVPLAY="vlc"
+export MOVPLAY="mplayer"
 export PICVIEW="feh"
 export SNDPLAY="mplayer"
 export TERMINAL="xterm"
@@ -75,7 +83,7 @@ for exit in png jpg gif; do alias -s $ext=$PICVIEW; done
 for ext in mpg wmv avi mkv; do alias -s $ext=$MOVPLAY; done
 for ext in wav mp3 ogg; do alias -s $ext=$SNDPLAY; done
 
-export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # # Preferred editor for local and remote sessions
@@ -90,6 +98,25 @@ export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
+typeset -A key
 
+# key[Up]=${terminfo[kcuul]}
+# key[Down]=${terminfo[kcudl]}
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+[[ -n "${key[Up]}"   ]] && bindkey "${key[Up]}"   up-line-or-history   # history-beginning-search-backward
+[[ -n "${key[Down]}" ]] && bindkey "${key[Down]}" down-line-or-history # history-beginning-search-forward
+
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+    function zle-line-init () {
+        printf '%s' "${terminfo[smkx]}"
+    }
+    function zle-line-finish () {
+        printf '%s' "${termifo[rmkx]}"
+    }
+    zle -N zle-line-init
+    zle -N zle-line-finish
+fi
+source ~/.aliases
+
+# Add RVM to PATH for scripting
+PATH=$PATH:$HOME/.rvm/bin

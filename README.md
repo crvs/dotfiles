@@ -18,7 +18,7 @@ subject](http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/).
 Run:
 
 ```sh
-git clone https://github.com/rsrsl/dotfiles.git ~/.dotfiles
+git clone https://github.com/crvs/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 script/bootstrap
 ```
@@ -56,7 +56,7 @@ There's a few special files in the hierarchy.
 
 ## thanks
 
-An onormous thanks to [rsrsl](http://github.com/rsrsl) for mentioning this and
+An enormous thanks to [rsrsl](http://github.com/rsrsl) for mentioning this and
 for introducing me to vim, and by extension a huge thanks to a lot of people
 that I don't have time to mention, but regarding the current project they
 should be directed at [Zach Holman](http://github.com/holman) and [Ryan
