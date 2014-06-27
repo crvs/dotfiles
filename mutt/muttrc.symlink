@@ -1,5 +1,5 @@
 # call urlscan on the mutt pager. the urlscan is like urlview but supplying context
-macro pager \Cu "|urlscan<enter>" "call urlscan to open links"
+macro pager \Cu "|urlview<enter>" "call urlscan to open links"
 
 set realname="João Carvalho"
 
@@ -43,7 +43,9 @@ bind index - collapse-thread
 bind index _ collapse-all
 
 # "adress book"
+# seems like you have to source it otherwise there is no autocompletion
 set alias_file="~/.dotfiles/mutt/aliases"
+source ~/.dotfiles/mutt/aliases
 # palette for monochrome terminals... ssh and whatnot
 source ~/.dotfiles/mutt/paletteMono
 # default-ish palette for pretty colored terminals
