@@ -1,9 +1,0 @@
-# for some reason firefox seems to nood to come BEFORE w3m
-text/html; firefox %s
-text/html; w3m -T text/html -dump %s; copiousoutput
-image/gif; feh -Z %s
-image/png; feh -Z %s
-image/jpg; feh -Z %s
-image/jpeg; feh -Z %s
-application/pdf; zathura %s
-text/plain; less %s

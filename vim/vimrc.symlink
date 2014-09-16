@@ -1,138 +1,174 @@
-" allow detection of file types
-filetype on
-let mapleader=','
+:let mapleader=','
+:colorscheme delek
 
-" send swapfiles to temp
-set dir=/tmp
+"file type defaults -------------------------------------------------
+:filetype on
+:filetype plugin on
+:filetype indent on
 
-" use pathogen to manage vim plugins
-execute pathogen#infect()
+" temp folder and files ----------------------------------------------
+:set dir=/tmp
 
-" making folding and unfolding easier
-nnoremap <silent> Bn :bn<cr>
-
-let g:tmux_navigator_no_mappings = 1
+" start pathogen -----------------------------------------------------
+:execute pathogen#infect()
 
 " keep 10 lines visible under the cursor
-set scrolloff=10
+:set scrolloff=10
 
-" tmux navigation keys
-autocmd BufRead * nunmap <c-j>
-autocmd BufRead * nnoremap <silent> <c-f> :TmuxNavigateLeft<cr>
-autocmd BufRead * nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-autocmd BufRead * nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-autocmd BufRead * nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-autocmd BufRead * nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+" Haskell mode settings
+:let g:haddock_browser="/usr/bin/firefox"
+" tmux & navigation keys ---------------------------------------------
+:let g:tmux_navigator_no_mappings = 1
+:autocmd BufRead * nunmap <c-j>
+:autocmd BufRead * nnoremap <silent> <c-f> :TmuxNavigateLeft<cr>
+:autocmd BufRead * nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+:autocmd BufRead * nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+:autocmd BufRead * nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+:autocmd BufRead * nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
 
-" no more arrows
-inoremap <left> <nop>
-inoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap ,. <CR>
+" no more arrows -----------------------------------------------------
+:inoremap <left>  <noP>
+:inoremap <right> <noP>
+:inoremap <up>    <noP>
+:inoremap <down>  <noP>
 
-nnoremap <f2> :NERDTreeToggle<cr>
-inoremap <f2> <esc>:NERDTreeToggle<cr>
+" parenthesis matching------------------------------------------------
+:inoremap <> <><++><esc>4hi
+:inoremap () ()<++><esc>4hi
+:inoremap [] []<++><esc>4hi
+:inoremap {} {}<++><esc>4hi
+:inoremap "" ""<++><esc>4hi
+:inoremap '' ''<++><esc>4hi
 
-inoremap bb <C-W>
-set listchars=eol:¬,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
-set list
+:nnoremap <f2> :NERDTreeToggle<cr>
+:inoremap <f2> <esc>:NERDTreeToggle<cr>
 
-let g:Tex_DefaultTargetFormat='pdf'
+:set listchars=eol:¬,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
+:set list
 
-if &ft == 'org'
-	let maplocalleader='\'
-endif
+" LaTeX Defaults ----------------------------------------------------
+:let g:tex_flavor="latex"
+:let g:Tex_DefaultTargetFormat='pdf'
+:let g:Tex_MultipleCompileFormats='pdf,dvi'
+:autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
+:autocmd BufRead *.tex :nnoremap <silent> <leader>c I% <esc>
+:autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf &'
+:autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark"
 
-autocmd BufRead *.tex :nnoremap ZM :w<CR>:call Tex_RunLaTeX()<CR>
-autocmd BufRead *.tex :iabbrev nuoh ^{}<++><esc>T{i
-autocmd BufRead *.tex :nnoremap <silent> <leader>c I% <esc>
-" make a plugin out of this you lazy bum!!
-" date and time stamp function
-command Datestamp read ! date +"\%A \%B \%d \%Y"
-command Timestamp read ! date +"\%a \%b \%d \%Y - \%H:\%M"
+:autocmd ColorScheme * :highlight Folded cterm=bold ctermbg=none ctermfg=green
+" date and time stamps -----------------------------------------------
+:command! Datestamp read ! date +"\%A \%B \%d \%Y"
+:command! Timestamp read ! date +"\%a \%b \%d \%Y - \%H:\%M"
 
-" get rid of search highlights quickly
-nnoremap <silent> <esc><esc> :noh<cr>
+" Search settings ----------------------------------------------------
+:set hlsearch
+:set incsearch
+:nnoremap n nzz
+:nnoremap N Nzz
+:nnoremap <silent> <esc><esc> :noh<cr>:match<cr>
+:autocmd ColorScheme * :highlight Search ctermfg=black ctermbg=yellow cterm=NONE
+:autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
+:command! -nargs=1 S :match Search /<args>/
 
-nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <silent> <leader>sv :silent! :source $MYVIMRC<cr>
+" vimrc editin -------------------------------------------------------
+:nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <silent> <leader>sv :silent! :source $MYVIMRC<cr>
 
-" vim calendar options for google calendar
-let g:calendar_google_calendar=1
-let g:calendar_google_task=1
+" swaping visual and normal navigation -------------------------------
+:let g:visual_nav=0
+:function! s:toggle_visual_nav()
+:   let g:visual_nav=!g:visual_nav
+:   if g:visual_nav
+:       nnoremap <silent> j gj
+:       nnoremap <silent> k gk
+:       echo "visual navigation ON"
+:   else
+:       nnoremap <silent> j  j
+:       nnoremap <silent> k k
+:       echo "visual navigation OFF"
+:   endif
+:endfunction
+:nnoremap <leader>v :call <sid>toggle_visual_nav()<cr>
 
-set rnu " turn on relative numbering of lines
-set number " show the current line number on the left ruler
+" vim calendar options for google calendar ---------------------------
+:let g:calendar_google_calendar=1
+:let g:calendar_google_task=1
 
+" line numbering, statusbar & tabline --------------------------------
+:set rnu
+:set number
+:set laststatus=2
+:let g:airline_powerline_fonts=1
+:let g:airline#extensions#tabline#enabled = 1
+:let g:airline#extensions#whitespace#enabled = 1
 
-noremap <leader>o o<Esc>k
-noremap <leader>O O<Esc>j
+" Git configurations -------------------------------------------------
+:autocmd ColorScheme * :highlight SignColumn   ctermbg=NONE
+:autocmd ColorScheme * :highlight GitGutterAdd          ctermbg=NONE ctermfg=green cterm=bold
+:autocmd ColorScheme * :highlight GitGutterChange       ctermbg=NONE ctermfg=yellow cterm=bold
+:autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red  cterm=bold
+:autocmd ColorScheme * :highlight GitGutterChangeDelete ctermbg=NONE ctermfg=red cterm=bold
 
-colorscheme delek
+" tabs and linebreaks ------------------------------------------------
+:set tabstop=4 shiftwidth=4 expandtab
+:set smartindent
+:set showbreak=>\ 
+:set breakindent
+:set linebreak
 
-" make statusline persistent
-set laststatus=2
+:autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green cterm=NONE
+" allow to use hidnen buffers more liberally
+:set hidden
+:set grepprg=grep\ -nH\ $*
 
-" while searching center the results on the screen
-nnoremap n nzz
-nnoremap N Nzz
-
-" expand tabs to spaces
-set tabstop=4 shiftwidth=4 expandtab
-
-" allow to use hidden buffers more liberally
-set hidden
-
-set grepprg=grep\ -nH\ $*
-filetype plugin on
-filetype indent on
-
-let g:tex_flavor="latex"
-
+:noremap <leader>o o<Esc>k
+:noremap <leader>O O<Esc>j
 " custom modes documentation
-helptags ~/.vim/doc
+":helptags ~/.vim/doc
 
 " Use Vim settings, rather than Vi settings (much better!).  This must
 " be first, because it changes other options as a side effect.
-set nocompatible
+:set nocompatible
 
 " allow backspacing over everything in insert mode
-set backspace=indent,eol,start
+:set backspace=indent,eol,start
 
-if has("vms")
-    set nobackup      " do not keep a backup file, use versions instead
-else
-    set backup        " keep a backup file (restore to previous version)
-    set undofile      " keep an undo file (undo changes after closing)
-endif
-set history=50      " keep 50 lines of command line history
-set ruler       " show the cursor position all the time
-set showcmd     " display incomplete commands
-set incsearch       " do incremental searching
+:if has("vms")
+:   set nobackup      " do not keep a backup file, use versions instead
+:else
+:   set backup        " keep a backup file (restore to previous version)
+:   set undofile      " keep an undo file (undo changes after closing)
+:endif
+:set history=50      " keep 50 lines of command line history
+:set ruler       " show the cursor position all the time
+:set showcmd     " display incomplete commands
 
-" Don't use Ex mode, use Q for formatting
-nnoremap Q gq
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
+" CRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
 " undo, so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
+:inoremap <C-U> <C-G>u<C-U>
 
 " In many terminal emulators the mouse works just fine, thus enable
 " it.
-set mouse=a
+:set mouse=a
 
 " Switch syntax highlighting on, when the terminal has colors Also
 " switch on highlighting the last used search pattern.
-syntax on
-set hlsearch
-nohl
+:syntax on
+:nohl
+
 
 " Convenient command to see the difference between the current buffer
 " and the file it was loaded from, thus the changes you made.  Only
 " define it when not defined already.
-if !exists(":DiffOrig")
-    command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-                \ | wincmd p | diffthis
-endif
+:if !exists(":DiffOrig")
+   command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+               \ | wincmd p | diffthis
+:endif
 
+
+:let g:languagetool_jar='/home/crvs/.LanguageTool/languagetool-commandline.jar'
+
+:if &ft == 'org'
+:    let maplocalleader='\'
+:endif

@@ -1,0 +1,42 @@
+[submodule "vim.symlink/bundle/calendar.vim"]
+	path = vim.symlink/bundle/calendar.vim
+	url = https://github.com/itchyny/calendar.vim
+[submodule "vim.symlink/bundle/haskellmode-vim"]
+	path = vim.symlink/bundle/haskellmode-vim
+	url = https://github.com/lukerandall/haskellmode-vim
+[submodule "vim.symlink/bundle/LanguageTool"]
+	path = vim.symlink/bundle/LanguageTool
+	url = https://github.com/vim-scripts/LanguageTool
+[submodule "vim.symlink/bundle/matchit"]
+	path = vim.symlink/bundle/matchit
+	url = https://github.com/tmhedberg/matchit
+[submodule "vim.symlink/bundle/NrrwRgn"]
+	path = vim.symlink/bundle/NrrwRgn
+	url = https://github.com/chrisbra/NrrwRgn
+[submodule "vim.symlink/bundle/vim-syntax-shakespeare"]
+	path = vim.symlink/bundle/vim-syntax-shakespeare
+	url = https://github.com/pbrisbin/vim-syntax-shakespeare
+[submodule "vim.symlink/bundle/vim-easymotion"]
+	path = vim.symlink/bundle/vim-easymotion
+	url = https://github.com/Lokaltog/vim-easymotion
+[submodule "vim.symlink/bundle/vim-fugitive"]
+	path = vim.symlink/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "vim.symlink/bundle/vim-indent-guides"]
+	path = vim.symlink/bundle/vim-indent-guides
+	url = https://github.com/nathanaelkane/vim-indent-guides
+[submodule "vim.symlink/bundle/vim-tmux-navigator"]
+	path = vim.symlink/bundle/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "vim.symlink/bundle/vim-airline"]
+	path = vim.symlink/bundle/vim-airline
+	url = https://github.com/bling/vim-airline
+[submodule "vim.symlink/bundle/vim-latex-suite"]
+	path = vim.symlink/bundle/vim-latex-suite
+	url = https://github.com/gerw/vim-latex-suite
+[submodule "vim.symlink/bundle/vim-autoswap.git"]
+	path = vim.symlink/bundle/vim-autoswap.git
+	url = https://github.com/gioele/vim-autoswap.git
+[submodule "vim.symlink/bundle/vim-gitgutter"]
+	path = vim.symlink/bundle/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter
