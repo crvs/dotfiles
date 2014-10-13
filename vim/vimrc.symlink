@@ -1,23 +1,81 @@
+" Vundle {{{
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'airblade/vim-gitgutter'
+Plugin 'bling/vim-airline'
+Plugin 'chrisbra/histwin.vim.git'
+Plugin 'chrisbra/NrrwRgn'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'gerw/vim-latex-suite'
+Plugin 'gioele/vim-autoswap.git'
+Plugin 'gmarik/Vundle.vim'
+Plugin 'itchyny/calendar.vim'
+Plugin 'jceb/vim-orgmode.git'
+Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'lukerandall/haskellmode-vim'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'pbrisbin/vim-syntax-shakespeare'
+Plugin 'scrooloose/nerdtree.git'
+Plugin 'tmhedberg/matchit'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-scripts/bib_autocomp.vim.git'
+Plugin 'vim-scripts/gnupg.vim.git'
+Plugin 'vim-scripts/LanguageTool'
+Plugin 'vim-scripts/speeddating.vim.git'
+Plugin 'szw/vim-dict'
+Plugin 'mbbill/undotree'
+Plugin 'kshenoy/vim-signature'
+Plugin 'AndrewRadev/multichange.vim'
+Plugin 'mhinz/vim-startify'
+Plugin 'vim-scripts/buffet.vim'
+Plugin 'kana/vim-arpeggio'
+Plugin 'vimwiki/vimwiki'
+
+call vundle#end()
+filetype plugin indent on
+" }}}
+" Goyo & Limelight {{{
+:colorscheme blue
+
+:let g:limelight_conceal_ctermfg='gray'
+:let g:limelight_conceal_ctermfg=240
+
+:nnoremap <silent> <f4> :Goyo<cr>
+:inoremap <silent> <f4> <esc>:Goyo<cr>a
+
+" }}}
+"misc defaults {{{
 :let mapleader=','
-:colorscheme delek
+:set foldmethod=marker
 
-"file type defaults -------------------------------------------------
-:filetype on
-:filetype plugin on
-:filetype indent on
-
-" temp folder and files ----------------------------------------------
+" temp folder and files
 :set dir=/tmp
 
-" start pathogen -----------------------------------------------------
-:execute pathogen#infect()
+" fast edit vimrc
+:nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <silent> <leader>sv :silent! :source $MYVIMRC<cr>
 
-" keep 10 lines visible under the cursor
-:set scrolloff=10
+" nice guides
+:set listchars=eol:¬,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
+:set list
 
-" Haskell mode settings
-:let g:haddock_browser="/usr/bin/firefox"
-" tmux & navigation keys ---------------------------------------------
+" }}}
+" keep 10 lines visible under the cursor {{{
+:set scrolloff=5
+
+" }}}
+" Haskell mode settings {{{
+:au BufEnter *.hs compiler ghc
+:let g:ghc="/usr/sbin/ghc"
+:let g:haddock_browser="/usr/sbin/firefox"
+:let g:haddock_docdir="/usr/share/doc/ghc/html"
+" }}}
+" tmux & navigation keys {{{
 :let g:tmux_navigator_no_mappings = 1
 :autocmd BufRead * nunmap <c-j>
 :autocmd BufRead * nnoremap <silent> <c-f> :TmuxNavigateLeft<cr>
@@ -26,13 +84,15 @@
 :autocmd BufRead * nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 :autocmd BufRead * nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
 
-" no more arrows -----------------------------------------------------
-:inoremap <left>  <noP>
-:inoremap <right> <noP>
-:inoremap <up>    <noP>
-:inoremap <down>  <noP>
+" }}}
+"parenthesis and matchings {{{
+:nnoremap <leader>" ciW"<esc>pa"<esc>
+:nnoremap <leader>' ciW'<esc>pa'<esc>
+:nnoremap <leader>( ciW(<esc>pa)<esc>
+:nnoremap <leader>[ ciW[<esc>pa]<esc>
+:nnoremap <leader>{ ciW{<esc>pa}<esc>
+:nnoremap <leader>< ciW<<esc>pa><esc>
 
-" parenthesis matching------------------------------------------------
 :inoremap <> <><++><esc>4hi
 :inoremap () ()<++><esc>4hi
 :inoremap [] []<++><esc>4hi
@@ -40,27 +100,56 @@
 :inoremap "" ""<++><esc>4hi
 :inoremap '' ''<++><esc>4hi
 
-:nnoremap <f2> :NERDTreeToggle<cr>
-:inoremap <f2> <esc>:NERDTreeToggle<cr>
+" }}}
+" NERDTree {{{
+:nnoremap <silent> <f2> :NERDTreeToggle<cr>
+:inoremap <silent> <f2> <esc>:NERDTreeToggle<cr>
 
-:set listchars=eol:¬,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
-:set list
+" }}}
+" startify {{{
+:let g:startify_custom_header=map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['','']
+" }}}
+" gvim {{{
+:set guioptions=''
+" }}}
+" Undotree {{{
+:nnoremap <silent> <f3> :UndotreeToggle<cr>
+:inoremap <silent> <f3>  <esc>:UndotreeToggle<cr>
 
-" LaTeX Defaults ----------------------------------------------------
+" }}}
+" LaTeX {{{
 :let g:tex_flavor="latex"
 :let g:Tex_DefaultTargetFormat='pdf'
 :let g:Tex_MultipleCompileFormats='pdf,dvi'
+
+" fast compile
 :autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
-:autocmd BufRead *.tex :nnoremap <silent> <leader>c I% <esc>
+" easy comment
+:autocmd BufRead *.tex :nnoremap <silent> <leader>c I%<esc>
+:autocmd BufRead *.tex :vnoremap <silent> <leader>c norm I%<esc>
+" open pdf
 :autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf &'
-:autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark"
+" more environments to collapse
+:autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark,definition"
 
 :autocmd ColorScheme * :highlight Folded cterm=bold ctermbg=none ctermfg=green
-" date and time stamps -----------------------------------------------
-:command! Datestamp read ! date +"\%A \%B \%d \%Y"
-:command! Timestamp read ! date +"\%a \%b \%d \%Y - \%H:\%M"
+" }}}
+" Arpeggios {{{
+:call arpeggio#load()
 
-" Search settings ----------------------------------------------------
+:augroup arpeggio
+:   au BufEnter * call arpeggio#load()
+:   au BufEnter * call arpeggio#map("n","s",1,"wo","<c-w>o")
+:   au BufEnter * call arpeggio#map("n","s",0,"bl",":Bufferlist<cr>")
+:   au BufEnter * call arpeggio#map("i","s",1,"nt","<c-j>")
+:   au BufEnter * call arpeggio#map("i","s",1,"()","()")
+:   au BufEnter * call arpeggio#map("i","s",1,"[]","[]")
+:   au BufEnter * call arpeggio#map("i","s",1,"{}","{}")
+:   au BufEnter * call arpeggio#map("i","s",1,"<>","<>")
+:augroup END
+"
+" }}}
+" Search {{{
 :set hlsearch
 :set incsearch
 :nnoremap n nzz
@@ -70,11 +159,8 @@
 :autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
 :command! -nargs=1 S :match Search /<args>/
 
-" vimrc editin -------------------------------------------------------
-:nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
-:nnoremap <silent> <leader>sv :silent! :source $MYVIMRC<cr>
-
-" swaping visual and normal navigation -------------------------------
+" }}}
+" navigation swapping{{{
 :let g:visual_nav=0
 :function! s:toggle_visual_nav()
 :   let g:visual_nav=!g:visual_nav
@@ -90,11 +176,13 @@
 :endfunction
 :nnoremap <leader>v :call <sid>toggle_visual_nav()<cr>
 
-" vim calendar options for google calendar ---------------------------
+" }}}
+" vim calendar options for google calendar {{{
 :let g:calendar_google_calendar=1
 :let g:calendar_google_task=1
 
-" line numbering, statusbar & tabline --------------------------------
+" }}}
+" statusbar {{{
 :set rnu
 :set number
 :set laststatus=2
@@ -102,17 +190,19 @@
 :let g:airline#extensions#tabline#enabled = 1
 :let g:airline#extensions#whitespace#enabled = 1
 
-" Git configurations -------------------------------------------------
+" }}}
+" Git configurations {{{
 :autocmd ColorScheme * :highlight SignColumn   ctermbg=NONE
 :autocmd ColorScheme * :highlight GitGutterAdd          ctermbg=NONE ctermfg=green cterm=bold
 :autocmd ColorScheme * :highlight GitGutterChange       ctermbg=NONE ctermfg=yellow cterm=bold
 :autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red  cterm=bold
 :autocmd ColorScheme * :highlight GitGutterChangeDelete ctermbg=NONE ctermfg=red cterm=bold
 
-" tabs and linebreaks ------------------------------------------------
+" }}}
+" tabs and linebreaks {{{
 :set tabstop=4 shiftwidth=4 expandtab
 :set smartindent
-:set showbreak=>\ 
+:set showbreak=>\ "begin broken line
 :set breakindent
 :set linebreak
 
