@@ -1,0 +1,109 @@
+#  Call  Urlscan  On  The  Mutt  Pager.  The  Urlscan  Is  Like  Urlview  But  Supplying  Context
+macro pager \Cu "|urlscan<enter>" "call urlscan to open links"
+
+set realname="João Carvalho"
+
+set index_format = "%4C %Z %[%a %b %d %I:%M] %-15.15L %s"
+
+#  Stuff  To  Manage  Attachments
+set implicit_autoview
+auto_view text/html text/plain
+
+set move = no
+set imap_keepalive = 900
+unset wait_key
+
+set sort_browser="alpha"
+set sort_aux="date"
+set sort = threads                         # like gmail
+set sort_aux = reverse-last-date-received  # like gmail
+set uncollapse_jump                        # don't collapse on an unread message
+set sort_re                                # thread based on regex
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+
+bind index gg first-entry
+bind index G last-entry
+bind index - collapse-thread
+bind index za collapse-thread
+bind index _ collapse-all
+bind index zr collapse-all
+bind index j next-entry          # don't ignore deleted
+bind index k previous-entry      # don't ignore deleted
+bind pager j next-line
+bind pager k previous-line
+
+# Paths ---------------------------------------------------
+set tmpdir           =  /tmp
+set folder           = ~/.mail
+set header_cache     = ~/.mail/cache/headers
+set message_cachedir = ~/.mail/cache/bodies
+set certificate_file = ~/.mail/cache/certificates
+set mailcap_path     = ~/.dotfiles/mail/mailcap
+set alias_file       = ~/.dotfiles/mail/aliases
+
+# Sidebar -------------------------------------------------
+set sidebar_delim   = '|'
+set sidebar_visible = yes
+set sidebar_width   = 25
+
+macro index i ":toggle sidebar_visible<enter>"
+
+mailboxes +gmail/INBOX \
+          +gmail/Drafts \
+          +gmail/Sent \
+          +gmail/Trash
+
+mailboxes +ist/INBOX \
+          +ist/Drafts \
+          +ist/Sent \
+          +ist/Sent\ Messages \
+          +ist/Trash
+
+mailboxes +kth/INBOX \
+          +kth/Drafts \
+          +kth/Sent \
+          +kth/Sent\ Items \
+          +kth/Trash
+
+bind index,pager J sidebar-next
+bind index,pager K sidebar-prev
+bind index,pager E sidebar-open
+
+source ~/.dotfiles/mail/aliases
+
+#  Colors  And  Themes
+source ~/.dotfiles/mail/paletteMono
+source ~/.dotfiles/mail/palette1
+
+
+# Defaoult Account ----------------------------------------
+source ~/.dotfiles/mail/account.gmail
+
+
+# Account Macros ------------------------------------------
+macro index <f2> "c+gmail/INBOX<enter>"
+macro index <f3> "c+ist/INBOX<enter>"
+macro index <f4> "c+kth/INBOX<enter>"
+
+# Folder Hooks --------------------------------------------
+folder-hook +gmail/* "source /home/crvs/.dotfiles/mail/account.gmail"
+folder-hook +ist/* "source /home/crvs/.dotfiles/mail/account.ist"
+folder-hook +kth/* "source /home/crvs/.dotfiles/mail/account.kth"
+
+# Message Hooks -------------------------------------------
+# message-hook '!(~g|~G) ~b"^-----BEGIN\ PGP\ (SIGNED\ )?MESSAGE"' "exec check-traditional-pgp"
+source /usr/share/doc/mutt/samples/gpg.rc
+set pgp_auto_decode=yes
+
+set duplicate_threads=yes
+
+# Search Macros--------------------------------------------
+macro index <f5> "!rm -r ~/.mail/search<enter>!setsid notmuch-mutt -o ~/.mail/search search -p<enter>c~/.mail/search<enter>l!~=<enter>"
+
+# Sync & Auth Macros ---------------------------------------------
+macro index,pager,compose <f9> "!/home/crvs/.dotfiles/mail/mailsync.sh inbox<enter>"
+macro index,pager,compose <f10> "!/home/crvs/.dotfiles/mail/mailsync.sh<enter>"
+macro index,pager,compose <f12> "! /home/crvs/.dotfiles/mail/mailauth.sh<enter>"
+
+# Deauth & Quit -------------------------------------------
+macro index q "!/home/crvs/.dotfiles/mail/mailauth.sh deauth<enter><quit>"

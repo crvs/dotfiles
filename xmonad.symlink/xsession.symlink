@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# set background
+feh --bg-scale /home/crvs/.xmonad/wallpaper.jpg &
+
+# run redshift if it is not running
+(pgrep redshift > /dev/null)
+if [[ ! $? = 0 ]]; then
+    LISBON="38:-9" 
+    STOCKHOLM="59:18"
+    setsid redshift -l $STOCKHOLM &
+fi
+

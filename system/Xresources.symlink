@@ -11,12 +11,25 @@ XTerm*locale: true
 !XTerm*faceName: monofur:pixelsize=15
 !XTerm*faceSize: 9
 
+dzen2.font:       xft:monofur for Powerline-10.5:regular
+dzen2.foreground: #22EE11
+dzen2.background: black
+
 ! These used to be XTerm*
 *pointerColor: white
 *pointerColorBackground: black
 *cursorColor:yellow
 *cursorBlink:true
-*faceName: monofur:pixelsize=15
+
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+
+URxvt*font:     xft:monofur for Powerline-10.5:regular
+URxvt*faceName: xft:monofur for Powerline-10.5:regular
 *fullscreen:never
 
 XTerm*urgentOnBell:true

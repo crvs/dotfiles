@@ -1,0 +1,9 @@
+# vim: syntax=python
+
+set from          = "carvas.f@gmail.com"
+set sendmail      = "msmtp -a gmail"
+set sendmail_wait = 0
+set record        = "+gmail/INBOX"
+set spoolfile     = "+gmail/INBOX"
+set mbox          = "+gmail/"
+set postponed     = "+gmail/Drafts"

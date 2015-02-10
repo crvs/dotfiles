@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh configuration.
 ZSH=/opt/oh-my-zsh
-ZSH_CUSTOM=$HOME/.dotfiles
+#ZSH_CUSTOM=$HOME/.dotfiles
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -60,7 +60,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git)
-plugins=(git)
+plugins=(git vi-mode history-substring-search) # tilingaware)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -119,4 +119,21 @@ fi
 source ~/.aliases
 
 # Add RVM to PATH for scripting
-PATH=$PATH:$HOME/.rvm/bin
+PATH=$HOME/.dotfiles/bin:$HOME/.rvm/bin:/usr/bin/vendor_perl:$PATH
+
+# puth this in  a more convenient location
+# function to easily change the names of a whole folder of mp3s with the format "track - title.mp3"
+reanme_mp3s(){
+    IFS=$'\n'   # reassign the internal field separator
+    for file in $(ls); do
+        mv $file `mp3info -p "%n - %t.mp3" $file`
+    done
+    IFS=$'\ '   # restore IFS to default
+}
+
+# vi mode indicator
+RPS1='$(vi_mode_prompt_info)'$RPS1
+
+#grep warning
+alias grep="/usr/bin/grep $GREP_OPTIONS"
+unset GREP_OPTIONS

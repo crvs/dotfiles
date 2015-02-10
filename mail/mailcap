@@ -1,0 +1,7 @@
+# for some reason firefox seems to need to come BEFORE w3m
+text/html; firefox %s 2>/dev/null &;
+text/html; w3m -T text/html -dump %s; copiousoutput
+image/*; setsid sxiv %s > /dev/null;
+application/pdf; setsid zathura %s;
+text/plain; less %s
+video/mp4; mplayer %s;

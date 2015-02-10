@@ -1,0 +1,37 @@
+account gmail
+    host smtp.gmail.com
+    timeout 10
+    port 587
+    protocol smtp
+    auth on
+    from carvas.f@gmail.com
+    user carvas.f
+    passwordeval cat /home/crvs/crypt/gmail && echo ''
+    tls on
+    tls_trust_file /etc/ssl/certs/ca-certificates.crt
+
+account ist
+    host mail.tecnico.ulisboa.pt
+    timeout 10
+    protocol smtp
+    auth login
+    from joao.carvalho@tecnico.ulisboa.pt
+    user ist157881
+    passwordeval cat /home/crvs/crypt/ist && echo ''
+    tls on
+    tls_starttls on
+    tls_trust_file /etc/ssl/certs/ca-certificates.crt
+
+account kth
+    host smtp.kth.se
+    timeout 10
+    protocol smtp
+    auth login
+    from jfpbdc@kth.se
+    user jfpbdc
+    passwordeval cat /home/crvs/crypt/kth && echo ''
+    tls on
+    tls_starttls on
+    tls_trust_file /etc/ssl/certs/ca-certificates.crt
+
+account default : gmail

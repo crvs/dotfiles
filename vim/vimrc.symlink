@@ -3,7 +3,6 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
 Plugin 'chrisbra/histwin.vim.git'
@@ -13,10 +12,7 @@ Plugin 'gerw/vim-latex-suite'
 Plugin 'gioele/vim-autoswap.git'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'itchyny/calendar.vim'
-Plugin 'jceb/vim-orgmode.git'
 Plugin 'junegunn/goyo.vim'
-Plugin 'junegunn/limelight.vim'
-Plugin 'Lokaltog/vim-easymotion'
 Plugin 'lukerandall/haskellmode-vim'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'pbrisbin/vim-syntax-shakespeare'
@@ -31,22 +27,36 @@ Plugin 'szw/vim-dict'
 Plugin 'mbbill/undotree'
 Plugin 'kshenoy/vim-signature'
 Plugin 'AndrewRadev/multichange.vim'
-Plugin 'mhinz/vim-startify'
 Plugin 'vim-scripts/buffet.vim'
-Plugin 'kana/vim-arpeggio'
+"Plugin 'kana/vim-arpeggio'
 Plugin 'vimwiki/vimwiki'
-
+Plugin 'flazz/vim-colorschemes'
+"Plugin 'biskark/vim-ultimate-colorscheme-utility'
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'mhinz/vim-startify'
+Plugin 'vim-scripts/dbext.vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+"Plugin 'jceb/vim-orgmode.git' " replaced by vimwiki
+"Plugin 'junegunn/limelight.vim' " not used enough
+"Plugin 'Lokaltog/vim-easymotion' " cool but unused
 call vundle#end()
 filetype plugin indent on
 " }}}
 " Goyo & Limelight {{{
-:colorscheme blue
+:colorscheme SlateDark "conflicts with colorscheme tool
 
-:let g:limelight_conceal_ctermfg='gray'
-:let g:limelight_conceal_ctermfg=240
+":let g:limelight_conceal_ctermfg='gray' "disabled limelight
+":let g:limelight_conceal_ctermfg=240    "disabled limelight
 
-:nnoremap <silent> <f4> :Goyo<cr>
-:inoremap <silent> <f4> <esc>:Goyo<cr>a
+:nnoremap <silent> <f5> :Goyo<cr>
+:inoremap <silent> <f5> <esc>:Goyo<cr>a
+
+" }}}
+" Bufferlist {{{
+:nnoremap <silent> <f4> :Bufferlist<cr>
 
 " }}}
 "misc defaults {{{
@@ -64,6 +74,7 @@ filetype plugin indent on
 :set listchars=eol:¬,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
 :set list
 
+:autocmd VimResized * :normal <c-w>=
 " }}}
 " keep 10 lines visible under the cursor {{{
 :set scrolloff=5
@@ -93,6 +104,13 @@ filetype plugin indent on
 :nnoremap <leader>{ ciW{<esc>pa}<esc>
 :nnoremap <leader>< ciW<<esc>pa><esc>
 
+:vnoremap <leader>" c"<esc>pa"<esc>
+:vnoremap <leader>' c'<esc>pa'<esc>
+:vnoremap <leader>( c(<esc>pa)<esc>
+:vnoremap <leader>[ c[<esc>pa]<esc>
+:vnoremap <leader>{ c{<esc>pa}<esc>
+:vnoremap <leader>< c<<esc>pa><esc>
+
 :inoremap <> <><++><esc>4hi
 :inoremap () ()<++><esc>4hi
 :inoremap [] []<++><esc>4hi
@@ -104,10 +122,20 @@ filetype plugin indent on
 " NERDTree {{{
 :nnoremap <silent> <f2> :NERDTreeToggle<cr>
 :inoremap <silent> <f2> <esc>:NERDTreeToggle<cr>
+:let NERDTreeChDirMode=2
 
 " }}}
 " startify {{{
 :let g:startify_custom_header=map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['','']
+:let g:startify_skiplist = [
+    \ '\/usr\/share\/vim\/.*$',
+    \ 'bundle/.*/doc',
+    \ '\.aux$',
+    \ '\.log$',
+    \ '\.sty$',
+    \ '\.wiki$',
+    \ 'vimrc',
+    \ ]
 " }}}
 " gvim {{{
 :set guioptions=''
@@ -128,25 +156,24 @@ filetype plugin indent on
 :autocmd BufRead *.tex :nnoremap <silent> <leader>c I%<esc>
 :autocmd BufRead *.tex :vnoremap <silent> <leader>c norm I%<esc>
 " open pdf
-:autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf &'
+:autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf 1>&/dev/null &'
 " more environments to collapse
-:autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark,definition"
+:autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark,definition,tikzpicture"
 
 :autocmd ColorScheme * :highlight Folded cterm=bold ctermbg=none ctermfg=green
 " }}}
 " Arpeggios {{{
-:call arpeggio#load()
-
-:augroup arpeggio
-:   au BufEnter * call arpeggio#load()
-:   au BufEnter * call arpeggio#map("n","s",1,"wo","<c-w>o")
-:   au BufEnter * call arpeggio#map("n","s",0,"bl",":Bufferlist<cr>")
-:   au BufEnter * call arpeggio#map("i","s",1,"nt","<c-j>")
-:   au BufEnter * call arpeggio#map("i","s",1,"()","()")
-:   au BufEnter * call arpeggio#map("i","s",1,"[]","[]")
-:   au BufEnter * call arpeggio#map("i","s",1,"{}","{}")
-:   au BufEnter * call arpeggio#map("i","s",1,"<>","<>")
-:augroup END
+":augroup arpeggio
+":   call arpeggio#load()
+":   au BufEnter * so ~/.dotfiles/vim/arpeggio.unmap
+":   au BufEnter * call arpeggio#map('n','s',1,'wo','<c-w>o')
+":   au BufEnter * call arpeggio#map('n','s',0,'bl',':Bufferlist<cr>')
+":   au BufEnter * call arpeggio#map('i','s',1,'nt','<c-j>')
+":   au BufEnter * call arpeggio#map('i','s',1,'()','()')
+":   au BufEnter * call arpeggio#map('i','s',1,'[]','[]')
+":   au BufEnter * call arpeggio#map('i','s',1,'{}','{}')
+":   au BufEnter * call arpeggio#map('i','s',1,'<>','<>')
+":augroup END
 "
 " }}}
 " Search {{{
@@ -160,8 +187,10 @@ filetype plugin indent on
 :command! -nargs=1 S :match Search /<args>/
 
 " }}}
-" navigation swapping{{{
-:let g:visual_nav=0
+" navigation mode swapping{{{
+:nnoremap <silent> j gj
+:nnoremap <silent> k gk
+:let g:visual_nav=1
 :function! s:toggle_visual_nav()
 :   let g:visual_nav=!g:visual_nav
 :   if g:visual_nav
@@ -174,7 +203,7 @@ filetype plugin indent on
 :       echo "visual navigation OFF"
 :   endif
 :endfunction
-:nnoremap <leader>v :call <sid>toggle_visual_nav()<cr>
+:nnoremap <silent> <leader>v :call <sid>toggle_visual_nav()<cr>
 
 " }}}
 " vim calendar options for google calendar {{{
@@ -192,7 +221,7 @@ filetype plugin indent on
 
 " }}}
 " Git configurations {{{
-:autocmd ColorScheme * :highlight SignColumn   ctermbg=NONE
+:autocmd ColorScheme * :highlight SignColumn   guibg=NONE ctermbg=NONE
 :autocmd ColorScheme * :highlight GitGutterAdd          ctermbg=NONE ctermfg=green cterm=bold
 :autocmd ColorScheme * :highlight GitGutterChange       ctermbg=NONE ctermfg=yellow cterm=bold
 :autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red  cterm=bold
@@ -205,6 +234,10 @@ filetype plugin indent on
 :set showbreak=>\ "begin broken line
 :set breakindent
 :set linebreak
+
+" }}}
+" common typos {{{
+:iabbr teh the
 
 :autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green cterm=NONE
 " allow to use hidnen buffers more liberally

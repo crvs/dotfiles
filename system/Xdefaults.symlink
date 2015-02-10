@@ -1,0 +1,58 @@
+!vim : nnoremap ZM :w<cr>:! xrdb ~/.Xdefaults<cr>
+
+xterm*utf8: 1
+xterm*locale: true
+xterm*metaSendsEscape: true
+
+xterm*faceName: monofur for Powerline:size=10.5
+
+! defaults
+xterm*background: #000030
+xterm*foreground: #ffffd0
+
+URxvt*depth: 32
+!whateverbackground you are using, the last field is alpha
+URxvt*foreground: rgba:ffff/ffff/ffff/ffff
+URxvt*background: rgba:1000/1000/1000/cccc
+URxvt*font: xft:monofur for Powerline:pixelsize=13
+URxvt*scrollBar:false
+URxvt*letterSpace:-1
+
+! ! 0: black
+! *color0:  #242424
+! *color8:  #242424
+!
+! ! 1: red
+! *color1:  #9f6767
+! *color9:  #9f6767
+!
+! ! 2: green
+! *color2:  #92ac68
+! *color10: #92ac68
+!
+! ! 3: yellow
+*color3:  #c0b000
+*color11: #c0b000
+!
+! ! 4: blue
+*color4:  #5a5aea
+*color12: #8080ff
+
+! ! 5: magenta
+! *color5:  #bb77a4
+! *color13: #bb77a4
+!
+! ! 6: cyan
+! *color6:  #77bbb5
+! *color14: #77bbb5
+!
+! ! 7: white
+! *color7:  #bfbfbf
+! *color15: #bfbfbf
+
+xterm*ttymodes: erase \^\? kill \^\U intr \^\C quit \^\\ eof \^\D susp \^\Z start \^\Q stop \^\S eol \^\@
+
+xpdf*matteColor rgb:0/0/0
+xpdf*Background rgb:0/0/0
+xpdf*Foreground rgb:ff/ff/ff
+

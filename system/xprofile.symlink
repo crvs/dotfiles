@@ -1,2 +1,0 @@
-setxkbmap -layout us,us -variant dvorak, -option caps:escape, altwin:alt_super_win, grp:sclk_toggle, grp_led:scroll
-xrandr --output HDMI1 --auto --left-of VGA1 --auto

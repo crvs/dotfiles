@@ -1,0 +1,47 @@
+-- Xmonad config file by John Goerzen, taken from 
+-- http://www.haskell.org/haskellwiki/Xmonad/Config_archive/John_Goerzen%27s_Configuration 
+-- with a few modifiactions
+-- modifications imported from darzyas version on GitHub
+
+import System.Exit
+import System.IO
+import XMonad
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.SetWMName
+import XMonad.Layout.NoBorders -- (what functions??)
+import XMonad.Layout.Spiral
+import XMonad.Layout.Tabbed
+import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.EZConfig(additionalKeysP)
+import qualified XMonad.StackSet as W
+import qualified Data.Map        as M
+
+startup :: X ()
+startup = do 
+    spawn "/home/crvs/.xsession"
+    
+    --make script to automatically check if VGA1 is connected
+    --in which case it will automatically run dualVGAh
+    --if "connected" `isInfixOf` 
+    --spawn "xrandr | egrep VGA1"
+
+main :: IO ()
+main = do
+    xmproc <- spawnPipe "/home/crvs/.cabal/bin/xmobar /home/crvs/.xmobarrc"
+    xmonad $ defaultConfig
+	    { manageHook = manageDocks <+> manageHook defaultConfig
+        , startupHook = startup
+        , layoutHook = avoidStruts  $  smartBorders $ layoutHook defaultConfig
+        , focusFollowsMouse = False
+        , logHook = dynamicLogWithPP xmobarPP
+                { ppOutput = hPutStrLn xmproc
+                , ppTitle = xmobarColor "green" "" . shorten 50
+                }
+        , modMask = mod4Mask -- Rebind Mod to the mod4 key (Win)
+        , terminal = "terminator"
+        }`additionalKeysP`
+            [ ("M-z", spawn "xscreensaver-command -lock")
+            , ("M-S-z" , spawn "xscreensaver-command -lock && sleep 2 && sudo pm-suspend")
+            ]

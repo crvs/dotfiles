@@ -1,0 +1,10 @@
+# vim: syntax=python
+
+# Default inbox
+set from          = "jfpbdc@kth.se"
+set sendmail      = "msmtp -a kth"
+set sendmail_wait = 0
+set record        = "+kth/INBOX"
+set spoolfile     = "+kth/INBOX"
+set mbox          = "+kth/"
+set postponed     = "+kth/Drafts"
