@@ -51,7 +51,7 @@ COMPLETION_WAITING_DOTS="true"
 # much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment following line if you want to  shown in the command execution time stamp 
+# Uncomment following line if you want to  shown in the command execution time stamp
 # in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
 # yyyy-mm-dd
 HIST_STAMPS="mm/dd/yyyy"
@@ -60,7 +60,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git)
-plugins=(git vi-mode history-substring-search) # tilingaware)
+plugins=(git archlinux mercurial vi-mode history-substring-search) # tilingaware)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -118,18 +118,11 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
 fi
 source ~/.aliases
 
-# Add RVM to PATH for scripting
-PATH=$HOME/.dotfiles/bin:$HOME/.rvm/bin:/usr/bin/vendor_perl:$PATH
-
-# puth this in  a more convenient location
-# function to easily change the names of a whole folder of mp3s with the format "track - title.mp3"
-reanme_mp3s(){
-    IFS=$'\n'   # reassign the internal field separator
-    for file in $(ls); do
-        mv $file `mp3info -p "%n - %t.mp3" $file`
-    done
-    IFS=$'\ '   # restore IFS to default
-}
+PATH=$HOME/.rvm/bin:$PATH # Add RVM to PATH for scripting
+PATH=$HOME/.dotfiles/bin:$PATH # user scripts
+PATH=$HOME/.cabal/bin:$PATH # haskell binary files
+PATH=/opt/ghci-color:$PATH # ghci with color
+PATH=/usr/bin/vendor_perl:$PATH
 
 # vi mode indicator
 RPS1='$(vi_mode_prompt_info)'$RPS1

@@ -3,8 +3,10 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
+Plugin 'bling/vim-bufferline'
 Plugin 'chrisbra/histwin.vim.git'
 Plugin 'chrisbra/NrrwRgn'
 Plugin 'christoomey/vim-tmux-navigator'
@@ -18,20 +20,25 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'pbrisbin/vim-syntax-shakespeare'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'tmhedberg/matchit'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'eagletmt/ghcmod-vim'
 Plugin 'tpope/vim-fugitive'
+" Plugin 'vim-scripts/mru.vim.git'
 Plugin 'vim-scripts/bib_autocomp.vim.git'
 Plugin 'vim-scripts/gnupg.vim.git'
 Plugin 'vim-scripts/LanguageTool'
-Plugin 'vim-scripts/speeddating.vim.git'
+" Plugin 'vim-scripts/speeddating.vim.git'
 Plugin 'szw/vim-dict'
 Plugin 'mbbill/undotree'
 Plugin 'kshenoy/vim-signature'
 Plugin 'AndrewRadev/multichange.vim'
-Plugin 'vim-scripts/buffet.vim'
-"Plugin 'kana/vim-arpeggio'
+" Plugin 'vim-scripts/buffet.vim'
+" Plugin 'kana/vim-arpeggio'
 Plugin 'vimwiki/vimwiki'
 Plugin 'flazz/vim-colorschemes'
-"Plugin 'biskark/vim-ultimate-colorscheme-utility'
+" Plugin 'biskark/vim-ultimate-colorscheme-utility'
 Plugin 'haya14busa/incsearch.vim'
 Plugin 'mhinz/vim-startify'
 Plugin 'vim-scripts/dbext.vim'
@@ -39,14 +46,16 @@ Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
-"Plugin 'jceb/vim-orgmode.git' " replaced by vimwiki
-"Plugin 'junegunn/limelight.vim' " not used enough
-"Plugin 'Lokaltog/vim-easymotion' " cool but unused
+" Plugin 'jceb/vim-orgmode.git' " replaced by vimwiki
+" Plugin 'junegunn/limelight.vim' " not used enough
+" Plugin 'Lokaltog/vim-easymotion' " cool but unused
 call vundle#end()
 filetype plugin indent on
 " }}}
 " Goyo & Limelight {{{
-:colorscheme SlateDark "conflicts with colorscheme tool
+colorscheme BlackSea
+" 0x7A69_dark
+" Tomorrow-Night-Blue
 
 ":let g:limelight_conceal_ctermfg='gray' "disabled limelight
 ":let g:limelight_conceal_ctermfg=240    "disabled limelight
@@ -56,7 +65,7 @@ filetype plugin indent on
 
 " }}}
 " Bufferlist {{{
-:nnoremap <silent> <f4> :Bufferlist<cr>
+":nnoremap <silent> <f4> :Bufferlist<cr>
 
 " }}}
 "misc defaults {{{
@@ -138,7 +147,10 @@ filetype plugin indent on
     \ ]
 " }}}
 " gvim {{{
-:set guioptions=''
+:if  has("gui_running")
+:    set guioptions=''
+:    set guifont=\ monofur\ for\ Powerline\ 10.5
+:endif
 " }}}
 " Undotree {{{
 :nnoremap <silent> <f3> :UndotreeToggle<cr>
@@ -149,9 +161,10 @@ filetype plugin indent on
 :let g:tex_flavor="latex"
 :let g:Tex_DefaultTargetFormat='pdf'
 :let g:Tex_MultipleCompileFormats='pdf,dvi'
+:let g:Tex_ViewRule_pdf='zathura'
 
-" fast compile
-:autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
+"" fast compile
+":autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
 " easy comment
 :autocmd BufRead *.tex :nnoremap <silent> <leader>c I%<esc>
 :autocmd BufRead *.tex :vnoremap <silent> <leader>c norm I%<esc>
@@ -215,17 +228,47 @@ filetype plugin indent on
 :set rnu
 :set number
 :set laststatus=2
-:let g:airline_powerline_fonts=1
-:let g:airline#extensions#tabline#enabled = 1
-:let g:airline#extensions#whitespace#enabled = 1
 
 " }}}
+" airline {{{
+
+" THEMES: badwolf ; base16 ; bubblegum ; dark ; durant ; hybrid ; jellybeans ; kalisi ; kolor ; laederon ; light ; lucius ; luna ; molokai ; monochrome ; murmur ; powerlineish ; raven ; serene ; silver ; simple ; solarized ; sol ; tomorrow ; ubaryd ; understated ; wombat ; zenburn
+:let g:airline_theme='luna'
+
+:if (&ft=='tex')
+:   let g:airline#extensions#whitespace#enabled = 0
+:endif
+
+:let g:airline_powerline_fonts = 1
+:let g:airline#extensions#tabline#enabled = 1
+
+" }}}
+" bufferline {{{
+
+let g:bufferline_echo = 1
+let g:bufferline_active_buffer_left = '['
+let g:bufferline_active_buffer_right = ']'
+let g:bufferline_modified = '+'
+let g:bufferline_show_bufnr = 1
+let g:bufferline_rotate = 1
+let g:bufferline_fixed_index =  0 "always first
+let g:bufferline_fname_mod = ':t'
+let g:bufferline_inactive_highlight = 'StatusLine'
+let g:bufferline_active_highlight = 'StatusLine'
+let g:bufferline_solo_highlight = 1
+let g:bufferline_excludes = [] "see source for defaults
+let g:bufferline_echo = 0
+autocmd VimEnter *
+    \ let &statusline='%{bufferline#refresh_status()}'
+    \ .bufferline#get_status_string()
+" }}}
 " Git configurations {{{
-:autocmd ColorScheme * :highlight SignColumn   guibg=NONE ctermbg=NONE
-:autocmd ColorScheme * :highlight GitGutterAdd          ctermbg=NONE ctermfg=green cterm=bold
-:autocmd ColorScheme * :highlight GitGutterChange       ctermbg=NONE ctermfg=yellow cterm=bold
-:autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red  cterm=bold
-:autocmd ColorScheme * :highlight GitGutterChangeDelete ctermbg=NONE ctermfg=red cterm=bold
+:autocmd ColorScheme * :highlight hlSignColumn          ctermbg=NONE ctermfg=NONE   cterm=NONE guibg=NONE guifg=NONE   gui=NONE
+:autocmd ColorScheme * :highlight SignColumn            ctermbg=NONE ctermfg=NONE   cterm=NONE guibg=NONE guifg=NONE   gui=NONE
+:autocmd ColorScheme * :highlight GitGutterAdd          ctermbg=NONE ctermfg=green  cterm=bold guibg=NONE guifg=green  gui=bold
+:autocmd ColorScheme * :highlight GitGutterChange       ctermbg=NONE ctermfg=yellow cterm=bold guibg=NONE guifg=yellow gui=bold
+:autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
+:autocmd ColorScheme * :highlight GitGutterChangeDelete ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
 
 " }}}
 " tabs and linebreaks {{{
@@ -239,8 +282,8 @@ filetype plugin indent on
 " common typos {{{
 :iabbr teh the
 
-:autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green cterm=NONE
-" allow to use hidnen buffers more liberally
+:autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green guifg=black guibg=yellow cterm=NONE
+" allow to use hidden buffers more liberally
 :set hidden
 :set grepprg=grep\ -nH\ $*
 
@@ -267,7 +310,7 @@ filetype plugin indent on
 :set showcmd     " display incomplete commands
 
 
-" CRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
 " undo, so that you can undo CTRL-U after inserting a line break.
 :inoremap <C-U> <C-G>u<C-U>
 
@@ -290,7 +333,7 @@ filetype plugin indent on
 :endif
 
 
-:let g:languagetool_jar='/home/crvs/.LanguageTool/languagetool-commandline.jar'
+:let g:languagetool_jar='/usr/share/java/languagetool/languagetool.jar'
 
 :if &ft == 'org'
 :    let maplocalleader='\'

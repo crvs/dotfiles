@@ -39,7 +39,6 @@ set header_cache     = ~/.mail/cache/headers
 set message_cachedir = ~/.mail/cache/bodies
 set certificate_file = ~/.mail/cache/certificates
 set mailcap_path     = ~/.dotfiles/mail/mailcap
-set alias_file       = ~/.dotfiles/mail/aliases
 
 # Sidebar -------------------------------------------------
 set sidebar_delim   = '|'
@@ -69,7 +68,6 @@ bind index,pager J sidebar-next
 bind index,pager K sidebar-prev
 bind index,pager E sidebar-open
 
-source ~/.dotfiles/mail/aliases
 
 #  Colors  And  Themes
 source ~/.dotfiles/mail/paletteMono
@@ -92,8 +90,10 @@ folder-hook +kth/* "source /home/crvs/.dotfiles/mail/account.kth"
 
 # Message Hooks -------------------------------------------
 # message-hook '!(~g|~G) ~b"^-----BEGIN\ PGP\ (SIGNED\ )?MESSAGE"' "exec check-traditional-pgp"
-source /usr/share/doc/mutt/samples/gpg.rc
+source ~/.dotfiles/mail/gpg.rc
+set pgp_sign_as=0x527A4CB5 # key id
 set pgp_auto_decode=yes
+set pgp_timeout=1800
 
 set duplicate_threads=yes
 
@@ -107,3 +107,10 @@ macro index,pager,compose <f12> "! /home/crvs/.dotfiles/mail/mailauth.sh<enter>"
 
 # Deauth & Quit -------------------------------------------
 macro index q "!/home/crvs/.dotfiles/mail/mailauth.sh deauth<enter><quit>"
+
+# # Address book
+# set alias_file       = ~/.dotfiles/mail/aliases
+# source ~/.dotfiles/mail/aliases
+set query_command="abook --mutt-query '%s'"
+macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>abook --add-email-quiet<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
+bind editor         <Tab>   complete-query
