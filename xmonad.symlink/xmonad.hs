@@ -29,7 +29,7 @@ startup = do
 main :: IO ()
 main = do
     -- xmproc <- spawnPipe "xmobar /home/crvs/.xmobarrc"
-    dzproc <- spawnPipe "dzen2 -p 1 -xs 1 -fg white -bg '#333333' -fn -*-DejaVu-regular-*-*-*-11-*-*-*-*-*-*-*"
+    dzproc <- spawnPipe "dzen2 -p 1 -xs 1 -fg white -bg '#333333' -fn 'monofur for Powerline:regular:pixelsize=15'"
     -- xmonad $ withUrgencyHookC StdoutUrgencyHook urgencyConfig { suppressWhen = Focused, remindWhen = Dont } $ defaultConfig
     xmonad $ defaultConfig
         { manageHook = composeAll
@@ -65,7 +65,8 @@ main = do
                     , ppExtras          = [aumixVolume,date "%a %b%_d (w %V) %H:%M:%S",battery]
                     }) >> ewmhDesktopsLogHook >> setWMName "XMonad"
         , modMask = mod4Mask
-        , terminal = "termite"
+        --, terminal = "termite"
+        , terminal = "urxvt"
         , workspaces = ["1","2","3","4","5","6","7","8","9"]
         }`additionalKeys`
             [ (( modM , xK_z ) , spawn "xscreensaver-command -lock")
@@ -112,13 +113,16 @@ main = do
         ]
         where
             term :: String -> String -> String
-            term t c = "termite -t " ++ t ++ " -e " ++ c
+            term t c = "urxvt -title " ++ t ++ " -e " ++ c
+            --term t c = "termite -t " ++ t ++ " -e " ++ c
             modM              = mod4Mask
             modN              = noModMask
             modS              = mod4Mask .|. shiftMask
             socialCommand     = "if tmux has -t social; then tmux detach -s social  || sleep 1 && tmux attach -t social && tmux select-window -t social -t 0; else tmux new -s social turses; sleep 1; tmux split -t social mutt; sleep 1; tmux new-window -t social irssi -c Freenode; fi"
             cmusCommand       = "~/.xmonad/cmusLaunch.sh"
-            dmenuCommand      = "dmenu_run -nb rgb:70/0/70 -sb yellow -nf white -sf rgb:70/0/70 -p 'run: ' -fn xft:monofur-10.5:regular"
+            dmenuCommand      = "dmenu_run -nb rgb:30/30/30 -sb rgb:220/55/55 -nf white -sf white -p 'run ' -fn 'monofur for Powerline:regular:pixelsize=15'"
+            -- purple dmenu
+            -- dmenuCommand      = "dmenu_run -nb rgb:70/0/70 -sb yellow -nf white -sf rgb:70/0/70 -p 'run: ' -fn xft:monofur-10.5:regular"
             toggleBacklightKey     = (stringToKeysym "XF86Display")
             toggleBacklightCommand = "~/.xmonad/backlighttoggle.sh"
             raiseAudioKey     = (stringToKeysym "XF86AudioRaiseVolume")
@@ -137,7 +141,7 @@ main = do
             nextCommand       = (spawn "cmus-remote --next")
             previousKey       = (stringToKeysym "XF86AudioPrev")
             previousCommand   = (spawn "cmus-remote --prev")
-            launchBrowser     = (spawn "dwb")
+            launchBrowser     = (spawn "firefox")
             myLayout =
                 boringWindows $
                 minimize $

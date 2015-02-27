@@ -94,6 +94,9 @@ source ~/.dotfiles/mail/gpg.rc
 set pgp_sign_as=0x527A4CB5 # key id
 set pgp_auto_decode=yes
 set pgp_timeout=1800
+set pgp_replyencrypt=yes
+set pgp_replysign=yes
+set pgp_replysignencrypted=yes
 
 set duplicate_threads=yes
 

@@ -3,6 +3,7 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'triglav/vim-visual-increment'
 Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
@@ -152,9 +153,18 @@ colorscheme BlackSea
 :    set guifont=\ monofur\ for\ Powerline\ 10.5
 :endif
 " }}}
-" Undotree {{{
+"   Undotree {{{
 :nnoremap <silent> <f3> :UndotreeToggle<cr>
 :inoremap <silent> <f3>  <esc>:UndotreeToggle<cr>
+
+" }}}
+"   Vimwiki {{{
+let wiki = {}
+let wiki.path='~/.vimwiki/'
+let wiki.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
+
+let g:vimwiki_list = [wiki]
+"g:vimwiki_list        [{'maxhi': 0, 'css_name': 'style.css', 'auto_export': 0, 'diary_index': 'diary', 'template_default': '', 'nested_syntaxes': {}, 'diary_sort': 'desc', 'path': '/home/crvs/vimwiki/', 'diary_link_fmt': '%Y-%m-%d', 'template_ext': '', 'syntax': 'default', 'custom_wiki2html': '', 'index': 'index', 'diary_header': 'Diary', 'ext': '.wiki', 'path_html': '/home/crvs/vimwiki_html/', 'temp': 0, 'template_path': '/', 'list_margin': -1, 'diary_rel_path': 'diary/'}]
 
 " }}}
 " LaTeX {{{
