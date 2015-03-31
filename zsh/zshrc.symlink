@@ -60,7 +60,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git)
-plugins=(git archlinux mercurial vi-mode history-substring-search) # tilingaware)
+plugins=(cabal git archlinux mercurial vi-mode history-substring-search) # tilingaware)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -120,13 +120,24 @@ source ~/.aliases
 
 PATH=$HOME/.rvm/bin:$PATH # Add RVM to PATH for scripting
 PATH=$HOME/.dotfiles/bin:$PATH # user scripts
-PATH=$HOME/.cabal/bin:$PATH # haskell binary files
 PATH=/opt/ghci-color:$PATH # ghci with color
 PATH=/usr/bin/vendor_perl:$PATH
 
+PATH=$HOME/.cabal/bin:$PATH # haskell binary files
+for build in `ls $HOME/.sandboxedCabal`;
+    do if [[ -d $HOME/.sandboxedCabal/$build/bin ]];
+        then PATH=$HOME/.sandboxedCabal/$build/bin:$PATH;
+        fi;
+    done
+
 # vi mode indicator
+function cabalprompt { if [[ "$(cabal_sandbox_info)" != "" ]] ; then echo $(cabal_sandbox_info)' '; fi }
+PROMPT=$PROMPT'$(cabalprompt)'
 RPS1='$(vi_mode_prompt_info)'$RPS1
 
 #grep warning
 alias grep="/usr/bin/grep $GREP_OPTIONS"
 unset GREP_OPTIONS
+
+source ~/.dotfiles/haskell/completion.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

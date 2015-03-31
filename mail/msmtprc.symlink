@@ -16,7 +16,7 @@ account ist
     protocol smtp
     auth login
     from joao.carvalho@tecnico.ulisboa.pt
-    user ist157881
+    user ist157881@tecnico.ulisboa.pt
     passwordeval cat /home/crvs/crypt/ist && echo ''
     tls on
     tls_starttls on

@@ -3,6 +3,7 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'Shougo/vimproc.vim'
 Plugin 'triglav/vim-visual-increment'
 Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
@@ -15,6 +16,7 @@ Plugin 'gerw/vim-latex-suite'
 Plugin 'gioele/vim-autoswap.git'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'itchyny/calendar.vim'
+Plugin 'junegunn/fzf'
 Plugin 'junegunn/goyo.vim'
 Plugin 'lukerandall/haskellmode-vim'
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -26,20 +28,15 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'eagletmt/ghcmod-vim'
 Plugin 'tpope/vim-fugitive'
-" Plugin 'vim-scripts/mru.vim.git'
 Plugin 'vim-scripts/bib_autocomp.vim.git'
 Plugin 'vim-scripts/gnupg.vim.git'
 Plugin 'vim-scripts/LanguageTool'
-" Plugin 'vim-scripts/speeddating.vim.git'
 Plugin 'szw/vim-dict'
 Plugin 'mbbill/undotree'
 Plugin 'kshenoy/vim-signature'
 Plugin 'AndrewRadev/multichange.vim'
-" Plugin 'vim-scripts/buffet.vim'
-" Plugin 'kana/vim-arpeggio'
 Plugin 'vimwiki/vimwiki'
 Plugin 'flazz/vim-colorschemes'
-" Plugin 'biskark/vim-ultimate-colorscheme-utility'
 Plugin 'haya14busa/incsearch.vim'
 Plugin 'mhinz/vim-startify'
 Plugin 'vim-scripts/dbext.vim'
@@ -47,14 +44,22 @@ Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
+
+" Plugin 'biskark/vim-ultimate-colorscheme-utility'
+" Plugin 'kana/vim-arpeggio'
+" Plugin 'vim-scripts/buffet.vim'
+" Plugin 'vim-scripts/speeddating.vim.git'
+" Plugin 'vim-scripts/mru.vim.git'
 " Plugin 'jceb/vim-orgmode.git' " replaced by vimwiki
 " Plugin 'junegunn/limelight.vim' " not used enough
 " Plugin 'Lokaltog/vim-easymotion' " cool but unused
+
 call vundle#end()
 filetype plugin indent on
 " }}}
 " Goyo & Limelight {{{
-colorscheme BlackSea
+colorscheme 3dglasses
+" BlackSea
 " 0x7A69_dark
 " Tomorrow-Night-Blue
 
@@ -134,6 +139,9 @@ colorscheme BlackSea
 :inoremap <silent> <f2> <esc>:NERDTreeToggle<cr>
 :let NERDTreeChDirMode=2
 
+" change directory to the directory of the current file
+:nnoremap <silent> <leader>h :cd %:p:h<cr>:NERDTreeCWD<cr>
+
 " }}}
 " startify {{{
 :let g:startify_custom_header=map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['','']
@@ -159,11 +167,15 @@ colorscheme BlackSea
 
 " }}}
 "   Vimwiki {{{
-let wiki = {}
-let wiki.path='~/.vimwiki/'
-let wiki.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
+:let wiki = {}
+:let wiki.path='~/.vimwiki/'
+:let wiki.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
 
-let g:vimwiki_list = [wiki]
+:let blog = {}
+:let blog.path='~/.vimwikiblog/'
+:let blog.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
+
+:let g:vimwiki_list = [wiki,blog]
 "g:vimwiki_list        [{'maxhi': 0, 'css_name': 'style.css', 'auto_export': 0, 'diary_index': 'diary', 'template_default': '', 'nested_syntaxes': {}, 'diary_sort': 'desc', 'path': '/home/crvs/vimwiki/', 'diary_link_fmt': '%Y-%m-%d', 'template_ext': '', 'syntax': 'default', 'custom_wiki2html': '', 'index': 'index', 'diary_header': 'Diary', 'ext': '.wiki', 'path_html': '/home/crvs/vimwiki_html/', 'temp': 0, 'template_path': '/', 'list_margin': -1, 'diary_rel_path': 'diary/'}]
 
 " }}}
@@ -171,15 +183,18 @@ let g:vimwiki_list = [wiki]
 :let g:tex_flavor="latex"
 :let g:Tex_DefaultTargetFormat='pdf'
 :let g:Tex_MultipleCompileFormats='pdf,dvi'
-:let g:Tex_ViewRule_pdf='zathura'
+:let g:Tex_ViewRule_pdf='zathura 1>& /dev/null'
 
+:autocmd BufRead *.tex :let g:Tex_CompileRule_pdf="pdflatex -interaction=nonstopmode -file-line-error-style $* 1>& /dev/null"
 "" fast compile
 ":autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
 " easy comment
-:autocmd BufRead *.tex :nnoremap <silent> <leader>c I%<esc>
-:autocmd BufRead *.tex :vnoremap <silent> <leader>c norm I%<esc>
+":autocmd BufEnter *.tex :nnoremap <silent> <leader>c I%<esc>
+":autocmd BufEnter *.tex :vnoremap <silent> <leader>c norm I%<esc>
+":autocmd BufLeave *.tex :nunmap <leader>c
+":autocmd BufLeave *.tex :vunmap <leader>c
 " open pdf
-:autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf 1>&/dev/null &'
+:autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf 2>&/dev/null &'
 " more environments to collapse
 :autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark,definition,tikzpicture"
 
@@ -291,6 +306,7 @@ autocmd VimEnter *
 " }}}
 " common typos {{{
 :iabbr teh the
+:iabbr taht that
 
 :autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green guifg=black guibg=yellow cterm=NONE
 " allow to use hidden buffers more liberally
@@ -309,12 +325,11 @@ autocmd VimEnter *
 " allow backspacing over everything in insert mode
 :set backspace=indent,eol,start
 
-:if has("vms")
-:   set nobackup      " do not keep a backup file, use versions instead
-:else
-:   set backup        " keep a backup file (restore to previous version)
-:   set undofile      " keep an undo file (undo changes after closing)
-:endif
+:set backup        " keep a backup file (restore to previous version)
+:set undofile      " keep an undo file (undo changes after closing)
+:set backupdir=~/.vimtmp,.
+:set undodir=~/.vimtmp,.
+:set directory=~/.vimtmp,.
 :set history=50      " keep 50 lines of command line history
 :set ruler       " show the cursor position all the time
 :set showcmd     " display incomplete commands

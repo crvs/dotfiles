@@ -1,6 +1,7 @@
 .*.un\~
 *\~
 xmonad.symlink/xmonad-x86_64-linux
+xmonad.symlink/wallpaper*
 xmonad.symlink/xmonad.errors
 xmonad.symlink/xmonad.hi
 xmonad.symlink/xmonad.o

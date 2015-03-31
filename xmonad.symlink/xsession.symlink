@@ -6,8 +6,66 @@ feh --bg-scale /home/crvs/.xmonad/wallpaper.jpg &
 # run redshift if it is not running
 (pgrep redshift > /dev/null)
 if [[ ! $? = 0 ]]; then
-    LISBON="38:-9" 
+    LISBON="38:-9"
     STOCKHOLM="59:18"
-    setsid redshift -l $STOCKHOLM &
+    setsid redshift -l $LISBON &
 fi
 
+
+# set terminal preferences
+xrdb $HOME/.Xresources &
+
+# set cursor
+xsetroot -cursor_name left_ptr &
+
+# add Super_R in lenovo keyboard
+echo "keycode 107 = Super_R NoSymbol Super_R" | xmodmap -
+
+# disable system beep
+xset -b
+
+# enable scrolling (vertical and horizontal) with trackpoint, fix found at thinkwiki 2014/02/02
+xinput --set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 1 &
+xinput --set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 2 &
+xinput --set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Timeout" 200 &
+xinput --set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 6 7 4 5 &
+
+# start audio server
+(pgrep pulse > /dev/null)
+if [[ ! $? = 0 ]]; then
+    start-pulseaudio-x11 &
+fi
+
+# enable numlock
+numlockx &
+
+# Set the background color
+xsetroot -solid black &
+
+# (pgrep xscreensaver > /dev/null)
+# if [[ ! $? = 0 ]]; then
+    # xscreensaver -no-splash &
+# fi
+
+# modelines can be computed resorting to
+#
+#       $ gtf   x_res   y_res   freq
+#
+# add xrandr mode for VGA1 (since the cable sucks) homes creen
+xrandr --newmode "1920x1200_60.00" 193.25 1920 2056 2256 2592 1200 1203 1209 1245 -hsync +vsync
+xrandr --addmode VGA1 1920x1200_60.00
+# add xrandr mode for VGA1 Peeter and Angela's place
+xrandr --newmode "1368x768_59.90"  85.72  1368 1440 1584 1800  768 769 772 795  -HSync +Vsync
+xrandr --admode 1368x768_59.90 VGA1
+
+# allow compositing (run if not running)
+(pgrep compton > /dev/null)
+if [[ ! $? = 0 ]]; then
+    compton -C &
+fi
+
+# make the mouse disappears
+(pgrep unclutter > /dev/null)
+if [[ ! $? = 0 ]]; then
+    unclutter &
+fi
