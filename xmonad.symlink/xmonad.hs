@@ -9,7 +9,6 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
-import XMonad.Layout.BoringWindows(boringWindows)
 import XMonad.Layout.NoBorders(noBorders)
 import XMonad.Layout.Minimize(minimizeWindow,minimize,MinimizeMsg(RestoreNextMinimizedWin))
 import XMonad.Util.Run(runProcessWithInput,spawnPipe)
@@ -22,8 +21,6 @@ startup = spawn "/home/crvs/.xsession"
 
 main :: IO ()
 main = do
-    -- xmproc <- spawnPipe "xmobar /home/crvs/.xmobarrc"
-    -- xmonad $ withUrgencyHookC StdoutUrgencyHook urgencyConfig { suppressWhen = Focused, remindWhen = Dont } $ defaultConfig
     dzproc <- spawnPipe "dzen2 -p 1 -xs 1 -fg white -bg '#333333' -fn 'monofur for Powerline:regular:pixelsize=15' -expand right "
     ckwidth <- show . (+) (-570) . (read :: String -> Int) . unpack . head . split (== 'x') . (!! 3) . split (== ' ') . pack . head . filter (=~ "primary") . map unpack . split (== '\n') . pack <$> runProcessWithInput "xrandr" ["--current"] []
     spawn $ "conky -c /home/crvs/.xmonad/conky.conf | dzen2 -xs 1 -fg white -bg '#333333' -fn 'monofur for Powerline:regular:pixelsize=15' -w " ++ ckwidth ++ " -x 590"
@@ -39,26 +36,16 @@ main = do
         , borderWidth = 1
         , layoutHook = myLayout
         , focusFollowsMouse = False
-        -- , logHook = (dynamicLogWithPP xmobarPP
-                    -- { ppOutput = hPutStrLn xmproc
-                    -- , ppTitle   = xmobarColor "#ffff00" "#000000" . shorten 40
-                    -- , ppVisible = xmobarColor "#ffff00" "#000000"
-                    -- , ppCurrent = xmobarColor "#ffff00" "#000000"
-                    -- , ppLayout = (\_ -> "")
-                    -- , ppSort    = getSortByXineramaRule
-                    -- }) >> ewmhDesktopsLogHook >> setWMName "XMonad"
         , logHook = dynamicLogWithPP dzenPP
                     { ppOutput          = hPutStrLn dzproc
-                    , ppTitle           = const "" -- pad . pad . dzenColor "#ffffff" "#333333" . shorten 40 . pad . pad
+                    , ppTitle           = const ""
                     , ppVisible         = dzenColor "#a0a0a0" "#234848" . pad
                     , ppCurrent         = dzenColor "#ffffff" "#306060" . pad
                     , ppHidden          = dzenColor "#ffffff" "#555555" . pad
                     , ppLayout          = const ""
                     , ppHiddenNoWindows = dzenColor "#555555" "#333333" . pad
                     , ppSep             = " "
-                    , ppWsSep           = "" --"/"
-                    -- , ppSort            = getSortByXineramaRule
-                    -- , ppExtras          = [aumixVolume,date "%a %b%_d (w %V) %H:%M:%S",battery]
+                    , ppWsSep           = ""
                     , ppExtras          = [ (return . return :: String -> X(Maybe String)) "^p(_LEFT)^p(210)"
                                           , fixedWidthL AlignLeft " " 80 . dzenColorL "#ffffff" "#333333" . shortenL 40 $ logTitle
                                           ]
@@ -112,7 +99,6 @@ main = do
         where
             term :: String -> String -> String
             term t c = "urxvt -title " ++ t ++ " -e " ++ c
-            --term t c = "termite -t " ++ t ++ " -e " ++ c
             modM              = mod4Mask
             modN              = noModMask
             modS              = mod4Mask .|. shiftMask
@@ -139,10 +125,9 @@ main = do
             previousCommand   = spawn "cmus-remote --prev"
             launchBrowser     = spawn "firefox"
             myLayout =
-                boringWindows $
                 minimize $
-                 avoidStruts $ tallLayout ||| mirrorTall ||| noBorders Full 
-                ||| noBorders Full
+                    avoidStruts ( tallLayout ||| mirrorTall ||| noBorders Full )
+                        ||| noBorders Full
               where
                 tallLayout = Tall {tallNMaster = 1, tallRatioIncrement = 3 / 100, tallRatio = 1 / 2}
                 mirrorTall = Mirror tallLayout
