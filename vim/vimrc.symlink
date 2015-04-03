@@ -295,6 +295,13 @@ autocmd VimEnter *
 :autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
 :autocmd ColorScheme * :highlight GitGutterChangeDelete ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
 
+" nice mappings for days when large chunks of work need to be reviewed
+:nnoremap <silent> <leader>gt :GitGutterToggle<cr>
+:nnoremap <silent> <leader>gn :GitGutterNextHunk<cr>
+:nnoremap <silent> <leader>gp :GitGutterPrevHunk<cr>
+:nnoremap <silent> <leader>gs :GitGutterStageHunk<cr>
+:nnoremap <silent> <leader>gu :GitGutterRevertHunk<cr>
+
 " }}}
 " tabs and linebreaks {{{
 :set tabstop=4 shiftwidth=4 expandtab
