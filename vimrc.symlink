@@ -18,7 +18,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'itchyny/calendar.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/goyo.vim'
-Plugin 'lukerandall/haskellmode-vim'
+" Plugin 'lukerandall/haskellmode-vim'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'pbrisbin/vim-syntax-shakespeare'
 Plugin 'scrooloose/nerdtree.git'
@@ -96,10 +96,10 @@ colorscheme 3dglasses
 
 " }}}
 " Haskell mode settings {{{
-:au BufEnter *.hs compiler ghc
-:let g:ghc="/usr/sbin/ghc"
-:let g:haddock_browser="/usr/sbin/firefox"
-:let g:haddock_docdir="/usr/share/doc/ghc/html"
+" :au BufEnter *.hs compiler ghc
+" :let g:ghc="/usr/sbin/ghc"
+" :let g:haddock_browser="/usr/sbin/firefox"
+" :let g:haddock_docdir="/usr/share/doc/ghc/html"
 " }}}
 " tmux & navigation keys {{{
 :let g:tmux_navigator_no_mappings = 1
