@@ -1,5 +1,5 @@
 #  Call  Urlscan  On  The  Mutt  Pager.  The  Urlscan  Is  Like  Urlview  But  Supplying  Context
-macro pager \Cu "|urlscan<enter>" "call urlscan to open links"
+macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
 set realname="João Carvalho"
 
