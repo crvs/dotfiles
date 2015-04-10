@@ -52,7 +52,7 @@ main = do
                     } >> ewmhDesktopsLogHook >> setWMName "XMonad"
         , modMask = mod4Mask
         --, terminal = "termite"
-        , terminal = "urxvt"
+        , terminal = "urxvt -e tmux"
         , workspaces = ["1","2","3","4","5","6","7","8","9"]
         }`additionalKeys`
             [ (( modM , xK_z ) , spawn "slock")
@@ -72,7 +72,7 @@ main = do
             , (( modN , muteAudioKey ), muteAudioCommand)
             , (( modM , xK_f ) , spawn $ term "vifm" "vifm" )
             , (( modN , toggleBacklightKey ) , spawn toggleBacklightCommand )
-            , (( modS , xK_m ) , spawn $ term "social" socialCommand )
+            , (( modS , xK_m ) , spawn $ term "" oldSpawn )
             , (( modM , xK_m ) , spawn $ term "cmus" cmusCommand )
             , (( modS , xK_p ) , spawn $ term "htop" "htop" )
             , (( modM , xK_i ) , spawn $ term "irssi" "irssi" )
@@ -102,7 +102,6 @@ main = do
             modM              = mod4Mask
             modN              = noModMask
             modS              = mod4Mask .|. shiftMask
-            socialCommand     = "if tmux has -t social; then tmux detach -s social  || sleep 1 && tmux attach -t social && tmux select-window -t social -t 0; else tmux new -s social turses; sleep 1; tmux split -t social mutt; sleep 1; tmux new-window -t social irssi -c Freenode; fi"
             cmusCommand       = "~/.xmonad/cmusLaunch.sh"
             dmenuCommand      = "dmenu_run -nb rgb:30/30/30 -sb rgb:220/55/55 -nf white -sf white -p 'run ' -fn 'monofur for Powerline:regular:pixelsize=15'"
             toggleBacklightKey     = stringToKeysym "XF86Display"
