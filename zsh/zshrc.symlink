@@ -1,5 +1,6 @@
-# Path to your oh-my-zsh configuration.
+#Path to your oh-my-zsh configuration.
 ZSH=/opt/oh-my-zsh
+
 #ZSH_CUSTOM=$HOME/.dotfiles
 
 # Set name of the theme to load.
@@ -139,9 +140,9 @@ PATH=/opt/ghci-color:$PATH # ghci with color
 PATH=/usr/bin/vendor_perl:$PATH
 
 PATH=$HOME/.cabal/bin:$PATH # haskell binary files
-for build in `ls $HOME/.sandboxedCabal`;
-    do if [[ -d $HOME/.sandboxedCabal/$build/bin ]];
-        then PATH=$HOME/.sandboxedCabal/$build/bin:$PATH;
+for build in `ls $HOME/.cabal-sandbox`;
+    do if [[ -d $HOME/.cabal-sandbox/$build/bin ]];
+        then PATH=$HOME/.cabal-sandbox/$build/bin:$PATH;
         fi;
     done
 
