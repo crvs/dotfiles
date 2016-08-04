@@ -1,4 +1,3 @@
 #!/bin/bash
-HOME=`pwd`
 
-ln -s ~/.dotfiles/awesome ~/.config/awesome
+ln -s $HOME/.dotfiles/awesome $HOME/.config/awesome
