@@ -1,64 +1,100 @@
+autocmd!
 " Vundle {{{
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'Shougo/vimproc.vim'
-Plugin 'triglav/vim-visual-increment'
-Plugin 'scrooloose/syntastic'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'bling/vim-airline'
-Plugin 'bling/vim-bufferline'
-Plugin 'chrisbra/histwin.vim.git'
-Plugin 'chrisbra/NrrwRgn'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'gerw/vim-latex-suite'
-Plugin 'gioele/vim-autoswap.git'
+
+" management
 Plugin 'gmarik/Vundle.vim'
-Plugin 'itchyny/calendar.vim'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/goyo.vim'
-" Plugin 'lukerandall/haskellmode-vim'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'pbrisbin/vim-syntax-shakespeare'
-Plugin 'scrooloose/nerdtree.git'
-Plugin 'tmhedberg/matchit'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'eagletmt/ghcmod-vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-scripts/bib_autocomp.vim.git'
-Plugin 'vim-scripts/gnupg.vim.git'
-Plugin 'vim-scripts/LanguageTool'
-Plugin 'szw/vim-dict'
-Plugin 'mbbill/undotree'
-Plugin 'kshenoy/vim-signature'
-Plugin 'AndrewRadev/multichange.vim'
-Plugin 'vimwiki/vimwiki'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'haya14busa/incsearch.vim'
-Plugin 'mhinz/vim-startify'
-Plugin 'vim-scripts/dbext.vim'
+
+" snippets
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 
-" Plugin 'biskark/vim-ultimate-colorscheme-utility'
-" Plugin 'kana/vim-arpeggio'
-" Plugin 'vim-scripts/buffet.vim'
-" Plugin 'vim-scripts/speeddating.vim.git'
-" Plugin 'vim-scripts/mru.vim.git'
-" Plugin 'jceb/vim-orgmode.git' " replaced by vimwiki
-" Plugin 'junegunn/limelight.vim' " not used enough
-" Plugin 'Lokaltog/vim-easymotion' " cool but unused
+" diary and calendar
+Plugin 'freitass/todo.txt-vim'
+Plugin 'vimwiki/vimwiki'
+Plugin 'itchyny/calendar.vim'
+
+" ide style
+Plugin 'mbbill/undotree'
+Plugin 'scrooloose/nerdtree.git'
+Plugin 'majutsushi/tagbar'
+Plugin 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
+
+" syntax highlighting
+Plugin 'scrooloose/syntastic'
+
+" git
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+
+" shakespeare templates
+Plugin 'pbrisbin/vim-syntax-shakespeare'
+
+" airline
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'bling/vim-bufferline'
+
+" text objects (think around/inside-obj)
+Plugin 'kana/vim-textobj-user'
+
+" autocomplete
+Plugin 'Valloric/YouCompleteMe' "general
+Plugin 'davidhalter/jedi-vim' "python
+
+" pretty substitute
+Plugin 'osyo-manga/vim-over'
+
+Plugin 'sjl/strftimedammit.vim'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'AndrewRadev/multichange.vim'
+Plugin 'Shougo/unite.vim'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'chrisbra/histwin.vim.git'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'eagletmt/ghcmod-vim'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'gioele/vim-autoswap.git'
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/goyo.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'kshenoy/vim-signature'
+Plugin 'lervag/vimtex'
+Plugin 'mhinz/vim-startify'
+Plugin 'rafaqz/citation.vim'
+Plugin 'rhysd/vim-clang-format'
+Plugin 'szw/vim-dict'
+Plugin 'tmhedberg/matchit'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'triglav/vim-visual-increment'
+Plugin 'vim-scripts/LanguageTool'
+Plugin 'vim-scripts/gnupg.vim.git'
 
 call vundle#end()
 filetype plugin indent on
+
+" }}}
+" snipets {{{
+
+:imap <tab> <esc>a<Plug>snipMateNextOrTrigger
+:smap <tab> <Plug>snipMateNextOrTrigger
+
+" }}}
+" Easy Tags {{{
+
 " }}}
 " Goyo & Limelight {{{
-colorscheme 3dglasses
+colorscheme badwolf
+" inkpot
 " BlackSea
 " 0x7A69_dark
 " Tomorrow-Night-Blue
@@ -66,28 +102,114 @@ colorscheme 3dglasses
 ":let g:limelight_conceal_ctermfg='gray' "disabled limelight
 ":let g:limelight_conceal_ctermfg=240    "disabled limelight
 
+:nnoremap <silent> <leader>tt :TagbarToggle<cr>
+
 :nnoremap <silent> <f5> :Goyo<cr>
 :inoremap <silent> <f5> <esc>:Goyo<cr>a
 
+" }}}
+" SmartTab {{{
+" if there is a tab character in the file, setlocal noexpandtab
+" put in autocommand BufReadPost
 " }}}
 " Bufferlist {{{
 ":nnoremap <silent> <f4> :Bufferlist<cr>
 
 " }}}
+" todo.txt {{{
+
+:function! g:safedelete(obj)
+:   let l:delcontents = @"
+:   let l:execstring = 'norm d'. a:obj
+:   execute l:execstring
+:   let @" = l:delcontents
+:endfunction
+
+:let g:todo_txt_location='~/Dropbox/todo.txt/todo.txt'
+:command! OpenTodo :execute ':e '. g:todo_txt_location
+:augroup my_todo_txt
+:   autocmd!
+:   autocmd BufEnter,BufRead todo.txt :nmap <leader>at $F@i <esc>BE dwi +
+:   autocmd BufEnter,BufRead todo.txt :nmap <leader>ac $a @
+:   autocmd BufEnter,BufRead todo.txt :nmap <leader>ad $a due:
+:augroup END
+
+" }}}
+" vimwiki {{{
+:augroup my_vim_wiki
+:   autocmd!
+:   autocmd BufEnter,BufRead,BufNew *.wiki :nmap <silent> td ggOnd<c-\>
+:   autocmd BufWrite *.wiki :Vimwiki2HTML
+:augroup END
+" }}}
+" custom text objects {{{
+:call textobj#user#plugin('line', {
+        \ 'line': {
+        \ 'pattern': '^.*$',
+        \ 'select': [ 'al' , 'il' ],
+        \ },
+        \ }
+        \ )
+" }}}
+" pasting {{{
+
+:function! s:paste_reg(reg,paste_c)
+:   let l:ex_string = ':norm "' . a:reg . a:paste_c
+:   if &paste == 1
+:       execute l:ex_string
+:   else
+:       set paste
+:       execute l:ex_string
+:       set nopaste
+:   endif
+:endfunction
+
+:nnoremap <silent> <leader>pc :call <sid>paste_reg('*','p')<cr>
+:nnoremap <silent> <leader>Pc :call <sid>paste_reg('*','P')<cr>
+:nnoremap <silent> <leader>pv :call <sid>paste_reg('+','p')<cr>
+:nnoremap <silent> <leader>Pv :call <sid>paste_reg('+','P')<cr>
+
+" }}}
 "misc defaults {{{
-:let mapleader=','
+
+:let g:multichange_mapping = '_s'
+:let g:multichange_motion_mapping = 'm'
+
+:cnoremap subs OverCommandLine<cr>
+:set smarttab
+
+:nnoremap <silent> <Leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>Ljzt:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
+
+" indenting and dedenting in insert mode
+:inoremap >< <c-d><esc>I<tab><esc>A
+:inoremap << <c-d>
+:inoremap >> <esc>I<tab><esc>A
+
+:nnoremap <leader>i Bi
+:nnoremap <leader>a Ea
+
+:let mapleader=' '
 :set foldmethod=marker
+
+:augroup my_python
+:au!
+" :autocmd BufEnter *.py :set foldmethod=indent
+:augroup END
+
 
 " temp folder and files
 :set dir=/tmp
 
+" reopen the current file
+:nnoremap <silent> <leader>e :e<cr>
+:nnoremap <silent> <leader>ee :e!<cr>
 " fast edit vimrc
 :nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
 :nnoremap <silent> <leader>sv :silent! :source $MYVIMRC<cr>
 
 " nice guides
 :set listchars=eol:¬,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
-:set list
+:set nolist
 
 :autocmd VimResized * :normal <c-w>=
 " }}}
@@ -103,12 +225,30 @@ colorscheme 3dglasses
 " }}}
 " tmux & navigation keys {{{
 :let g:tmux_navigator_no_mappings = 1
-:autocmd BufRead * nunmap <c-j>
-:autocmd BufRead * nnoremap <silent> <c-f> :TmuxNavigateLeft<cr>
-:autocmd BufRead * nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-:autocmd BufRead * nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-:autocmd BufRead * nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-:autocmd BufRead * nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+
+" }}}
+"citation vim {{{
+"work in progress
+let g:citation_vim_file_path=["/home/crvs/.zotero/zotero/kn8mcg6j.default"]
+let g:citation_vim_file_format="zotero"
+let g:citation_vim_file_cache_path='~/.vim_citation_cache'
+let g:citation_vim_outer_prefix="["
+let g:citation_vim_inner_prefix="@"
+let g:citation_vim_suffix="]"
+
+nnoremap <silent>[unite]c       :<C-u>Unite -buffer-name=citation   -start-insert -default-action=append      bibtex<cr>
+nnoremap <silent><leader>co :<C-u>Unite -input=<C-R><C-W> -default-action=start -force-immediately citation/file<cr>
+nnoremap <silent><leader>cf :<C-u>Unite -input=<C-R><C-W> -default-action=file -force-immediately citation/file<cr>
+nnoremap <silent><leader>ci :<C-u>Unite -input=<C-R><C-W> -default-action=preview -force-immediately citation/combined<cr
+nnoremap <silent>[unite]cp :<C-u>Unite -buffer-name=citation -default-action=append  -auto-preview citation/XXXXXX<cr>
+
+"}}}
+"python defaults {{{
+:if &ft == 'python'
+:inoremap # X#
+:endif
+
+:let g:SimpylFold_docstring_preview=1
 
 " }}}
 "parenthesis and matchings {{{
@@ -117,7 +257,7 @@ colorscheme 3dglasses
 :nnoremap <leader>( ciW(<esc>pa)<esc>
 :nnoremap <leader>[ ciW[<esc>pa]<esc>
 :nnoremap <leader>{ ciW{<esc>pa}<esc>
-:nnoremap <leader>< ciW<<esc>pa><esc>
+:nnoremap <leader>< ciW<<esc>pa><esc>:
 
 :vnoremap <leader>" c"<esc>pa"<esc>
 :vnoremap <leader>' c'<esc>pa'<esc>
@@ -126,247 +266,498 @@ colorscheme 3dglasses
 :vnoremap <leader>{ c{<esc>pa}<esc>
 :vnoremap <leader>< c<<esc>pa><esc>
 
-:inoremap <> <><++><esc>4hi
-:inoremap () ()<++><esc>4hi
-:inoremap [] []<++><esc>4hi
-:inoremap {} {}<++><esc>4hi
-:inoremap "" ""<++><esc>4hi
-:inoremap '' ''<++><esc>4hi
+":inoremap <> <><++><esc>4hi
+":inoremap () ()<++><esc>4hi
+":inoremap [] []<++><esc>4hi
+":inoremap {} {}<++><esc>4hi
+":inoremap "" ""<++><esc>4hi
+":inoremap '' ''<++><esc>4hi
 
 " }}}
 " NERDTree {{{
-:nnoremap <silent> <f2> :NERDTreeToggle<cr>
-:inoremap <silent> <f2> <esc>:NERDTreeToggle<cr>
+" mnemonic:
+" nt -- _N_erdtree _T_oggle
+" nc -- _N_erdtree toggle "_C_entered"
+" nh -- _N_erdtree _H_ide
+" nd -- _N_erdtree change _D_irectory
+:nnoremap <silent> <leader>nt :NERDTreeToggle<cr>
+:nnoremap <silent> <leader>nc :cd %:p:h<cr>:NERDTreeCWD<cr>
+:nnoremap <silent> <leader>nh :NERDTreeClose<cr>
+:nnoremap <silent> <leader>nd :NERDTreeCWD<cr>
 :let NERDTreeChDirMode=2
+" :let NERDTReeRespectWildIgnore=1
+:let NERDTreeIgnore=[
+            \ '\.aux$',
+            \ '\.bbl$',
+            \ '\.bcf$',
+            \ '\.blg$',
+            \ '\.fdb_latexmk$',
+            \ '\.fls$',
+            \ '\.log$',
+            \ '\.pyc$',
+            \ '\.run\.xml$',
+            \ '\.synctex\.gz.*$',
+            \ '\~$']
 
 " change directory to the directory of the current file
-:nnoremap <silent> <leader>h :cd %:p:h<cr>:NERDTreeCWD<cr>
+:nnoremap <silent> <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" }}}
+" overrides {{{
+
+:function! s:Free_c_keys()
+:   if mapcheck('<C-Right>', 'n') != ':TmuxNavigateRight<cr>'
+:       nnoremap <silent> <C-Right> :TmuxNavigateRight<cr>
+:   endif
+:   if mapcheck('<C-Up>', 'n') != ':TmuxNavigateUp<cr>'
+:       nnoremap <silent> <C-Up> :TmuxNavigateUp<cr>
+:   endif
+:   if mapcheck('<C-Down>', 'n') != ':TmuxNavigateDown<cr>'
+:       nnoremap <silent> <C-Down> :TmuxNavigateDown<cr>
+:   endif
+:   if mapcheck('<C-Left>', 'n') != ':TmuxNavigateLeft<cr>'
+:       nnoremap <silent> <C-Left> :TmuxNavigateLeft<cr>
+:   endif
+:   if mapcheck('<c-K>', 'n') != ':TmuxNavigateUp<cr>'
+:      nnoremap <silent> <c-K> :TmuxNavigateUp<cr>
+:   endif
+:   if mapcheck('<c-J>', 'n') != ':TmuxNavigateDown<cr>'
+:      nnoremap <silent> <c-J> :TmuxNavigateDown<cr>
+:   endif
+:   if mapcheck('<c-L>', 'n') != ':TmuxNavigateRight<cr>'
+:      nnoremap <silent> <c-L> :TmuxNavigateRight<cr>
+:   endif
+:   if mapcheck('<c-H>', 'n') != ':TmuxNavigateLeft<cr>'
+:      nnoremap <silent> <c-H> :TmuxNavigateLeft<cr>
+:   endif
+:   if mapcheck('<c-/>', 'n') != ':TmuxNavigatePrevious<cr>'
+:      nnoremap <silent> <c-/> :TmuxNavigatePrevious<cr>
+:   endif
+:endfunction
+
+:autocmd User * :call <sid>Free_c_keys()
 
 " }}}
 " startify {{{
 :let g:startify_custom_header=map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['','']
 :let g:startify_skiplist = [
-    \ '\/usr\/share\/vim\/.*$',
-    \ 'bundle/.*/doc',
-    \ '\.aux$',
-    \ '\.log$',
-    \ '\.sty$',
-    \ '\.wiki$',
-    \ 'vimrc',
-    \ ]
+            \ '\/usr\/share\/vim\/.*$',
+            \ 'bundle/.*/doc',
+            \ '\.aux$',
+            \ '\.log$',
+            \ '\.sty$',
+            \ '\.wiki$',
+            \ 'vimrc',
+            \ ]
+" }}}
+" make {{{
+
+" for scripts
+:autocmd BufRead *.sh,*.py :nmap <silent> <leader>ll :! ./%<cr>
+
+" for makefiles
+:autocmd BufRead *.c,*.cpp,*.h,*.hpp nmap <silent> <leader>ll :make<cr>
+
 " }}}
 " gvim {{{
 :if  has("gui_running")
 :    set guioptions=''
-:    set guifont=\ monofur\ for\ Powerline\ 10.5
+:    set guifont=monofur\ for\ Powerline\ 13
+:    colorscheme CodeFactoryv3
+"    C64
 :endif
 " }}}
+"   Clangformat {{{
+:let g:clang_format#style_options = {
+            \ 'AllowShortIfStatementsOnASingleLine' : 'true',
+            \ 'ColumnLimit' : '80',
+            \ 'TabWidth' : '4',
+            \ 'Standard' : 'C++11',
+            \ }
+
+:let g:clang_format#filetype_style_options = {
+            \   'cpp' : {'Standard' : 'C++11'}
+            \ }
+
+:let g:clang_format#command='clang-format-3.6'
+
+:nnoremap <silent> <leader>S :Startify<cr>
+:autocmd BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <leader>f :ClangFormat<cr>
+:autocmd BufWritePre *.c,*.cpp,*.h,*.hpp :ClangFormat
+
+"   }}}
 "   Undotree {{{
 :nnoremap <silent> <f3> :UndotreeToggle<cr>
 :inoremap <silent> <f3>  <esc>:UndotreeToggle<cr>
 
 " }}}
+"   YouCompleteMe {{{
+:let g:ycm_preview_window_after_completion = 1
+:let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+:nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<cr>
+" python with virtualenv
+
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+"   }}}
+"   Syntastic {{{
+
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+
+"   }}}
 "   Vimwiki {{{
-:let wiki = {}
-:let wiki.path='~/.vimwiki/'
-:let wiki.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
+:let g:vimwiki_list = [{
+  \ 'path': '~/.vimwiki',
+  \ 'template_path': '~/.vimwiki_templates/',
+  \ 'html_path': '~/.vimwiki_html',
+  \ 'template_default': 'default',
+  \ 'template_ext': '.html'}]
 
-:let blog = {}
-:let blog.path='~/.vimwikiblog/'
-:let blog.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
-
-:let g:vimwiki_list = [wiki,blog]
-"g:vimwiki_list        [{'maxhi': 0, 'css_name': 'style.css', 'auto_export': 0, 'diary_index': 'diary', 'template_default': '', 'nested_syntaxes': {}, 'diary_sort': 'desc', 'path': '/home/crvs/vimwiki/', 'diary_link_fmt': '%Y-%m-%d', 'template_ext': '', 'syntax': 'default', 'custom_wiki2html': '', 'index': 'index', 'diary_header': 'Diary', 'ext': '.wiki', 'path_html': '/home/crvs/vimwiki_html/', 'temp': 0, 'template_path': '/', 'list_margin': -1, 'diary_rel_path': 'diary/'}]
-
-" }}}
-" LaTeX {{{
-:let g:tex_flavor="latex"
-:let g:Tex_DefaultTargetFormat='pdf'
-:let g:Tex_MultipleCompileFormats='pdf,dvi'
-:let g:Tex_ViewRule_pdf='zathura 1>& /dev/null'
-
-:autocmd BufRead *.tex :let g:Tex_CompileRule_pdf="pdflatex -interaction=nonstopmode -file-line-error-style $* 1>& /dev/null"
-"" fast compile
-":autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
-" easy comment
-":autocmd BufEnter *.tex :nnoremap <silent> <leader>c I%<esc>
-":autocmd BufEnter *.tex :vnoremap <silent> <leader>c norm I%<esc>
-":autocmd BufLeave *.tex :nunmap <leader>c
-":autocmd BufLeave *.tex :vunmap <leader>c
-" open pdf
-:autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf 2>&/dev/null &'
-" more environments to collapse
-:autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark,definition,tikzpicture"
-
-:autocmd ColorScheme * :highlight Folded cterm=bold ctermbg=none ctermfg=green
-" }}}
-" Arpeggios {{{
-":augroup arpeggio
-":   call arpeggio#load()
-":   au BufEnter * so ~/.dotfiles/vim/arpeggio.unmap
-":   au BufEnter * call arpeggio#map('n','s',1,'wo','<c-w>o')
-":   au BufEnter * call arpeggio#map('n','s',0,'bl',':Bufferlist<cr>')
-":   au BufEnter * call arpeggio#map('i','s',1,'nt','<c-j>')
-":   au BufEnter * call arpeggio#map('i','s',1,'()','()')
-":   au BufEnter * call arpeggio#map('i','s',1,'[]','[]')
-":   au BufEnter * call arpeggio#map('i','s',1,'{}','{}')
-":   au BufEnter * call arpeggio#map('i','s',1,'<>','<>')
-":augroup END
+":let wiki = {}
+":let wiki.path='$HOME/.vimwiki/'
+":let wiki.template_path='$HOME/.vimwiki_html/templates'
+":let wiki.html_template = 'template'
+":let wiki.template_default = 'template'
+":let wiki.template_ext = '.tpl'
+":let wiki.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
 "
-" }}}
-" Search {{{
-:set hlsearch
-:set incsearch
-:nnoremap n nzz
-:nnoremap N Nzz
-:nnoremap <silent> <esc><esc> :noh<cr>:match<cr>
-:autocmd ColorScheme * :highlight Search ctermfg=black ctermbg=yellow cterm=NONE
-:autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
-:command! -nargs=1 S :match Search /<args>/
+    ":let blog = {}
+    ":let blog.path='$HOME/.vimwikiblog/'
+    ":let blog.nested_syntaxes = {'python': 'python', 'haskell': 'hs', 'latex': 'latex'}
+"
+    ":let g:vimwiki_list=[wiki,blog]
+"
+    " :let g:vimwiki_list = [wiki,blog]
+    "g:vimwiki_list        [{'maxhi': 0, 'css_name': 'style.css', 'auto_export': 0, 'diary_index': 'diary', 'template_default': '', 'nested_syntaxes': {}, 'diary_sort': 'desc', 'path': '/home/crvs/vimwiki/', 'diary_link_fmt': '%Y-%m-%d', 'template_ext': '', 'syntax': 'default', 'custom_wiki2html': '', 'index': 'index', 'diary_header': 'Diary', 'ext': '.wiki', 'path_html': '/home/crvs/vimwiki_html/', 'temp': 0, 'template_path': '/', 'list_margin': -1, 'diary_rel_path': 'diary/'}]
+
+    " }}}
+" LaTeX {{{
+if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
+  endif
+  let g:ycm_semantic_triggers.tex = [
+        \ 're!\\[A-Za-z]*cite[A-Za-z]*(\[[^]]*\]){0,2}{[^}]*',
+        \ 're!\\[A-Za-z]*ref({[^}]*|range{([^,{}]*(}{)?))',
+        \ 're!\\hyperref\[[^]]*',
+        \ 're!\\includegraphics\*?(\[[^]]*\]){0,2}{[^}]*',
+        \ 're!\\(include(only)?|input){[^}]*',
+        \ 're!\\\a*(gls|Gls|GLS)(pl)?\a*(\s*\[[^]]*\]){0,2}\s*\{[^}]*',
+        \ 're!\\includepdf(\s*\[[^]]*\])?\s*\{[^}]*',
+        \ 're!\\includestandalone(\s*\[[^]]*\])?\s*\{[^}]*',
+        \ ]
+
+    :let g:vimtex_complete_recursive_bib=1
+    :let g:vimtex_view_general_viewer='evince'
+    ":let g:vimtex_view_general_viewer='xpdf'
+    :let g:tex_flavor="latex"
+    :let g:Tex_DefaultTargetFormat='pdf'
+    :let g:Tex_MultipleCompileFormats='pdf,dvi'
+    ":let g:Tex_ViewRule_pdf='setsid xpdf 2>& /dev/null'
+    ":let g:Tex_ViewRule_pdf='setsid evince 2>& /dev/null'
+    ":let g:Tex_ViewRule_pdf='setsid zathura 2>& /dev/null'
+
+
+
+    :function s:last_changed_header()
+    :   let l:del_reg = @"
+    :   g/^% Last Change:/normal f:  D
+    :   normal "=strftime("%a %b %d %I:%M %p %Y %Z")p''
+    :   let @" = l:del_reg
+    :endfunction
+
+
+    :augroup my_tex_group
+    :   autocmd!
+    :   autocmd FileType tex :iabbrev i.e.\  i.e.\\ 
+    :   autocmd FileType tex :iabbrev resp.\  resp.\\ 
+    :   autocmd BufRead *.tex :let g:Tex_CompileRule_pdf="pdflatex -interaction=nonstopmode -file-line-error-style $* 1>& /dev/null"
+    :   autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark,definition,tikzpicture"
+    " :   autocmd BufWritePre *.tex :silent:call s:last_changed_header()
+    :augroup END
+
+    "" fast compile
+    ":autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
+    " easy comment
+    ":autocmd BufEnter *.tex :nnoremap <silent> <leader>c I%<esc>
+    ":autocmd BufEnter *.tex :vnoremap <silent> <leader>c norm I%<esc>
+    ":autocmd BufLeave *.tex :nunmap <leader>c
+    ":autocmd BufLeave *.tex :vunmap <leader>c
+    " open pdf
+    " :autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf 2>&/dev/null &'
+    " more environments to collapse
+
+
+
+
+    ":autocmd ColorScheme * :highlight Folded cterm=bold ctermbg=none ctermfg=green
+
+    :nnoremap <localleader>lt :<c-u>Unite vimtex_toc<cr>
+    :nnoremap <localleader>ly :<c-u>Unite vimtex_labels<cr>
 
 " }}}
-" navigation mode swapping{{{
-:nnoremap <silent> j gj
-:nnoremap <silent> k gk
-:let g:visual_nav=1
-:function! s:toggle_visual_nav()
-:   let g:visual_nav=!g:visual_nav
-:   if g:visual_nav
-:       nnoremap <silent> j gj
-:       nnoremap <silent> k gk
-:       echo "visual navigation ON"
-:   else
-:       nnoremap <silent> j  j
-:       nnoremap <silent> k k
-:       echo "visual navigation OFF"
-:   endif
-:endfunction
-:nnoremap <silent> <leader>v :call <sid>toggle_visual_nav()<cr>
+" trying to get commentline to work {{{
+
+    " :function CommentLine()
+    " :   if ( &ft == c || &ft == h || &ft == cpp || &ft == hpp )
+    " :       let l:comment = '// '
+    " :   endif
+    " :   execute 'normal 0i// '
+    " :endfunction
 
 " }}}
-" vim calendar options for google calendar {{{
-:let g:calendar_google_calendar=1
-:let g:calendar_google_task=1
+    " Arpeggios {{{
+    ":augroup arpeggio
+    ":   call arpeggio#load()
+    ":   au BufEnter * so ~/.dotfiles/vim/arpeggio.unmap
+    ":   au BufEnter * call arpeggio#map('n','s',1,'wo','<c-w>o')
+    ":   au BufEnter * call arpeggio#map('n','s',0,'bl',':Bufferlist<cr>')
+    ":   au BufEnter * call arpeggio#map('i','s',1,'nt','<c-j>')
+    ":   au BufEnter * call arpeggio#map('i','s',1,'()','()')
+    ":   au BufEnter * call arpeggio#map('i','s',1,'[]','[]')
+    ":   au BufEnter * call arpeggio#map('i','s',1,'{}','{}')
+    ":   au BufEnter * call arpeggio#map('i','s',1,'<>','<>')
+    ":augroup END
+    "
+    " }}}
+    " Search {{{
+    :set hlsearch
+    :set incsearch
+    :nnoremap n nzz
+    :nnoremap N Nzz
+    " :autocmd ColorScheme * :highlight Search ctermfg=black ctermbg=yellow cterm=NONE
+    " :autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
 
+    :nnoremap <silent> <leader>c :noh<cr>:call clearmatches()<cr>
+    :nnoremap <silent> <leader>h yiw:nohl<cr>:match Search /"/<cr>
+    :nnoremap <silent> <leader>H yiw:call matchadd( "Search" , """)<cr>
+    :vnoremap <silent> <leader>h y:nohl<cr>:match Search /\M"/<cr>
+    :vnoremap <silent> <leader>H y:call matchadd( "Search" , "\M"")<cr>
+    :nnoremap <silent> <leader>* yiw:vimgrep /"/ *<cr>
+    :nnoremap <silent> <leader>ct :cd %:h<cr>:! ctags -R *<cr>
+
+    " paste without capturing
+    :let s:paste = 0
+    :nnoremap <silent> <leader>p :call <sid>toggle_things("paste mode","s:paste",":set paste",":set nopaste")<cr>
+
+    " fast toggle wrap
+    :let s:wrap = 1
+    :nnoremap <silent> <leader>r :call <sid>toggle_things("wrap mode","s:wrap",":set wrap",":set nowrap")<cr>
+
+
+    " toggle quickfix window
+    :let s:quickfix = 0
+    :nnoremap <silent> <leader>q :call <sid>toggle_things("quickfix window","s:quickfix",":copen",":cclose")<cr>
+
+    " toggle location window
+    :let s:location = 0
+    :nnoremap <silent> <leader>L :call <sid>toggle_things("location window","s:location",":lopen",":lclose")<cr>
+
+    " toggle visual navigation
+    :let s:visual_nav=1
+
+    :nnoremap <silent> j gj
+    :nnoremap <silent> k gk
+
+    :function! s:visual_nav_on()
+    :   nnoremap <silent> j gj
+    :   nnoremap <silent> k gk
+    :endfunction
+
+    :function! s:visual_nav_off()
+    :   nnoremap <silent> j j
+    :   nnoremap <silent> k k
+    :endfunction
+
+    :nnoremap <silent> <leader>v :call <sid>toggle_things("visual navigation","s:visual_nav",":call <sid>visual_nav_on()",":call <sid>visual_nav_off()")<cr>
+
+    " }}}
+    " toggling{{{
+
+    :function! s:toggle_things(thing,toggle_var,comm_1,comm_0)
+    :   execute 'let '.a:toggle_var.'=!'.a:toggle_var
+    :   execute 'let dec ='a:toggle_var
+    :   if dec
+    :       execute a:comm_1
+    :       echo a:thing.' ON'
+    :   else
+    :       execute a:comm_0
+    :       echo a:thing.' OFF'
+    :   endif
+    :endfunction
+
+    " }}}
+    " vim calendar options for google calendar {{{
+    " :let g:calendar_time_zone=+0060
+
+    :let g:calendar_week_number=1
+    :let g:calendar_google_calendar=1
+    :let g:calendar_google_task=1
+
+    " }}}
+    " statusbar {{{
+    ":set rnu "show numbering relative to the current line
+    :set number
+    :set laststatus=2
+
+    " }}}
+    " airline {{{
+
+    " THEMES: badwolf ; base16 ; bubblegum ; dark ; durant ; hybrid ; jellybeans ; kalisi ; kolor ; laederon ; light ; lucius ; luna ; molokai ; monochrome ; murmur ; powerlineish ; raven ; serene ; silver ; simple ; solarized ; sol ; tomorrow ; ubaryd ; understated ; wombat ; zenburn
+    :let g:airline_theme='badwolf'
+
+    :if (&ft=='tex')
+    :   let g:airline#extensions#whitespace#enabled = 0
+    :endif
+
+    :let g:airline_detect_crypt=1
+    :let g:airline_powerline_fonts = 1
+    :let g:airline#extensions#tabline#enabled = 1
+
+    " }}}
+    " bufferline {{{
+
+    let g:bufferline_echo = 1
+    let g:bufferline_active_buffer_left = '['
+    let g:bufferline_active_buffer_right = ']'
+    let g:bufferline_modified = '+'
+    let g:bufferline_show_bufnr = 1
+    let g:bufferline_rotate = 1
+    let g:bufferline_fixed_index =  0 "always first
+    let g:bufferline_fname_mod = ':t'
+    let g:bufferline_inactive_highlight = 'StatusLine'
+    let g:bufferline_active_highlight = 'StatusLine'
+    let g:bufferline_solo_highlight = 1
+    let g:bufferline_excludes = [] "see source for defaults
+    let g:bufferline_echo = 0
+    autocmd VimEnter *
+                \ let &statusline='%{bufferline#refresh_status()}'
+                \ .bufferline#get_status_string()
+    " }}}
+    " Force save {{{
+    :cmap w!! w !sudo tee % > /dev/null<cr>
+    :cabbrev W w!
+    :cabbrev E e!
+    :cabbrev cl <c-f>
+
+    " }}}
+    " Git configurations {{{
+    :autocmd ColorScheme * :highlight hlSignColumn          ctermbg=NONE ctermfg=NONE   cterm=NONE guibg=NONE guifg=NONE   gui=NONE
+    :autocmd ColorScheme * :highlight SignColumn            ctermbg=NONE ctermfg=NONE   cterm=NONE guibg=NONE guifg=NONE   gui=NONE
+    :autocmd ColorScheme * :highlight GitGutterAdd          ctermbg=NONE ctermfg=green  cterm=bold guibg=NONE guifg=green  gui=bold
+    :autocmd ColorScheme * :highlight GitGutterChange       ctermbg=NONE ctermfg=yellow cterm=bold guibg=NONE guifg=yellow gui=bold
+    :autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
+    :autocmd ColorScheme * :highlight GitGutterChangeDelete ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
+
+    " nice mappings for days when large chunks of work need to be reviewed
+    :nnoremap <silent> <leader>gt :GitGutterToggle<cr>
+    :nnoremap <silent> <leader>gn :GitGutterNextHunk<cr>
+    :nnoremap <silent> <leader>gp :GitGutterPrevHunk<cr>
+    :nnoremap <silent> <leader>gs :GitGutterStageHunk<cr>
+    :nnoremap <silent> <leader>gu :GitGutterRevertHunk<cr>
+
+    " }}}
+    " tabs and linebreaks {{{
+    :set tabstop=4 shiftwidth=4 expandtab
+    :set smartindent
+    :set showbreak=>\ "begin broken line
+    ":set breakindent
+    :set linebreak
+
+    " }}}
+    " common typos {{{
+    :iabbr teh the
+    :iabbr taht that
+
+    :autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green guifg=black guibg=yellow cterm=NONE
+    " better switching between buffers
+
+    :function! Kill_all_other_buffers()
+    :   NERDTreeClose
+    :   only
+    :   let keepBuff = bufnr("%")
+    :   bufdo :call Kill_buffers_but(keepBuff)
+    :endfunction
+
+    :function! Kill_buffers_but(k)
+    :   if a:k != bufnr("%")
+    :      bd
+    :   endif
+    :endfunction
+
+    :nmap <silent> <leader>wo o
+    :nmap <silent> <leader>wc c
+    :nmap <silent> <leader>we =
+
+    :nmap <silent> <leader>o :call Kill_all_other_buffers()<cr>
+    :nmap <silent> <leader>b :bn<cr>
+    :nmap <silent> <leader>B :bp<cr>
+    :nmap <silent> <leader>d :bd<cr>
+
+    " allow to use hidden buffers more liberally
+    :set hidden
+    :set grepprg=grep\ -nH\ $*
+
+    " custom modes documentation
+    ":helptags ~/.vim/doc
+
+    " Use Vim settings, rather than Vi settings (much better!).  This must
+    " be first, because it changes other options as a side effect.
+    :set nocompatible
+
+    " allow backspacing over everything in insert mode
+    :set backspace=indent,eol,start
+
+    :set backup        " keep a backup file (restore to previous version)
+    :set undofile      " keep an undo file (undo changes after closing)
+    :set backupdir=~/.vimtmp,.
+    :set undodir=~/.vimtmp,.
+    :set directory=~/.vimtmp,.
+    :set history=50      " keep 50 lines of command line history
+    :set ruler       " show the cursor position all the time
+    :set showcmd     " display incomplete commands
+
+
+    " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
+    " undo, so that you can undo CTRL-U after inserting a line break.
+    :inoremap <C-U> <C-G>u<C-U>
+
+    " In many terminal emulators the mouse works just fine, thus enable
+    " it.
+    :set mouse=a
+
+
+    " Switch syntax highlighting on, when the terminal has colors Also
+    " switch on highlighting the last used search pattern.
+    :syntax on
+    :nohl
+
+
+
+    " Convenient command to see the difference between the current buffer
+    " and the file it was loaded from, thus the changes you made.  Only
+    " define it when not defined already.
+    :if !exists(":DiffOrig")
+    command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+                \ | wincmd p | diffthis
+    :endif
+
+    :let g:languagetool_jar='/usr/share/java/languagetool/languagetool.jar'
+
+    :if &ft == 'org'
+    :    let maplocalleader='\'
+    :endif
+
+    :set complete=.,w,b,u,t,i,kspell
+    " }}}
+" after everything is done {{{
+:doautocmd User
 " }}}
-" statusbar {{{
-:set rnu
-:set number
-:set laststatus=2
-
-" }}}
-" airline {{{
-
-" THEMES: badwolf ; base16 ; bubblegum ; dark ; durant ; hybrid ; jellybeans ; kalisi ; kolor ; laederon ; light ; lucius ; luna ; molokai ; monochrome ; murmur ; powerlineish ; raven ; serene ; silver ; simple ; solarized ; sol ; tomorrow ; ubaryd ; understated ; wombat ; zenburn
-:let g:airline_theme='luna'
-
-:if (&ft=='tex')
-:   let g:airline#extensions#whitespace#enabled = 0
-:endif
-
-:let g:airline_powerline_fonts = 1
-:let g:airline#extensions#tabline#enabled = 1
-
-" }}}
-" bufferline {{{
-
-let g:bufferline_echo = 1
-let g:bufferline_active_buffer_left = '['
-let g:bufferline_active_buffer_right = ']'
-let g:bufferline_modified = '+'
-let g:bufferline_show_bufnr = 1
-let g:bufferline_rotate = 1
-let g:bufferline_fixed_index =  0 "always first
-let g:bufferline_fname_mod = ':t'
-let g:bufferline_inactive_highlight = 'StatusLine'
-let g:bufferline_active_highlight = 'StatusLine'
-let g:bufferline_solo_highlight = 1
-let g:bufferline_excludes = [] "see source for defaults
-let g:bufferline_echo = 0
-autocmd VimEnter *
-    \ let &statusline='%{bufferline#refresh_status()}'
-    \ .bufferline#get_status_string()
-" }}}
-" Git configurations {{{
-:autocmd ColorScheme * :highlight hlSignColumn          ctermbg=NONE ctermfg=NONE   cterm=NONE guibg=NONE guifg=NONE   gui=NONE
-:autocmd ColorScheme * :highlight SignColumn            ctermbg=NONE ctermfg=NONE   cterm=NONE guibg=NONE guifg=NONE   gui=NONE
-:autocmd ColorScheme * :highlight GitGutterAdd          ctermbg=NONE ctermfg=green  cterm=bold guibg=NONE guifg=green  gui=bold
-:autocmd ColorScheme * :highlight GitGutterChange       ctermbg=NONE ctermfg=yellow cterm=bold guibg=NONE guifg=yellow gui=bold
-:autocmd ColorScheme * :highlight GitGutterDelete       ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
-:autocmd ColorScheme * :highlight GitGutterChangeDelete ctermbg=NONE ctermfg=red    cterm=bold guibg=NONE guifg=red    gui=bold
-
-" nice mappings for days when large chunks of work need to be reviewed
-:nnoremap <silent> <leader>gt :GitGutterToggle<cr>
-:nnoremap <silent> <leader>gn :GitGutterNextHunk<cr>
-:nnoremap <silent> <leader>gp :GitGutterPrevHunk<cr>
-:nnoremap <silent> <leader>gs :GitGutterStageHunk<cr>
-:nnoremap <silent> <leader>gu :GitGutterRevertHunk<cr>
-
-" }}}
-" tabs and linebreaks {{{
-:set tabstop=4 shiftwidth=4 expandtab
-:set smartindent
-:set showbreak=>\ "begin broken line
-:set breakindent
-:set linebreak
-
-" }}}
-" common typos {{{
-:iabbr teh the
-:iabbr taht that
-
-:autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green guifg=black guibg=yellow cterm=NONE
-" allow to use hidden buffers more liberally
-:set hidden
-:set grepprg=grep\ -nH\ $*
-
-:noremap <leader>o o<Esc>k
-:noremap <leader>O O<Esc>j
-" custom modes documentation
-":helptags ~/.vim/doc
-
-" Use Vim settings, rather than Vi settings (much better!).  This must
-" be first, because it changes other options as a side effect.
-:set nocompatible
-
-" allow backspacing over everything in insert mode
-:set backspace=indent,eol,start
-
-:set backup        " keep a backup file (restore to previous version)
-:set undofile      " keep an undo file (undo changes after closing)
-:set backupdir=~/.vimtmp,.
-:set undodir=~/.vimtmp,.
-:set directory=~/.vimtmp,.
-:set history=50      " keep 50 lines of command line history
-:set ruler       " show the cursor position all the time
-:set showcmd     " display incomplete commands
-
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
-" undo, so that you can undo CTRL-U after inserting a line break.
-:inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine, thus enable
-" it.
-:set mouse=a
-
-" Switch syntax highlighting on, when the terminal has colors Also
-" switch on highlighting the last used search pattern.
-:syntax on
-:nohl
-
-
-" Convenient command to see the difference between the current buffer
-" and the file it was loaded from, thus the changes you made.  Only
-" define it when not defined already.
-:if !exists(":DiffOrig")
-   command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-               \ | wincmd p | diffthis
-:endif
-
-
-:let g:languagetool_jar='/usr/share/java/languagetool/languagetool.jar'
-
-:if &ft == 'org'
-:    let maplocalleader='\'
-:endif

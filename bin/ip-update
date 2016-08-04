@@ -1,0 +1,19 @@
+#!/bin/bash
+
+OIPFILE=/tmp/myIP.txt
+NIPFILE=/tmp/myNIP.txt
+
+if [ ! -f "${OIPFILE}" ]
+then
+    touch "${OIPFILE}"
+fi
+
+ip addr | grep "inet " | grep "eth0" > "${NIPFILE}"
+OLDIP=`cat "${OIPFILE}"`
+NEWIP=`cat "${NIPFILE}"`
+
+if [ "${OLDIP}" != "${NEWIP}" ]
+then
+    mv "${NIPFILE}" "${OIPFILE}"
+    echo "${NEWIP}" | mail -s "ip changed" carvas.f@gmail.com
+fi

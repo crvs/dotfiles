@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CurrKey=`setxkbmap -print | grep symbols | sed 's/.*pc+\(..\).*/\1/'`
+
+if [ $CurrKey = 'us' ]
+    then setxkbmap -layout ru -option caps:escape
+elif [ $CurrKey = 'ru' ]
+    then setxkbmap -layout us,us -variant dvorak,dvorak-intl -option caps:escape,grp:sclk_toggle
+else
+    setxkbmap -layout us -variant dvorak -option caps:escape
+fi
+
+
+

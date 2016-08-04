@@ -18,7 +18,7 @@ dzen2.background: black
 ! These used to be XTerm*
 *pointerColor: white
 *pointerColorBackground: black
-*cursorColor:yellow
+!*cursorColor:green
 *cursorBlink:true
 
 Xft.autohint: 0
@@ -28,31 +28,93 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
 
-URxvt*font:     xft:monofur for Powerline-10.5:regular
-URxvt*faceName: xft:monofur for Powerline-10.5:regular
+Xterm*faceName: Monofur for Powerline-10:style=regular:antialias=true
+Xterm*boldFont: Monofur Bold for Powerline-10:style=bold:antialias=true
+Xterm*utf8:     2
+
+URxvt*font:     xft:Monofur for Powerline-9:regular
+URxvt*faceName: xft:Monofur for Powerline-9:regular
+!URxvt*font:     xft:Ubuntu mono-12:regular
+!URxvt*faceName:     xft:Ubuntu mono-12:regular
+!URxvt*font:     xft:Ubuntu mono-10.5:regular
+!URxvt*faceName: xft:Ubuntu mono-10.5:regular
 *fullscreen:never
 
 XTerm*urgentOnBell:true
+URxvt*urgentOnBell:true
+URxvt*visualBell:false
+! jwr low contrast
+
+!black
+*color0: #222222
+*color8: #454545
+
+!red
+*color1: #9E5641
+*color9: #CC896D
+!green
+*color2: #6C7E55
+*color10: #C4DF90
+!yellow
+*color3: #CAAF2B
+*color11: #FFE080
+!blue
+*color4: #7FB8D8
+*color12: #B8DDEA
+!magenta
+*color5: #956D9D
+*color13: #C18FCB
+!cyan
+*color6: #4c8ea1
+*color14: #6bc1d0
+!white
+*color7: #808080
+*color15: #cdcdcd
+
+*borderColor: #343434
+*background: #343434
+*foreground: #cdcdcd
+
+! urxvt*transpacent: true
+! urxvt*shading: 15
+! urxvt*foreground: #ffffff
+! urxvt*background: #000000
+! *color0: #2E3436
+! *color1: #a40000
+! *color2: #4E9A06
+! *color3: #C4A000
+! *color4: #3465A4
+! *color5: #75507B
+! *color6: #ce5c00
+! *color7: #babdb9
+! *color8: #555753
+! *color9: #EF2929
+! *color10: #8AE234
+! *color11: #FCE94F
+! *color12: #729FCF
+! *color13: #AD7FA8
+! *color14: #fcaf3e
+! *color15: #EEEEEC
 
 ! Mellow colorscheme, very enjoyable
-*background: rgb:00/00/00
-*foreground: rgb:ff/ff/ff
-*color0:     rgb:00/00/00
-*color1:     rgb:9e/18/28
-*color2:     rgb:ae/ce/92
-*color3:     rgb:96/8a/38
-*color4:     rgb:41/41/71
-*color5:     rgb:96/3c/59
-*color6:     rgb:41/81/79
-*color7:     rgb:be/be/be
-*color8:     rgb:66/66/66
-*color9:     rgb:cf/61/71
-*color10:    rgb:c5/f7/79
-*color11:    rgb:ff/f7/96
-*color12:    rgb:41/86/be
-*color13:    rgb:cf/9e/be
-*color14:    rgb:71/be/be
-*color15:    rgb:ff/ff/ff
+!*background: rgb:00/00/00
+!*foreground: rgb:ff/ff/ff
+!*color0:     rgb:00/00/00
+!*color1:     rgb:9e/18/28
+!*color2:     rgb:ae/ce/92
+!*color3:     rgb:96/8a/38
+!*color4:     rgb:41/41/71
+!*color5:     rgb:96/3c/59
+!*color6:     rgb:41/81/79
+!*color7:     rgb:be/be/be
+!*color8:     rgb:66/66/66
+!*color9:     rgb:cf/61/71
+!*color10:    rgb:c5/f7/79
+!*color11:    rgb:ff/f7/96
+!*color12:    rgb:41/86/be
+!*color13:    rgb:cf/9e/be
+!*color14:    rgb:71/be/be
+!*color15:    rgb:ff/ff/ff
 
 ! Dark colorscheme
 ! *background:   rgb:00/00/00

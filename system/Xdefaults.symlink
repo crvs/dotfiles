@@ -1,10 +1,8 @@
-!vim : nnoremap ZM :w<cr>:! xrdb ~/.Xdefaults<cr>
-
 xterm*utf8: 1
 xterm*locale: true
 xterm*metaSendsEscape: true
 
-xterm*faceName: monofur for Powerline:size=10.5
+xterm*faceName: monofur for Powerline:size=12
 
 ! defaults
 xterm*background: #000030
@@ -12,11 +10,13 @@ xterm*foreground: #ffffd0
 
 URxvt*depth: 32
 !whateverbackground you are using, the last field is alpha
-URxvt*foreground: rgba:ffff/ffff/ffff/ffff
-URxvt*background: rgba:1000/1000/1000/cccc
-URxvt*font: xft:monofur for Powerline:pixelsize=13
-URxvt*scrollBar:false
-URxvt*letterSpace:-1
+URxvt*foreground:   rgba:ffff/ffff/ffff/ffff
+URxvt*background:   rgba:1000/1000/1000/ffff
+URxvt*font:         xft:monofur for Powerline:pixelsize=13
+URxvt*scrollBar:    false
+URxvt*letterSpace:  -1
+URxvt*urgentOnBell: true
+URxvt*visualBell:   false
 
 ! ! 0: black
 ! *color0:  #242424
