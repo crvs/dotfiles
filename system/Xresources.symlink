@@ -11,7 +11,7 @@ XTerm*locale: true
 !XTerm*faceName: monofur:pixelsize=15
 !XTerm*faceSize: 9
 
-dzen2.font:       xft:monofur for Powerline-10.5:regular
+dzen2.font:       xft:monofur for Powerline-12.5:regular
 dzen2.foreground: #22EE11
 dzen2.background: black
 
@@ -32,8 +32,8 @@ Xterm*faceName: Monofur for Powerline-10:style=regular:antialias=true
 Xterm*boldFont: Monofur Bold for Powerline-10:style=bold:antialias=true
 Xterm*utf8:     2
 
-URxvt*font:     xft:Monofur for Powerline-9:regular
-URxvt*faceName: xft:Monofur for Powerline-9:regular
+URxvt*font:     xft:Monofur for Powerline-11:regular
+URxvt*faceName: xft:Monofur for Powerline-11:regular
 !URxvt*font:     xft:Ubuntu mono-12:regular
 !URxvt*faceName:     xft:Ubuntu mono-12:regular
 !URxvt*font:     xft:Ubuntu mono-10.5:regular

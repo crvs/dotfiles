@@ -36,6 +36,12 @@ fi
 # Set the background color
 xsetroot -solid black &
 
+# run autolocker
+(pgrep xautolock > /dev/null)
+if [[ ! $? = 0 ]]; then
+    xautolock -time 5 -locker "dm-tool lock" 
+fi
+
 # allow compositing (run if not running)
 (pgrep compton > /dev/null)
 if [[ ! $? = 0 ]]; then
