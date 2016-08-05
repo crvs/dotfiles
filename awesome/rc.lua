@@ -10,6 +10,9 @@ require("naughty")
 -- Load Debian menu entries
 require("debian.menu")
 
+-- widgets
+vicious = require("vicious")
+
 -- {{{ Theme
 -- theme.wallpaper = "/home/crvs/Firefox_wallpaper.png"
 
@@ -115,6 +118,19 @@ mytextclock = awful.widget.textclock({ align = "right" })
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
+-- Create a battery widget
+batwidget = awful.widget.progressbar()
+batwidget:set_width(8)
+batwidget:set_height(19)
+batwidget:set_vertical(true)
+batwidget:set_background_color("#494B4F")
+batwidget:set_border_color(nil)
+batwidget:set_color("#FFFFFF")
+
+vicious.register(batwidget,vicious.widgets.bat,"$2",120,"BAT0")
+
+battext = widget({ type= "textbox"})
+vicious.register(battext,vicious.widgets.bat,"$3",120,"BAT0")
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -184,7 +200,9 @@ for s = 1, screen.count() do
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
         {
-            mylauncher,
+            batwidget,
+            battext,
+            -- mylauncher,
             mytaglist[s],
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
@@ -245,7 +263,11 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     awful.key({ modkey,           }, "z", function () awful.util.spawn("dm-tool lock") end),
-    awful.key({ modkey, "Shift"   }, "z", function () awful.util.spawn("dm-tool lock && pm-suspend") end),
+    awful.key({ modkey, "Shift"   }, "z", function () os.execute("dm-tool lock && sleep 1 && sudo pm-suspend") end),
+
+    -- Brightness controls
+    awful.key({ }, "XF86MonBrightnessUp",     function () awful.util.spawn("xbacklight -inc 5") end),
+    awful.key({ }, "XF86MonBrightnessDown",   function () awful.util.spawn("xbacklight -dec 5") end),
 
     -- Volume controls // Ubuntu 14.04
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("pactl set-sink-volume 1 -- +3%") end),
@@ -402,4 +424,13 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
+
+-- Autostart {{{
+
+os.execute("/home/crvs/.dotfiles/awesome/startup.sh")
+
+-- check if this file is being loaded
+-- os.execute("setsid xmessage reloaded &")
+
 -- }}}
