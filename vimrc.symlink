@@ -125,7 +125,7 @@ colorscheme badwolf
 :   let @" = l:delcontents
 :endfunction
 
-:let g:todo_txt_location='~/Dropbox/todo.txt/todo.txt'
+:let g:todo_txt_location='~/.todo.txt/todo.txt'
 :command! OpenTodo :execute ':e '. g:todo_txt_location
 :augroup my_todo_txt
 :   autocmd!
