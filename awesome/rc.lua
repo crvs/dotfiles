@@ -18,8 +18,11 @@ vicious = require("vicious")
 
 -- }}}
 
--- {{{ Startup scipts
-awful.util.spawn_with_shell("setxkbmap -layout us,us -variant dvorak,dvorak-intl -option caps:escape,grp:sclk_toggle")
+-- {{{ Startup scripts
+
+os.execute("setxkbmap -layout us,us -variant dvorak,dvorak-intl -option caps:escape,grp:sclk_toggle")
+os.execute("/home/crvs/.dotfiles/awesome/startup.sh")
+
 
 -- }}}
 
@@ -68,19 +71,19 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
 }
     -- awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.max,
+    -- awful.layout.suit.magnifier
+    -- awful.layout.suit.floating,
+    -- awful.layout.suit.fair,
 -- }}}
 
 -- {{{ Tags
@@ -251,11 +254,16 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
     awful.key({ modkey,           }, "Tab",
         function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
+            awful.client.focus.byidx( 1)
+            if client.focus then client.focus:raise() end
         end),
+    -- awful.key({ modkey,           }, "Tab",
+    --     function ()
+    --         awful.client.focus.history.previous()
+    --         if client.focus then
+    --             client.focus:raise()
+    --         end
+    --     end),
 
     -- Standard program
     awful.key({ modkey, "Shift"   }, "Return", function () awful.util.spawn(terminal) end),
@@ -426,11 +434,3 @@ client.add_signal("focus", function(c) c.border_color = beautiful.border_focus e
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
--- Autostart {{{
-
-os.execute("/home/crvs/.dotfiles/awesome/startup.sh")
-
--- check if this file is being loaded
--- os.execute("setsid xmessage reloaded &")
-
--- }}}
