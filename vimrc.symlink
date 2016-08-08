@@ -153,6 +153,11 @@ colorscheme badwolf
 " }}}
 " pasting {{{
 
+" paste from clipboard to next/prev line
+" needs vim unimpaired
+:nmap <leader>p "*]p
+:nmap <leader>P "*[p
+
 :function! s:paste_reg(reg,paste_c)
 :   let l:ex_string = ':norm "' . a:reg . a:paste_c
 :   if &paste == 1
@@ -543,10 +548,6 @@ if !exists('g:ycm_semantic_triggers')
     :vnoremap <silent> <leader>H y:call matchadd( "Search" , "\M"")<cr>
     :nnoremap <silent> <leader>* yiw:vimgrep /"/ *<cr>
     :nnoremap <silent> <leader>ct :cd %:h<cr>:! ctags -R *<cr>
-
-    " paste without capturing
-    :let s:paste = 0
-    :nnoremap <silent> <leader>p :call <sid>toggle_things("paste mode","s:paste",":set paste",":set nopaste")<cr>
 
     " fast toggle wrap
     :let s:wrap = 1
