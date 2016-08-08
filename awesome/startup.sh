@@ -17,7 +17,7 @@ xrdb $HOME/.Xresources &
 # set cursor
 xsetroot -cursor_name left_ptr &
 
-# add Super_R in lenovo keyboard
+# add Super_R in keyboards with two supers
 echo "keycode 107 = Super_R NoSymbol Super_R" | xmodmap -
 
 # disable system beep
@@ -25,7 +25,7 @@ xset -b
 
 # kill mouse while typing
 # for dell xps 13
-syndaemon -i 1 -K -d
+syndaemon -i 2 -d
 
 # start audio server
 (pgrep pulse > /dev/null)
@@ -39,7 +39,7 @@ xsetroot -solid black &
 # run autolocker
 (pgrep xautolock > /dev/null)
 if [[ ! $? = 0 ]]; then
-    xautolock -time 5 -locker "dm-tool lock" 
+    setsid xautolock -time 5 -locker "dm-tool lock" &
 fi
 
 # allow compositing (run if not running)
@@ -49,7 +49,6 @@ if [[ ! $? = 0 ]]; then
 fi
 
 # run the network mananger applet
-
 (pgrep nm-applet > /dev/null)
 if [[ ! $? = 0 ]]; then
     setsid nm-applet &
@@ -58,5 +57,5 @@ fi
 # make the mouse disappears
 (pgrep unclutter > /dev/null)
 if [[ ! $? = 0 ]]; then
-    unclutter &
+    setsid unclutter -idle 0.5 &
 fi

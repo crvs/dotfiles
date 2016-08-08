@@ -1,5 +1,11 @@
+# vim ignores
+.*.swp
 .*.un\~
 *\~
+
+
+
+# haskell files and stuff
 xmonad.symlink/xmonad-x86_64-linux
 xmonad.symlink/wallpaper*
 xmonad.symlink/xmonad.errors
