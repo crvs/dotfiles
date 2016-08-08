@@ -54,6 +54,12 @@ if [[ ! $? = 0 ]]; then
     setsid nm-applet &
 fi
 
+# run syncthing
+(pgrep syncthing > /dev/null)
+if [[ ! $? = 0 ]]; then
+    setsid syncthing &
+fi
+
 # make the mouse disappears
 (pgrep unclutter > /dev/null)
 if [[ ! $? = 0 ]]; then
