@@ -270,8 +270,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-    awful.key({ modkey,           }, "z", function () awful.util.spawn("dm-tool lock") end),
-    awful.key({ modkey, "Shift"   }, "z", function () os.execute("dm-tool lock && sleep 1 && sudo pm-suspend") end),
+    awful.key({ modkey,           }, "z", function () awful.util.spawn("gnome-screensaver-command -l && dm-tool lock") end),
+    awful.key({ modkey, "Shift"   }, "z", function () os.execute("gnome-screensaver-command -l && dm-tool lock && sleep 1 && sudo pm-suspend") end),
 
     -- Brightness controls
     awful.key({ }, "XF86MonBrightnessUp",     function () awful.util.spawn("xbacklight -inc 5") end),
