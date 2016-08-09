@@ -130,10 +130,10 @@ batwidget:set_background_color("#494B4F")
 batwidget:set_border_color(nil)
 batwidget:set_color("#FFFFFF")
 
-vicious.register(batwidget,vicious.widgets.bat,"$2",120,"BAT0")
+vicious.register(batwidget,vicious.widgets.bat,"$2",30,"BAT0")
 
 battext = widget({ type= "textbox"})
-vicious.register(battext,vicious.widgets.bat,"$3",120,"BAT0")
+vicious.register(battext,vicious.widgets.bat,"$3",30,"BAT0")
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
