@@ -280,7 +280,7 @@ globalkeys = awful.util.table.join(
     -- Volume controls // Ubuntu 14.04
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("pactl set-sink-volume 1 -- +3%") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("pactl set-sink-volume 1 -- -3%") end),
-    awful.key({ }, "XF86AudioMute", function () auful.util.spawn("pactl set-sink-mute 1 -- toggle") end),
+    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("pactl set-sink-mute 1 -- toggle") end),
 
     -- Spotify controls
     awful.key({ }, "XF86AudioPlay", function () awful.util.spawn_with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
