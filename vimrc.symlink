@@ -85,8 +85,8 @@ filetype plugin indent on
 " }}}
 " snipets {{{
 
-:imap <tab> <esc>a<Plug>snipMateNextOrTrigger
-:smap <tab> <Plug>snipMateNextOrTrigger
+:imap <c-\> <esc>a<Plug>snipMateNextOrTrigger
+:smap <c-\> <Plug>snipMateNextOrTrigger
 
 " }}}
 " Easy Tags {{{
