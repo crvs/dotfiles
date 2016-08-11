@@ -85,8 +85,8 @@ filetype plugin indent on
 " }}}
 " snipets {{{
 
-:imap <tab> <esc>a<Plug>snipMateNextOrTrigger
-:smap <tab> <Plug>snipMateNextOrTrigger
+:imap <c-\> <esc>a<Plug>snipMateNextOrTrigger
+:smap <c-\> <Plug>snipMateNextOrTrigger
 
 " }}}
 " Easy Tags {{{
@@ -466,6 +466,7 @@ if !exists('g:ycm_semantic_triggers')
         \ ]
 
     :let g:vimtex_complete_recursive_bib=1
+    :let g:vimtex_labels_enable=1
     :let g:vimtex_view_general_viewer='evince'
     ":let g:vimtex_view_general_viewer='xpdf'
     :let g:tex_flavor="latex"

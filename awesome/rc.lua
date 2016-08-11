@@ -72,7 +72,7 @@ modkey = "Mod4"
 layouts =
 {
     awful.layout.suit.tile,
-    awful.layout.suit.tile.top,
+    awful.layout.suit.tile.bottom,
     awful.layout.suit.max,
 }
     -- awful.layout.suit.tile.left,
