@@ -1,0 +1,13 @@
+[user]
+	name = crvs
+	email = carvas.f@gmail.com
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	unstage = reset HEAD --
+	unstageall = reset ^HEAD
+	showtree = log --pretty --oneline --graph --decorate=short
+[push]
+	default = simple
