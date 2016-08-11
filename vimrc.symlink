@@ -125,8 +125,13 @@ colorscheme badwolf
 :   let @" = l:delcontents
 :endfunction
 
-:let g:todo_txt_location='~/.todo.txt/todo.txt'
-:command! OpenTodo :execute ':e '. g:todo_txt_location
+:nnoremap <leader>tt :OpenTodo<cr>
+:nnoremap <leader>td :execute ':e ' . g:todo_txt_done<cr>
+
+:let g:todo_txt_todo='~/.todo.txt/todo.txt'
+:let g:todo_txt_done='~/.todo.txt/done.txt'
+:command! OpenTodo :execute ':e '. g:todo_txt_todo
+
 :augroup my_todo_txt
 :   autocmd!
 :   autocmd BufEnter,BufRead todo.txt :nmap <leader>at $F@i <esc>BE dwi +
