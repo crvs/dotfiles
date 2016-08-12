@@ -82,7 +82,7 @@ function mp3Rename {
 				IFS=$'\ '   # restore IFS to default
 }
 
-alias gitwatch="watch git log --oneline --all --graph --decorate"
+alias gitwatch="watch --color 'git log --color --oneline --all --graph --decorate'"
 
 # personal calendar command
 alias calendar="vim -c:Calendar"
