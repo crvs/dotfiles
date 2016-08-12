@@ -124,6 +124,7 @@ function mkcd { mkdir $@ 2>& /dev/null || let EXIT_STATUS=$? ; cd $@ ; return $E
 # todotxt
 alias todotxt="todo.sh"
 function t { if [ $# = 0 ]; then todotxt ls; else todotxt $@; fi }
+compdef t='todo.sh'
 
 # alias vim="nvim"
 alias py="ipython3"
