@@ -129,6 +129,8 @@ compdef t='todo.sh'
 # alias vim="nvim"
 alias py="ipython3"
 
-alias pycharm='wmname LG3D && PYCHARM_JDK=/usr/lib/jvm/java-7-openjdk-amd64 /opt/pycharm/bin/pycharm.sh'
+# tmuxinator
+source ~/.dotfiles/tmux/tmuxinator.zsh
 alias mux='tmuxinator'
+compdef mux='tmuxinator'
 

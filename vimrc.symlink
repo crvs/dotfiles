@@ -488,6 +488,7 @@ if !exists('g:ycm_semantic_triggers')
 
     :augroup my_tex_group
     :   autocmd!
+    :   autocmd BufEnter *.tex :match SyntasticWarning '\[[^\s]\+\]'
     :   autocmd FileType tex :iabbrev i.e.\  i.e.\\ 
     :   autocmd FileType tex :iabbrev resp.\  resp.\\ 
     :   autocmd BufRead *.tex :let g:Tex_CompileRule_pdf="pdflatex -interaction=nonstopmode -file-line-error-style $* 1>& /dev/null"
