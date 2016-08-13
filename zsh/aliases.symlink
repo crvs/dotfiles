@@ -82,7 +82,7 @@ function mp3Rename {
 				IFS=$'\ '   # restore IFS to default
 }
 
-alias gitwatch="watch git log --oneline --all --graph --decorate"
+alias gitwatch="watch --color 'git log --color --oneline --all --graph --decorate'"
 
 # personal calendar command
 alias calendar="vim -c:Calendar"
@@ -124,6 +124,7 @@ function mkcd { mkdir $@ 2>& /dev/null || let EXIT_STATUS=$? ; cd $@ ; return $E
 # todotxt
 alias todotxt="todo.sh"
 function t { if [ $# = 0 ]; then todotxt ls; else todotxt $@; fi }
+compdef t='todo.sh'
 
 # alias vim="nvim"
 alias py="ipython3"
