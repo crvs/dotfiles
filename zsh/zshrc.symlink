@@ -165,3 +165,5 @@ unset GREP_OPTIONS
 #source ~/.dotfiles/haskell/completion.zsh
 #[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #source ~/catkin_ws/devel/setup.sh
+
+export HOSTALIASES=~/Sync/hosts
