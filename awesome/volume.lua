@@ -12,9 +12,9 @@ function update_volume(widget)
     status = string.match(status, "%[o..?%]")
 
     -- starting colour
-    local sr, sg, sb = 0x3F, 0x3F, 0x3F
+    local sr, sg, sb = 0x30, 0x30, 0x30
     -- ending colour
-    local er, eg, eb = 0xDC, 0xDC, 0xCC
+    local er, eg, eb = 0xFF, 0xFF, 0xFF
 
     local ir = math.floor(volume * (er - sr) + sr)
     local ig = math.floor(volume * (eg - sg) + sg)

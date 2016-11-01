@@ -1,3 +1,12 @@
+-- Create a battery widget
+battery_widget = awful.widget.progressbar()
+battery_widget:set_width(8)
+battery_widget:set_height(19)
+battery_widget:set_vertical(true)
+battery_widget:set_background_color("#494B4F")
+battery_widget:set_border_color(nil)
+battery_widget:set_color("#FFFFFF")
+
 function hasbatt()
     local fd = io.popen("upower -e")
     local batt_path = fd:read("*all")
@@ -40,3 +49,5 @@ function update_battery(widget)
     end
 end
 
+update_battery(battery_widget)
+awful.hooks.timer.register(30, function () update_battery(battery_widget) end)
