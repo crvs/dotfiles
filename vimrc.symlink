@@ -48,17 +48,14 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'Valloric/YouCompleteMe' "general
 Plugin 'davidhalter/jedi-vim' "python
 
-" pretty substitute
-Plugin 'osyo-manga/vim-over'
+" latex
+Plugin 'lervag/vimtex'
+Plugin 'rafaqz/citation.vim'
 
-Plugin 'sjl/strftimedammit.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'AndrewRadev/multichange.vim'
 Plugin 'Shougo/unite.vim'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'chrisbra/histwin.vim.git'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'eagletmt/ghcmod-vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'gioele/vim-autoswap.git'
 Plugin 'haya14busa/incsearch.vim'
@@ -66,9 +63,7 @@ Plugin 'junegunn/fzf'
 Plugin 'junegunn/goyo.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'kshenoy/vim-signature'
-Plugin 'lervag/vimtex'
 Plugin 'mhinz/vim-startify'
-Plugin 'rafaqz/citation.vim'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'szw/vim-dict'
 Plugin 'tmhedberg/matchit'
@@ -76,7 +71,6 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'triglav/vim-visual-increment'
-Plugin 'vim-scripts/LanguageTool'
 Plugin 'vim-scripts/gnupg.vim.git'
 
 call vundle#end()
@@ -89,40 +83,23 @@ filetype plugin indent on
 :smap <c-\> <Plug>snipMateNextOrTrigger
 
 " }}}
-" Easy Tags {{{
-
-" }}}
 " Goyo & Limelight {{{
-colorscheme badwolf
-" inkpot
-" BlackSea
-" 0x7A69_dark
-" Tomorrow-Night-Blue
 
-":let g:limelight_conceal_ctermfg='gray' "disabled limelight
-":let g:limelight_conceal_ctermfg=240    "disabled limelight
-
-:nnoremap <silent> <leader>tt :TagbarToggle<cr>
 
 :nnoremap <silent> <f5> :Goyo<cr>
 :inoremap <silent> <f5> <esc>:Goyo<cr>a
 
 " }}}
-" SmartTab {{{
-" if there is a tab character in the file, setlocal noexpandtab
-" put in autocommand BufReadPost
-" }}}
-" Bufferlist {{{
-":nnoremap <silent> <f4> :Bufferlist<cr>
-
+" tagbar {{{
+:nnoremap <silent> <leader>tt :TagbarToggle<cr>
 " }}}
 " todo.txt {{{
 
-:function! g:safedelete(obj)
-:   let l:delcontents = @"
-:   let l:execstring = 'norm d'. a:obj
-:   execute l:execstring
-:   let @" = l:delcontents
+:function! Safedelete(obj)
+:   let delcontents = @"
+:   let execstring = 'norm d'. a:obj
+:   execute execstring
+:   let @" = delcontents
 :endfunction
 
 :nnoremap <leader>tt :OpenTodo<cr>
@@ -148,40 +125,19 @@ colorscheme badwolf
 :augroup END
 " }}}
 " custom text objects {{{
-:call textobj#user#plugin('line', {
-        \ 'line': {
-        \ 'pattern': '^.*$',
-        \ 'select': [ 'al' , 'il' ],
-        \ },
-        \ }
+:call textobj#user#plugin(
+        \ 'line', {'line': { 'pattern': '^.*$', 'select': [ 'al' , 'il' ], }}
         \ )
 " }}}
 " pasting {{{
-
 " paste from clipboard to next/prev line
 " needs vim unimpaired
 :nmap <leader>p "*]p
 :nmap <leader>P "*[p
-
-:function! s:paste_reg(reg,paste_c)
-:   let l:ex_string = ':norm "' . a:reg . a:paste_c
-:   if &paste == 1
-:       execute l:ex_string
-:   else
-:       set paste
-:       execute l:ex_string
-:       set nopaste
-:   endif
-:endfunction
-
-:nnoremap <silent> <leader>pc :call <sid>paste_reg('*','p')<cr>
-:nnoremap <silent> <leader>Pc :call <sid>paste_reg('*','P')<cr>
-:nnoremap <silent> <leader>pv :call <sid>paste_reg('+','p')<cr>
-:nnoremap <silent> <leader>Pv :call <sid>paste_reg('+','P')<cr>
-
 " }}}
 "misc defaults {{{
 
+:cmap '' '<,'>
 :let g:multichange_mapping = '_s'
 :let g:multichange_motion_mapping = 'm'
 
@@ -219,7 +175,7 @@ colorscheme badwolf
 
 " nice guides
 :set listchars=eol:¬,tab:>-,trail:*,extends:>,precedes:<,nbsp:_
-:set nolist
+:set list
 
 :autocmd VimResized * :normal <c-w>=
 " }}}
@@ -407,14 +363,14 @@ nnoremap <silent>[unite]cp :<C-u>Unite -buffer-name=citation -default-action=app
 :nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<cr>
 " python with virtualenv
 
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
+" !py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"     project_base_dir = os.environ['VIRTUAL_ENV']
+"     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"     execfile(activate_this, dict(__file__=activate_this))
+" EOF
 
 "   }}}
 "   Syntastic {{{
@@ -471,6 +427,7 @@ if !exists('g:ycm_semantic_triggers')
     ":let g:vimtex_view_general_viewer='xpdf'
     :let g:tex_flavor="latex"
     :let g:Tex_DefaultTargetFormat='pdf'
+    :let g:vimtex_latexmk_options=' -synctex=0 '
     :let g:Tex_MultipleCompileFormats='pdf,dvi'
     ":let g:Tex_ViewRule_pdf='setsid xpdf 2>& /dev/null'
     ":let g:Tex_ViewRule_pdf='setsid evince 2>& /dev/null'
@@ -649,13 +606,9 @@ if !exists('g:ycm_semantic_triggers')
     autocmd VimEnter *
                 \ let &statusline='%{bufferline#refresh_status()}'
                 \ .bufferline#get_status_string()
-    " }}}
-    " Force save {{{
-    :cmap w!! w !sudo tee % > /dev/null<cr>
-    :cabbrev W w!
-    :cabbrev E e!
-    :cabbrev cl <c-f>
 
+    " Force save
+    :cmap w!! w !sudo tee % > /dev/null<cr>
     " }}}
     " Git configurations {{{
     :autocmd ColorScheme * :highlight hlSignColumn          ctermbg=NONE ctermfg=NONE   cterm=NONE guibg=NONE guifg=NONE   gui=NONE
@@ -677,7 +630,6 @@ if !exists('g:ycm_semantic_triggers')
     :set tabstop=4 shiftwidth=4 expandtab
     :set smartindent
     :set showbreak=>\ "begin broken line
-    ":set breakindent
     :set linebreak
 
     " }}}
@@ -759,10 +711,6 @@ if !exists('g:ycm_semantic_triggers')
     :endif
 
     :let g:languagetool_jar='/usr/share/java/languagetool/languagetool.jar'
-
-    :if &ft == 'org'
-    :    let maplocalleader='\'
-    :endif
 
     :set complete=.,w,b,u,t,i,kspell
     " }}}

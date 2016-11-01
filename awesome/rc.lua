@@ -8,12 +8,10 @@ require("beautiful")
 require("naughty")
 -- Volume widget
 require("volume")
-
+-- Battery widget
+require("batt")
 -- Load Debian menu entries
 require("debian.menu")
-
--- widgets
-vicious = require("vicious")
 
 -- {{{ Startup scripts
 
@@ -120,18 +118,17 @@ mytextclock = awful.widget.textclock({ align = "right" })
 mysystray = widget({ type = "systray" })
 
 -- Create a battery widget
-batwidget = awful.widget.progressbar()
-batwidget:set_width(8)
-batwidget:set_height(19)
-batwidget:set_vertical(true)
-batwidget:set_background_color("#494B4F")
-batwidget:set_border_color(nil)
-batwidget:set_color("#FFFFFF")
+battery_widget = awful.widget.progressbar()
+battery_widget:set_width(8)
+battery_widget:set_height(19)
+battery_widget:set_vertical(true)
+battery_widget:set_background_color("#494B4F")
+battery_widget:set_border_color(nil)
+battery_widget:set_color("#FFFFFF")
 
-vicious.register(batwidget,vicious.widgets.bat,"$2",30,"BAT0")
+update_battery(battery_widget)
+awful.hooks.timer.register(30, function () update_battery(battery_widget) end)
 
-battext = widget({ type= "textbox"})
-vicious.register(battext,vicious.widgets.bat,"$3",30,"BAT0")
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -211,6 +208,7 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         mytextclock,
         s == 1 and volume_widget or nil,
+        s == 1 and battery_widget or nil,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
