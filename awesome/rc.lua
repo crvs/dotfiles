@@ -6,6 +6,8 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
+-- Volume widget
+require("volume")
 
 -- Load Debian menu entries
 require("debian.menu")
@@ -212,6 +214,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        volume_widget,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -278,9 +281,9 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86MonBrightnessDown",   function () awful.util.spawn("xbacklight -dec 5") end),
 
     -- Volume controls // Ubuntu 14.04
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("pactl set-sink-volume 0 -- +3%") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("pactl set-sink-volume 0 -- -3%") end),
-    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("pactl set-sink-mute 0 -- toggle") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 3%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 3%-") end),
+    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -q -D pulse sset Master toggle") end),
 
     -- Spotify controls
     awful.key({ }, "XF86AudioPlay", function () awful.util.spawn_with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause") end),
