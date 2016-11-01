@@ -1,15 +1,6 @@
-XTerm*termName: xterm-256color
-XTerm*utf8:1
-XTerm*locale: true
-!XTerm*font: 8x13
-!XTerm*font: 7x13
-!XTerm*reverseVideo:on
-!xterm*faceName: Dejavu Sans Mono:antialias=true:size=10
-!xterm*faceName: Adobe Source Code:antialias=false:size=9
-!xterm*font: -*-terminus-medium-*-*-*-18-*-*-*-*-*-iso10646-*
-!XTerm*foceName: "Liberation Mono:size=8:antialias=true"
-!XTerm*faceName: monofur:pixelsize=15
-!XTerm*faceSize: 9
+*utf8: 1
+*locale: true
+*metaSendsEscape: true
 
 dzen2.font:       xft:monofur for Powerline-12.5:regular
 dzen2.foreground: #22EE11
@@ -28,27 +19,32 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
 
-Xterm*faceName: Monofur for Powerline-10:style=regular:antialias=true
-Xterm*boldFont: Monofur Bold for Powerline-10:style=bold:antialias=true
+Xterm*faceName: Monofur for Powerline-12:style=regular:antialias=true
+Xterm*boldFont: Monofur Bold for Powerline-12:style=bold:antialias=true
 Xterm*utf8:     2
 
-URxvt*font:     xft:Monofur for Powerline-11:regular
-URxvt*faceName: xft:Monofur for Powerline-11:regular
+!! fonts
+URxvt*font:     xft:Monofur for Powerline-12:regular
+URxvt*faceName: xft:Monofur for Powerline-12:regular
+!
 !URxvt*font:     xft:Ubuntu mono-12:regular
-!URxvt*faceName:     xft:Ubuntu mono-12:regular
+!URxvt*faceName: xft:Ubuntu mono-12:regular
+!
 !URxvt*font:     xft:Ubuntu mono-10.5:regular
 !URxvt*faceName: xft:Ubuntu mono-10.5:regular
-*fullscreen:never
+!
+!*fullscreen:never
 
 XTerm*urgentOnBell:true
-URxvt*urgentOnBell:true
+URxvt*urgentOnBell:false
 URxvt*visualBell:false
+URxvt*scrollBar:false
 ! jwr low contrast
 
+*transparency: true
 !black
 *color0: #222222
 *color8: #454545
-
 !red
 *color1: #9E5641
 *color9: #CC896D
@@ -135,3 +131,38 @@ URxvt*visualBell:false
 ! *color13:      rgb:f8/54/f8
 ! *color14:      rgb:50/fc/f8
 ! *color15:      rgb:f8/fc/f8
+
+! ! 0: black
+! *color0:  #242424
+! *color8:  #242424
+! ! 1: red
+! *color1:  #9f6767
+! *color9:  #9f6767
+! ! 2: green
+! *color2:  #92ac68
+! *color10: #92ac68
+! ! 3: yellow
+! *color3:  #c0b000
+! *color11: #c0b000
+! ! ! 4: blue
+! *color4:  #5a5aea
+! *color12: #8080ff
+! ! 5: magenta
+! *color5:  #bb77a4
+! *color13: #bb77a4
+! ! 6: cyan
+! *color6:  #77bbb5
+! *color14: #77bbb5
+! ! 7: white
+! *color7:  #bfbfbf
+! *color15: #bfbfbf
+
+
+
+! xpdf
+xpdf*matteColor rgb:0/0/0
+xpdf*Background rgb:0/0/0
+xpdf*Foreground rgb:ff/ff/ff
+
+! tty characters and things
+*ttymodes: erase \^\? kill \^\U intr \^\C quit \^\\ eof \^\D susp \^\Z start \^\Q stop \^\S eol \^\@
