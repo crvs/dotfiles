@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# set background
-feh --bg-scale /home/crvs/.xmonad/wallpaper.jpg &
-
 # run redshift if it is not running
 (pgrep redshift > /dev/null)
 if [[ ! $? = 0 ]]; then
@@ -39,7 +36,7 @@ xsetroot -solid black &
 # run autolocker
 (pgrep xautolock > /dev/null)
 if [[ ! $? = 0 ]]; then
-    setsid xautolock -time 5 -locker "dm-tool lock" &
+    setsid xautolock -corners -000 -time 5 -locker "dm-tool lock" &
 fi
 
 # allow compositing (run if not running)

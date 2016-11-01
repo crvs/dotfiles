@@ -15,11 +15,6 @@ require("debian.menu")
 -- widgets
 vicious = require("vicious")
 
--- {{{ Theme
--- theme.wallpaper = "/home/crvs/Firefox_wallpaper.png"
-
--- }}}
-
 -- {{{ Startup scripts
 
 os.execute("setxkbmap -layout us,us -variant dvorak,dvorak-intl -option caps:escape,grp:sclk_toggle")
@@ -55,7 +50,8 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+wallpaper_cmd = "feh --bg-scale /home/crvs/.xmonad/wallpaper.jpg"
+beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
