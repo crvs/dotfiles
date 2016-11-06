@@ -29,4 +29,4 @@ function update_volume(widget)
  end
 
 update_volume(volume_widget)
-awful.hooks.timer.register(1, function () update_volume(volume_widget) end)
+awful.hooks.timer.register(.2, function () update_volume(volume_widget) end)

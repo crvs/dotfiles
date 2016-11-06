@@ -48,8 +48,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-wallpaper_cmd = "feh --bg-scale /home/crvs/.xmonad/wallpaper.jpg"
-beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
+beautiful.init("/home/crvs/.config/awesome/themes/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -263,8 +262,8 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86MonBrightnessDown",   function () awful.util.spawn("xbacklight -dec 5") end),
 
     -- Volume controls // Ubuntu 14.04
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 3%+") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 3%-") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 1%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 1%-") end),
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -q -D pulse sset Master toggle") end),
 
     -- Spotify controls

@@ -50,4 +50,4 @@ function update_battery(widget)
 end
 
 update_battery(battery_widget)
-awful.hooks.timer.register(30, function () update_battery(battery_widget) end)
+awful.hooks.timer.register(.2, function () update_battery(battery_widget) end)
