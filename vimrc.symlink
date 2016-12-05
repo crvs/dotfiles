@@ -144,15 +144,8 @@ filetype plugin indent on
 :cnoremap subs OverCommandLine<cr>
 :set smarttab
 
+
 :nnoremap <silent> <Leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>Ljzt:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
-
-" indenting and dedenting in insert mode
-:inoremap >< <c-d><esc>I<tab><esc>A
-:inoremap << <c-d>
-:inoremap >> <esc>I<tab><esc>A
-
-:nnoremap <leader>i Bi
-:nnoremap <leader>a Ea
 
 :let mapleader=' '
 :set foldmethod=marker
@@ -502,8 +495,8 @@ if !exists('g:ycm_semantic_triggers')
     :set incsearch
     :nnoremap n nzz
     :nnoremap N Nzz
-    " :autocmd ColorScheme * :highlight Search ctermfg=black ctermbg=yellow cterm=NONE
-    " :autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
+    :autocmd ColorScheme * :highlight Search ctermfg=black ctermbg=yellow cterm=NONE
+    :autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
 
     :nnoremap <silent> <leader>c :noh<cr>:call clearmatches()<cr>
     :nnoremap <silent> <leader>h yiw:nohl<cr>:match Search /"/<cr>
@@ -717,3 +710,5 @@ if !exists('g:ycm_semantic_triggers')
 " after everything is done {{{
 :doautocmd User
 " }}}
+:nnoremap <leader>i Bi
+:nnoremap <leader>a Ea

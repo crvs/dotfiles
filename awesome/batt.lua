@@ -36,10 +36,17 @@ end
 function update_battery(widget)
     local percentage = ""
     if hasbatt() then
-        local fd = io.popen("upower -i `upower -e`")
+        local fd = io.popen("upower -i `upower -e | grep BAT`")
         local status = fd:read("*all")
         fd:close()
-        percentage = tonumber(string.match(status , "percentage: +(%d?%d?%d)%%")) / 100
+        percentage = tonumber(string.match(status , "percentage: +(%d?%d?%d)%%"))
+
+        if percentage ~= "" then
+            percentage = percentage/100
+        else
+            percentage = 0
+        end
+
         if ischarging() then
             widget:set_color("#8FBF8F")
         else

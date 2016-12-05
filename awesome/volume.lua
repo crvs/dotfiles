@@ -6,9 +6,8 @@ function update_volume(widget)
     local status = fd:read("*all")
     fd:close()
 
-    local volume = tonumber(string.match(status, "(%d?%d?%d)%%")) / 100
-    -- volume = string.format("% 3d", volume)
-
+    local volume = tonumber(string.match(status, "(%d?%d?%d)%%"))
+    if volume ~= "" then volume = volume/100 else volume = 0 end
     status = string.match(status, "%[o..?%]")
 
     -- starting colour

@@ -262,8 +262,8 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86MonBrightnessDown",   function () awful.util.spawn("xbacklight -dec 5") end),
 
     -- Volume controls // Ubuntu 14.04
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 1%+") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 1%-") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 3%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q -D pulse sset Master 3%-") end),
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -q -D pulse sset Master toggle") end),
 
     -- Spotify controls
