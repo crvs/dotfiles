@@ -8,6 +8,6 @@
 	st = status
 	unstage = reset HEAD --
 	unstageall = reset ^HEAD
-	showtree = log --pretty --oneline --graph --decorate=short
+	showtree = log --pretty --oneline --graph --decorate=short --all
 [push]
 	default = simple

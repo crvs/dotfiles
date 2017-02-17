@@ -1,4 +1,3 @@
-*utf8: 1
 *locale: true
 *metaSendsEscape: true
 
@@ -19,13 +18,12 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
 
-Xterm*faceName: Monofur for Powerline-12:style=regular:antialias=true
-Xterm*boldFont: Monofur Bold for Powerline-12:style=bold:antialias=true
-Xterm*utf8:     2
+*utf8:     2
 
 !! fonts
-URxvt*font:     xft:Monofur for Powerline-12:regular
-URxvt*faceName: xft:Monofur for Powerline-12:regular
+*font:     xft:Monofur for Powerline-12:regular
+*faceName: xft:Monofur for Powerline-12:regular
+*boldFont: xft:Monofur for Powerline-12:style=bold:
 !
 !URxvt*font:     xft:Ubuntu mono-12:regular
 !URxvt*faceName: xft:Ubuntu mono-12:regular
@@ -35,41 +33,80 @@ URxvt*faceName: xft:Monofur for Powerline-12:regular
 !
 !*fullscreen:never
 
-XTerm*urgentOnBell:true
-URxvt*urgentOnBell:false
-URxvt*visualBell:false
-URxvt*scrollBar:false
-! jwr low contrast
+*urgentOnBell:false
+*visualBell:false
+
+
+URxvt*saveLines: 12000
+URxvt*scrollBar: false
+URxvt*scrollstyle: rxvt
+
+URxvt*perl-ext-common: default,matcher
+URxvt*urlLauncher: firefox
+URxvt*matcher.button: 1
+URxvt*colorUL: #86a2be
 
 *transparency: true
-!black
-*color0: #222222
-*color8: #454545
-!red
-*color1: #9E5641
-*color9: #CC896D
-!green
-*color2: #6C7E55
-*color10: #C4DF90
-!yellow
-*color3: #CAAF2B
-*color11: #FFE080
-!blue
-*color4: #7FB8D8
-*color12: #B8DDEA
-!magenta
-*color5: #956D9D
-*color13: #C18FCB
-!cyan
-*color6: #4c8ea1
-*color14: #6bc1d0
-!white
-*color7: #808080
-*color15: #cdcdcd
 
-*borderColor: #343434
-*background: #343434
-*foreground: #cdcdcd
+! gnome terminal color theme
+! ubuntu purple
+URxvt*background: #300A24
+URxvt*foreground: #FFFFFF
+
+! black
+URxvt*color0  : #2E3436
+URxvt*color8  : #555753
+! red
+URxvt*color1  : #CC0000
+URxvt*color9  : #EF2929
+! green
+URxvt*color2  : #4E9A06
+URxvt*color10 : #8AE234
+! yellow
+URxvt*color3  : #C4A000
+URxvt*color11 : #FCE94F
+! blue
+URxvt*color4  : #3465A4
+URxvt*color12 : #729FCF
+! magenta
+URxvt*color5  : #75507B
+URxvt*color13 : #AD7FA8
+! cyan
+URxvt*color6  : #06989A
+URxvt*color14 : #34E2E2
+! white
+URxvt*color7  : #D3D7CF
+URxvt*color15 : #EEEEEC
+
+!! jwr low contrast
+!!black
+!*color0: #222222
+!*color8: #454545
+!!red
+!*color1: #9E5641
+!*color9: #CC896D
+!!green
+!*color2: #6C7E55
+!*color10: #C4DF90
+!!yellow
+!*color3: #CAAF2B
+!*color11: #FFE080
+!!blue
+!*color4: #7FB8D8
+!*color12: #B8DDEA
+!!magenta
+!*color5: #956D9D
+!*color13: #C18FCB
+!!cyan
+!*color6: #4c8ea1
+!*color14: #6bc1d0
+!!white
+!*color7: #808080
+!*color15: #cdcdcd
+!
+!*borderColor: #343434
+!*background: #343434
+!*foreground: #cdcdcd
 
 ! urxvt*transpacent: true
 ! urxvt*shading: 15
