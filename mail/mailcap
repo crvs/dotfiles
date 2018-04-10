@@ -1,7 +1,9 @@
 # for some reason firefox seems to need to come BEFORE w3m
 text/html; firefox %s 2>/dev/null &;
 text/html; w3m -T text/html -dump %s; copiousoutput
-image/*; setsid sxiv %s > /dev/null;
-application/pdf; setsid zathura %s;
+image/*; setsid eog %s;
+application/pdf; setsid evince %s;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; setsid libreoffice %s;
+application/vnd.openxmlformats-officedocument.spreadsheetml.document; setsid libreoiffice %s;
 text/plain; less %s
 video/mp4; mplayer %s;

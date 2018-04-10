@@ -6,20 +6,8 @@ account gmail
     auth on
     from carvas.f@gmail.com
     user carvas.f
-    passwordeval cat /home/crvs/crypt/gmail && echo ''
+    passwordeval gpg -dq ~/.email-keys/gmail.gpg && echo ''
     tls on
-    tls_trust_file /etc/ssl/certs/ca-certificates.crt
-
-account ist
-    host mail.tecnico.ulisboa.pt
-    timeout 10
-    protocol smtp
-    auth login
-    from joao.carvalho@tecnico.ulisboa.pt
-    user ist157881@tecnico.ulisboa.pt
-    passwordeval cat /home/crvs/crypt/ist && echo ''
-    tls on
-    tls_starttls on
     tls_trust_file /etc/ssl/certs/ca-certificates.crt
 
 account kth
@@ -29,7 +17,7 @@ account kth
     auth login
     from jfpbdc@kth.se
     user jfpbdc
-    passwordeval cat /home/crvs/crypt/kth && echo ''
+    passwordeval gpg -dq ~/.email-keys/kth.gpg && echo ''
     tls on
     tls_starttls on
     tls_trust_file /etc/ssl/certs/ca-certificates.crt

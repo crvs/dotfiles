@@ -5,9 +5,9 @@
 # format:
 # color object foreground background [regexp]
 color normal        default          default # normal text
-color indicator     magenta          black   # actual message
+color indicator     magenta          default  # actual message
 color tree          brightmagenta    default # thread arrows
-color status        brightgreen      blue    # status line
+color status        default          default #brightgreen      brightblue    # status line
 color error         red              default # errors
 color message       red              default # info messages
 color signature     red              default # signature
@@ -37,13 +37,22 @@ color body  green      default  "(^| )_[-a-z0-9_]+_[?]?[ \n]"
 color body  magenta    default  "(PROTO=[A-Z]+)|(DPT=[0-9]+)|(SRC=[0-9.]+)"
 #color signatures
 color body  green        default  "(Korrekte Unterschrift|Goodsignature)"
-color body  brightyellow black    "(Öffentlicher Schlüssel nichtgefunden|keine vertrauenswürdige Signatur|Dieser Schlüssel istverfallen)"
-color body  brightred    black    "FALSCHE Unterschrift"
-color body  brightgreen  black    "nicht durch hinreichendvertrauenswürdige Signaturen zertifiziert"
+color body  brightyellow default    "(Öffentlicher Schlüssel nichtgefunden|keine vertrauenswürdige Signatur|Dieser Schlüssel istverfallen)"
+color body  brightred    default    "FALSCHE Unterschrift"
+color body  brightgreen  default    "nicht durch hinreichendvertrauenswürdige Signaturen zertifiziert"
 uncolor index *                    # unset all color index entries
-color index          brightblue default  ~F     # Flagged
-color index          blue       white    ~N     # New
-color index          blue       white    ~O     # New
-color index          magenta    default  ~T     # Tagged
-color index          yellow     default  ~D     # Deleted
-color sidebar_new    blue       white
+
+color sidebar_new   default     default
+
+color index_number   yellow     default
+color index_author   green      default ".*"
+color index_date     red        default 
+
+mono sidebar_new bold
+color index  brightblue default  ~F     # Flagged
+color index  blue       default  ~N     # New
+color index  blue       default  ~O     # Old
+color index  magenta    default  ~T     # Tagged
+color index  yellow     default  ~D     # Deleted
+
+mono index  bold  ".*"     # Flagged
