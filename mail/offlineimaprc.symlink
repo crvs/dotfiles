@@ -1,25 +1,20 @@
 # vim: syntax=python
 
 [general]
-accounts = gmail,kth,ist
+pythonfile = ~/.offlineimap.py
+accounts = gmail,kth
 ui = ttyui
 
 [Account gmail]
 localrepository  = gmail-Local
 remoterepository = gmail-Remote
-status_backend = sqlite
-postsynchook = notmuch new
-
-[Account ist]
-localrepository  = ist-Local
-remoterepository = ist-Remote
-status_backend = sqlite
+# status_backend = sqlite
 postsynchook = notmuch new
 
 [Account kth]
 localrepository  = kth-Local
 remoterepository = kth-Remote
-status_backend = sqlite
+# status_backend = sqlite
 postsynchook = notmuch new
 
 [Repository gmail-Local]
@@ -30,10 +25,6 @@ nametrans = lambda folder: {'Drafts':  '[Gmail]/Drafts',
                             'Trash':   '[Gmail]/Trash',
                             'Archive': '[Gmail]/All Mail'
                             }.get(folder,folder)
-
-[Repository ist-Local]
-type = Maildir
-localfolders = ~/.mail/ist
 
 [Repository kth-Local]
 type = Maildir
@@ -46,21 +37,12 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 createfolders = True
 remoteuser = carvas.f
 maxconnections=5
-remotepasseval = open('/home/crvs/crypt/gmail','r').readline()
+remotepasseval = get_pass("~/.email-keys/gmail.gpg")
 nametrans = lambda folder: {'[Gmail]/Drafts':    'Drafts',
                             '[Gmail]/Sent Mail': 'Sent',
                             '[Gmail]/Trash':     'Trash',
                             '[Gmail]/All Mail':  'Archive'
                             }.get(folder,folder)
-
-[Repository ist-Remote]
-type = IMAP
-ssl = yes
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-createfolders = False
-remotehost = mail.ist.utl.pt
-remoteuser = ist157881
-remotepasseval = open('/home/crvs/crypt/ist','r').readline()
 
 [Repository kth-Remote]
 type = IMAP
@@ -69,5 +51,8 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 createfolders = False
 remotehost = webmail.kth.se
 remoteuser = jfpbdc
-remotepasseval = open('/home/crvs/crypt/kth','r').readline()
+remotepasseval = get_pass("~/.email-keys/kth.gpg")
+# for some reason calendar is grossly misshandled by kth
+# (or so it seems)
+folderfilter = lambda foldername: foldername not in ['Calendar']
 

@@ -1,0 +1,68 @@
+#!/bin/bash
+
+build_dir="build"
+source_dir="."
+n_threads="4"
+target="all"
+tags=true
+abs_build_dir=false
+
+function print_usage {
+cat << EOF
+usage: cbuild [-h] [-s SOURCE] [-b BUILD] [-B] [-n THREADS] [-t]
+    -h         : print this help message and exit
+    -s SOURCE  : use SOURCE as the source directory (where CMakeLists.txt is
+                 stored)
+    -B         : set the build directory to an absolute path
+    -b BUILD   : use BUILD as the build directory if -B then take the argument to
+                 be an absolute path, otherwise it is interpreted as a path
+                 relative to the source directory.
+    -n THREADS : use THREADS threads to compile
+    -t         : target to make
+    -T         : turn off creating the tags file on the source directory
+EOF
+}
+
+while getopts "hBb:s:n:t:T" opt;
+do
+    case $opt in
+        h)
+            print_usage
+            exit 0
+            ;;
+        B)
+            abs_build_dir=true
+            ;;
+        b)
+            build_dir=$OPTARG
+            [[ $OPTARG == -* ]] && echo "invalid directory name" && exit 1
+            ;;
+        s)
+            source_dir=$OPTARG
+            [[ $OPTARG == -* ]] && echo "invalid directory name" && exit 1
+            ;;
+        n)
+            number_re='^[0-9]+$'
+            n_threads=$OPTARG
+            (! [[ $OPTARG =~ $number_re ]]) && echo "not a number for threads option" && exit 1
+            ;;
+        t)
+            target=$OPTARG
+            ;;
+        T)
+            tags=false
+            ;;
+    esac
+done
+
+$abs_build_dir || build_dir=$source_dir/$build_dir
+if [ -f $source_dir/CMakeLists.txt ];
+then
+    [ tags ] && ctags -R $source_dir;
+    source_dir=`readlink -m $source_dir`;
+    build_dir=`readlink -m $build_dir`;
+    [ -d $build_dir ] || mkdir -p $build_dir;
+    (cd $build_dir && pwd && echo $build_dir && echo $source_dir && cmake $source_dir && make -j$n_threads $target)
+else
+    echo "no CMakeLists.txt file found";
+fi

@@ -1,5 +1,8 @@
+# set the shell variable (for tmux)
+SHELL=/usr/bin/zsh
+
 #Path to your oh-my-zsh configuration.
-ZSH=/opt/oh-my-zsh
+ZSH=$HOME/.extras/oh-my-zsh
 
 #ZSH_CUSTOM=$HOME/.dotfiles
 
@@ -7,7 +10,7 @@ ZSH=/opt/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="dieter"
+ZSH_THEME="rgm" # fancy theme: "agnoster"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -26,23 +29,12 @@ zstyle ':completion:*' menu select
 setopt completealiases
 setopt HIST_IGNORE_DUPS
 
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
-
-# Uncomment this to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment to change how often before auto-updates occur? (in days)
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment following line if you want to disable colors in ls
+# CASE_SENSITIVE="true" # case sensitive completion
+# DISABLE_AUTO_UPDATE="true" # disable update prompts
+# UPDATE_ZSH_DAYS=13 # change how often auto-updates occur
 # DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
 # DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want to disable command autocorrection
-# DISABLE_CORRECTION="true"
+# DISABLE_CORRECTION="true" # command autocorrection
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS="true"
@@ -60,8 +52,15 @@ HIST_STAMPS="mm/dd/yyyy"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-# plugins=(git)
-plugins=(ssh-agent last-working-dir cabal git archlinux mercurial vi-mode history-substring-search) # tilingaware)
+plugins=(ssh-agent \
+    gpg-agent \
+    last-working-dir\
+    cabal \
+    git \
+    archlinux \
+    mercurial \
+    vi-mode \
+    history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -77,11 +76,12 @@ if [[ " ${nvimers[*]} " == *`hostname`* ]];
 fi
 
 export PAGER="less"
-export BROWSER="firefox"
+export BROWSER="vivaldi-stable"
 export MOVPLAY="mplayer"
-export PICVIEW="feh"
+export PICVIEW="eog"
 export SNDPLAY="mplayer"
-export TERMINAL="xterm"
+export TERMINAL="gnome-terminal"
+export TERM="xterm-256color"
 
 # File Extesions
 for ext in html org php com net no; do alias -s $ext=$BROWSER; done
@@ -92,9 +92,8 @@ for ext in wav mp3 ogg; do alias -s $ext=$SNDPLAY; done
 
 
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-# ruby stuff
+export PATH=$PATH:/usr/bin/core_perl
 export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin
-# user pip stuff
 export PATH=$PATH:$HOME/.local/bin
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -112,8 +111,6 @@ export CLASSPATH=$CLASSPATH:~/.javapackages/algs4.jar
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
 typeset -A key
 
 key[Up]=${terminfo[kcuul]}
@@ -134,36 +131,59 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
 fi
 source ~/.aliases
 
-PATH=$HOME/.rvm/bin:$PATH # Add RVM to PATH for scripting
-PATH=$HOME/.dotfiles/bin:$PATH # user scripts
-PATH=/opt/ghci-color:$PATH # ghci with color
-PATH=/usr/bin/vendor_perl:$PATH
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH=$PATH:$HOME/.dotfiles/bin # user scripts
+export PATH=$PATH:/opt/ghci-color # ghci with color
+export PATH=$PATH:/opt/misc # misc executables
+export PATH=$PATH:/usr/bin/vendor_perl
 
-PATH=$HOME/.cabal/bin:$PATH # haskell binary files
+
+export PATH=$PATH:$HOME/.cabal/bin:$PATH # haskell binary files
 for build in `ls $HOME/.cabal-sandbox`;
     do if [[ -d $HOME/.cabal-sandbox/$build/bin ]];
-        then PATH=$HOME/.cabal-sandbox/$build/bin:$PATH;
+        then export PATH=$PATH:$HOME/.cabal-sandbox/$build/bin ;
         fi;
     done
 
 # vi mode indicator
 function cabalprompt { if [[ "$(cabal_sandbox_info)" != "" ]] ; then echo $(cabal_sandbox_info)' '; fi }
 PROMPT=$PROMPT'$(cabalprompt)'
-RPS1='$(vi_mode_prompt_info)'$RPS1
 
-#grep warning
-# GREP=
-if [[ -x /usr/bin/grep ]]
-then alias grep="/usr/bin/grep $GREP_OPTIONS"
-else alias grep="/bin/grep $GREP_OPTIONS"
-fi
-unset GREP_OPTIONS
+alias mutt=neomutt
 
+source ~/.dotfiles/java_apps.zsh
 #setup ros environment
 #source /opt/ros/indigo/setup.zsh
 
-#source ~/.dotfiles/haskell/completion.zsh
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#source ~/catkin_ws/devel/setup.sh
-
+export LLDB=/usr/bin/lldb
 export HOSTALIASES=~/Sync/hosts
+
+if [[ -f /opt/ros/indigo/setup.zsh ]]
+    then
+    source /opt/ros/indigo/setup.zsh
+    export ROS_HOSTNAME=localhost
+    export ROS_MASTER_URI=http://localhost:11311
+fi
+
+if [[ -d $HOME/catkin_ws/install ]]
+    then
+    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$HOME/catkin_ws/install/
+fi
+
+export PATH=$PATH:/opt/cling/bin:/opt/cling/bin:/opt/ros/indigo/bin:/home/crvs/.cabal/bin:/usr/bin/vendor_perl:/opt/ghci-color:/home/crvs/.dotfiles/bin:/home/crvs/.rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/crvs/.gem/ruby/2.2.0/bin:/home/crvs/.local/bin
+
+function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc";}
+
+BASE16_SHELL=$HOME/.extras/base16-shell
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+alias base16="sed -n '4s/^# \(.*\)scheme .*/\1/p' ~/.base16_theme"
+
+export CUDA_HOME="/usr/local/cuda/"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$CUDA_HOME/lib64"
+
+# allow docker to use the local Xserver
+
+source ~/.docker_defaults
+source ~/.ros_defaults
+RPS1=$RPS1$CONTAINER_NAME
+

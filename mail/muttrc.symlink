@@ -4,7 +4,7 @@ macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
 set realname="João Carvalho"
 
-set index_format = "%4C %Z %[%a %b %d %I:%M] %-15.15L %s"
+set index_format = "%4C %Z %[%a %b %d %H:%M] %-15.15L %s"
 
 #  Stuff  To  Manage  Attachments
 set implicit_autoview
@@ -54,13 +54,14 @@ mailboxes +GMAIL----- \
           +gmail/Drafts \
           +gmail/Sent \
           +gmail/Archives.2018 \
-          +gmail/Archives.RB\'18 \
+          +gmail/Archives.RB\'19 \
           +gmail/Trash \
           +KTH------- \
           +kth/INBOX \
           +kth/Drafts \
           +kth/Sent \
           +kth/Archives.ICRA\'18 \
+          +kth/Archives.ICRA\'18-Travel \
           +kth/Archives.TA-DB\'18 \
           +kth/Archives.2018 \
           +kth/Archives.2017 \
@@ -131,7 +132,7 @@ macro attach ob \
 <enter-command>unset wait_key<enter>\
 <shell-escape>rm -f /tmp/mutt-attach<enter>\
 <save-entry><kill-line>/tmp/mutt-attach<enter>\
-<shell-escape>qutebrowser /tmp/mutt-attach 1>& /dev/null &<enter>\
+<shell-escape>firefox /tmp/mutt-attach 1>& /dev/null &<enter>\
 "
 
 # open picture
@@ -158,5 +159,5 @@ macro attach oo \
 <enter-command>unset wait_key<enter>\
 <shell-escape>rm -f /tmp/mutt-attach<enter>\
 <save-entry><kill-line>/tmp/mutt-attach<enter>\
-<shell-escape> /tmp/mutt-attach 1>& /dev/null &^I\
+<shell-escape> /tmp/mutt-attach 1>& /dev/null &\
 "

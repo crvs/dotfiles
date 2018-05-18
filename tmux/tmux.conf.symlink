@@ -1,8 +1,10 @@
 # setting new prefix keys
 set-window-option -g mode-keys vi
-list-keys -t vi-copy
+# list-keys -t vi-copy
 set-option -g bell-action any
-set-option -g default-terminal "screen-256color"
+set-option -g default-terminal "xterm-256color"
+set-option -ga terminal-overrides ",xterm-256color:Tc"
+set-option -g default-shell /usr/bin/zsh
 #set-option -g   prefix C-.
 #unbind-key C-b
 #bind-key   C-.  send-prefix
@@ -18,6 +20,7 @@ bind -n C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iq v
 bind -n C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
 bind -n C-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys 'C-\\') || tmux select-pane -l"
 
+# easier window shortcuts (reminiscent of vim c-w + X)
 unbind-key s
 bind-key s split-window
 bind-key S list-sessions
@@ -35,7 +38,10 @@ bind-key j select-pane -D
 bind-key k select-pane -U
 bind-key l select-pane -R
 
+# extract urls
 bind-key u capture-pane \; save-buffer /tmp/tmux-buffer \; new-window -n "urlscan" '$SHELL -c "urlscan -c < /tmp/tmux-buffer"'
 bind-key u capture-pane \; save-buffer /tmp/tmux-buffer \; new-window -n "urlview" '$SHELL -c "urlview < /tmp/tmux-buffer"'
 
-# bind C-l send-keys 'C-l'
+# save pane history to a file
+bind-key P command-prompt -p "name of the file to write pane to:" "capture-pane -S - \; save-buffer %1 \; delete-buffer"
+
