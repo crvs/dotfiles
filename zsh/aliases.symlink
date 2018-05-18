@@ -126,11 +126,12 @@ alias todotxt="todo.sh"
 function t { if [ $# = 0 ]; then todotxt ls; else todotxt $@; fi }
 compdef t='todo.sh'
 
-# alias vim="nvim"
 alias py="ipython3"
 
 # tmuxinator
 source ~/.dotfiles/tmux/tmuxinator.zsh
 alias mux='tmuxinator'
+#alias vim=nvim
+alias vim=vim --servername VIM
 compdef mux='tmuxinator'
 

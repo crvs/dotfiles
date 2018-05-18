@@ -166,4 +166,25 @@ unset GREP_OPTIONS
 #[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #source ~/catkin_ws/devel/setup.sh
 
+function resource() { rehash; source ~/.zshrc; echo "rehashed and reloaded zsh";}
+
 export HOSTALIASES=~/Sync/hosts
+export PATH=$PATH:/home/crvs/.gem/ruby/2.4.0/bin/
+eval 
+            fuck () {
+                TF_PREVIOUS=$(fc -ln -1 | tail -n 1);
+                TF_CMD=$(
+                    TF_ALIAS=fuck
+                    TF_SHELL_ALIASES=$(alias)
+                    PYTHONIOENCODING=utf-8
+                    thefuck $TF_PREVIOUS THEFUCK_ARGUMENT_PLACEHOLDER $*
+                ) && eval $TF_CMD;
+                test -n "$TF_CMD" && print -s $TF_CMD
+            }
+        
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+alias base16="sed -n '4s/^\# \(.*\) scheme .*$/\1/p' ~/.base16_theme"
+
+source /home/crvs/.docker_defaults
+source /home/crvs/.ros_defaults

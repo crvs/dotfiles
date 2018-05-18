@@ -3,11 +3,16 @@
 # (bright...)
 # (color1,color2..,colorN-1)
 # format:
+# neomutt specific
+color index_date    red              default 
+color index_number  yellow           default 
+color index_author  green            default ".*"
+color index_flags   brightblue       default ".*"
 # color object foreground background [regexp]
 color normal        default          default # normal text
-color indicator     magenta          black   # actual message
+color indicator     brightmagenta       default   # current message
 color tree          brightmagenta    default # thread arrows
-color status        brightgreen      blue    # status line
+color status        default      default    # status line
 color error         red              default # errors
 color message       red              default # info messages
 color signature     red              default # signature
@@ -42,8 +47,8 @@ color body  brightred    black    "FALSCHE Unterschrift"
 color body  brightgreen  black    "nicht durch hinreichendvertrauenswürdige Signaturen zertifiziert"
 uncolor index *                    # unset all color index entries
 color index          brightblue default  ~F     # Flagged
-color index          blue       white    ~N     # New
-color index          blue       white    ~O     # New
+color index          brightblue       default    ~N     # New
+color index          brightblue       default    ~O     # New
 color index          magenta    default  ~T     # Tagged
 color index          yellow     default  ~D     # Deleted
-color sidebar_new    blue       white
+color sidebar_new    brightblue       default
