@@ -4,7 +4,6 @@
 pythonfile = ~/.offlineimap.py
 accounts = gmail,kth
 ui = ttyui
-pythonfile = "~/.offlineimpa.py"
 
 [Account gmail]
 localrepository  = gmail-Local
