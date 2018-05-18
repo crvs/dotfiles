@@ -1,7 +1,11 @@
 # for some reason firefox seems to need to come BEFORE w3m
-text/html; firefox %s 2>& /dev/null &;
+text/html; firefox '%s';
 text/html; w3m -T text/html -dump %s; copiousoutput
-image/*; eog %s 
-application/pdf; evince %s;
 text/plain; less %s
-video/*; setsid mpv %s 1>& /dev/null &;
+image/*; mkdir -p /tmp/mutt \; cp '%s' /tmp/mutt/ \; xdg-open /tmp/mutt/$(basename %s) &;
+application/*; mkdir -p /tmp/mutt \; cp '%s' /tmp/mutt/ \; xdg-open /tmp/mutt/$(basename %s) &;
+#application/pdf; evince %s;
+#application/vnd.openxmlformats-officedocument.wordprocessingml.document; libreoffice %s;
+#application/vnd.openxmlformats-officedocument.spreadsheetml.document; libreoiffice %s;
+video/*; mkdir -p /tmp/mutt \; cp '%s' /tmp/mutt/ \; xdg-open /tmp/mutt/$(basename %s) &;
+#video/mp4; mplayer %s;

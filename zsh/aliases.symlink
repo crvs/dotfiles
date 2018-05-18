@@ -1,6 +1,6 @@
 #!/bin/zsh
 # aliases concerning ls
-alias ls="ls --color=auto"
+alias ls="ls --color=auto --hide='*~' --hide='*.pyc' --hide='*\\~'"
 alias ll="ls -lh"
 alias la="ls -a"
 alias lla="ls -l -a"
@@ -11,6 +11,8 @@ alias egrep="egrep --color=auto"
 
 # don't show the value of erase when reseting
 alias reset="reset -Q"
+
+alias open="xdg-open"
 
 # aliases for several screen modes
 resetxmonad=" && killall dzen2 || true && xmonad --restart "

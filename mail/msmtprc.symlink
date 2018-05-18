@@ -6,7 +6,7 @@ account gmail
     auth on
     from carvas.f@gmail.com
     user carvas.f
-    passwordeval gpg -dq /home/crvs/.email-keys/gmail.gpg && echo ''
+    passwordeval gpg -dq ~/.email-keys/gmail.gpg && echo ''
     tls on
     tls_trust_file /etc/ssl/certs/ca-certificates.crt
 
@@ -18,7 +18,7 @@ account kth
     auth login
     from jfpbdc@kth.se
     user jfpbdc
-    passwordeval gpg -dq /home/crvs/.email-keys/kth.gpg && echo ''
+    passwordeval gpg -dq ~/.email-keys/kth.gpg && echo ''
     tls on
     tls_starttls on
     tls_trust_file /etc/ssl/certs/ca-certificates.crt

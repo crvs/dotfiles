@@ -1,6 +1,7 @@
 # vim: syntax=python
 
 [general]
+pythonfile = ~/.offlineimap.py
 accounts = gmail,kth
 ui = ttyui
 pythonfile = "~/.offlineimpa.py"
@@ -37,7 +38,7 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 createfolders = True
 remoteuser = carvas.f
 maxconnections=5
-remotepasseval = get_pass("gmail.gpg")
+remotepasseval = get_pass("~/.email-keys/gmail.gpg")
 nametrans = lambda folder: {'[Gmail]/Drafts':    'Drafts',
                             '[Gmail]/Sent Mail': 'Sent',
                             '[Gmail]/Trash':     'Trash',
@@ -51,5 +52,8 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 createfolders = False
 remotehost = webmail.kth.se
 remoteuser = jfpbdc
-remotepasseval = get_pass(gmail.gpg)
+remotepasseval = get_pass("~/.email-keys/kth.gpg")
+# for some reason calendar is grossly misshandled by kth
+# (or so it seems)
+folderfilter = lambda foldername: foldername not in ['Calendar']
 

@@ -1,9 +1,10 @@
 #  Call  Urlscan  On  The  Mutt  Pager.  The  Urlscan  Is  Like  Urlview  But  Supplying  Context
 macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
+
 set realname="João Carvalho"
 
-set index_format = "%4C %Z %[%a %b %d %I:%M] %-15.15L %s"
+set index_format = "%4C %Z %[%a %b %d %H:%M] %-15.15L %s"
 
 #  Stuff  To  Manage  Attachments
 set implicit_autoview
@@ -21,9 +22,6 @@ set uncollapse_jump                        # don't collapse on an unread message
 set sort_re                                # thread based on regex
 set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 
-bind index g noop
-bind index gg first-entry
-bind index G last-entry
 bind index - collapse-thread
 bind index za collapse-thread
 bind index _ collapse-all
@@ -50,17 +48,23 @@ set sidebar_width   = 25
 
 macro pager,index i ":toggle sidebar_visible<enter><refresh>"
 
-mailboxes +gmail/INBOX \
+mailboxes +GMAIL----- \
+          +gmail/INBOX \
           +gmail/Drafts \
           +gmail/Sent \
-          +gmail/Trash
-
-mailboxes +kth/INBOX \
+          +gmail/Archives.2018 \
+          +gmail/Archives.RB\'19 \
+          +gmail/Trash \
+          +KTH------- \
+          +kth/INBOX \
           +kth/Drafts \
           +kth/Sent \
-          +kth/Archives.2016 \
-          +kth/Archives.2017 \
+          +kth/Archives.ICRA\'18 \
+          +kth/Archives.ICRA\'18-Travel \
           +kth/Archives.TA-DB\'18 \
+          +kth/Archives.2018 \
+          +kth/Archives.2017 \
+          +kth/Archives.2016 \
           +kth/Trash
 
 bind index J sidebar-next
@@ -75,7 +79,6 @@ source ~/.dotfiles/mail/palette1
 
 # Defaoult Account ----------------------------------------
 source ~/.dotfiles/mail/account.gmail
-
 
 # Account Macros ------------------------------------------
 macro index <f2> "c+gmail/INBOX<enter>"
@@ -99,26 +102,61 @@ set pgp_replysignencrypted=yes
 set duplicate_threads=yes
 
 # Search Macros--------------------------------------------
-macro index <f5> "!rm -r ~/.mail/search<enter>!setsid notmuch-mutt -o ~/.mail/search search -p<enter>c~/.mail/search<enter>l!~=<enter>"
-
-# Sync & Auth Macros ---------------------------------------------
-macro index,pager,compose <f9> "!offlineimap -f INBOX 1>& /dev/null & <enter>"
-macro index,pager,compose <f12> "!offlineimap 1>& /dev/null & <enter>"
-
-macro attach O \
+macro index <f4> \
 "\
 <enter-command>unset wait_key<enter>\
-<shell-escape>rm -f /tmp/mutt-attach<enter>\
-<save-entry><kill-line>/tmp/mutt-attach<enter>\
-<shell-escape> /tmp/mutt-attach &^A\
-"
+<shell-escape>rm -rf /tmp/notmuch-search<enter>\
+<shell-escape>setsid notmuch-mutt -o /tmp/notmuch-search search -p<enter>\
+<change-folder> /tmp/notmuch-search<enter>\
+" "search"
 
-# Deauth & Quit -------------------------------------------
-macro index q "!/home/crvs/.dotfiles/mail/mailauth.sh deauth<enter><quit>"
+# Sync & Auth Macros ---------------------------------------------
+macro index,pager,compose <f12> "!offlineimap 1>& /dev/null & <enter>" "fetch IMAP"
 
 # # Address book
 # set alias_file       = ~/.dotfiles/mail/aliases
 # source ~/.dotfiles/mail/aliases
 set query_command="abook --mutt-query '%s'"
-macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>abook --add-email-quiet<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
+set my_add_address=ask-yes
+
+macro index,pager a "\
+<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return>\
+<pipe-message>echo "\$my_add_address" && abook --add-email-quiet<return>\
+<enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
 bind editor         <Tab>   complete-query
+
+# open browser
+macro attach ob \
+"\
+<enter-command>unset wait_key<enter>\
+<shell-escape>rm -f /tmp/mutt-attach<enter>\
+<save-entry><kill-line>/tmp/mutt-attach<enter>\
+<shell-escape>firefox /tmp/mutt-attach 1>& /dev/null &<enter>\
+"
+
+# open picture
+macro attach op \
+"\
+<enter-command>unset wait_key<enter>\
+<shell-escape>rm -f /tmp/mutt-attach<enter>\
+<save-entry><kill-line>/tmp/mutt-attach<enter>\
+<shell-escape>eog /tmp/mutt-attach 1>& /dev/null &<enter>\
+"
+
+# open video
+macro attach ov \
+"\
+<enter-command>unset wait_key<enter>\
+<shell-escape>rm -f /tmp/mutt-attach<enter>\
+<save-entry><kill-line>/tmp/mutt-attach<enter>\
+<shell-escape>mpv /tmp/mutt-attach 1>& /dev/null &<enter>\
+"
+
+# open custom
+macro attach oo \
+"\
+<enter-command>unset wait_key<enter>\
+<shell-escape>rm -f /tmp/mutt-attach<enter>\
+<save-entry><kill-line>/tmp/mutt-attach<enter>\
+<shell-escape> /tmp/mutt-attach 1>& /dev/null &\
+"
