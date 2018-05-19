@@ -129,7 +129,6 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     zle -N zle-line-init
     zle -N zle-line-finish
 fi
-source ~/.aliases
 
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 export PATH=$PATH:$HOME/.dotfiles/bin # user scripts
@@ -205,6 +204,7 @@ function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc"
 export CUDA_HOME="/usr/local/cuda/"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$CUDA_HOME/lib64"
 
+source ~/.aliases
 # allow docker to use the local Xserver
 
 source ~/.docker_defaults
