@@ -237,8 +237,8 @@ let g:netrw_list_hide = '\(^\.\|\~$\)'
 " gvim {{{
 :if  has("gui_running")
 :    set guioptions=''
-:    set guifont=monofur\ for\ Powerline\ 11
 :endif
+
 " }}}
 "   Clangformat {{{
 :let g:clang_format#style_options = {
@@ -488,4 +488,5 @@ set background=dark
 :set list
 :set scrolloff=5
 
+:let g:notes_directories = ['~/.vim-notes']
 :set makeprg='cbuild'
