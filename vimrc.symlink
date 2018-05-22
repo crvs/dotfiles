@@ -177,6 +177,12 @@ endif
 "let g:easytags_file = "./tags"
 "let g:easytags_async = 1
 " }}}
+" tab name {{{
+set title
+function! s:set_title()
+let &titlestring = '[vim] '.expand("%")
+endfunction
+au BufEnter * call <SID>set_title()
 " }}}
 " NERDCommenter {{{
 let NERDRemoveExtraSpaces=1
