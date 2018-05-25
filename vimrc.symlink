@@ -410,7 +410,7 @@ vnoremap <Down>  <nop>
     :set grepprg=grep\ -nH\ $*
 
     " allow backspacing over everything in insert mode
-    :set backspace=indent,eol,start
+    ":set backspace=indent,eol,start
 
     :set backup        " keep a backup file (restore to previous version)
     :set undofile      " keep an undo file (undo changes after closing)
