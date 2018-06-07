@@ -10,6 +10,7 @@ set index_format = "%4C %Z %[%a %b %d %H:%M] %-15.15L %s"
 set implicit_autoview
 auto_view text/html text/plain
 
+set editor = 'vim'
 set move = no
 set imap_keepalive = 900
 unset wait_key

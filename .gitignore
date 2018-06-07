@@ -3,7 +3,7 @@
 .*.un\~
 *\~
 
-
+tags
 
 # haskell files and stuff
 xmonad.symlink/xmonad-x86_64-linux
