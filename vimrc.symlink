@@ -74,6 +74,8 @@ let OmniCpp_MayCompleteDot = 1
 let OmniCpp_MayCompleteArrow = 1
 let OmniCpp_MayCompleteScope = 1
 
+let OmniCpp_DefaultNamespace = ["std","_GLIBCXX_STD"]
+
 au BufEnter *.c,*.cpp,*.hpp,*.h call TagOptions()
 
 function! TagOptions()
@@ -81,7 +83,6 @@ function! TagOptions()
         !echo "-R\n--c++-kinds=+p\n--fields=+iaS\n--extra=+q" > .gutctags
     endif
 endfunction
-"set statusline+=%{gutentags#statusline()}
 "for omnicompletion cpp files should be run into ctags with
 " ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
 " }}}
@@ -388,12 +389,35 @@ vnoremap <Down>  <nop>
     :let g:calendar_google_task=1
 
     " }}}
-    " statusbar {{{
-    ":set rnu "show numbering relative to the current line
-    :set number
-    :set laststatus=2
+" statusbar {{{
+":set rnu "show numbering relative to the current line
 
-    " }}}
+function! PasteStatus()
+    if &paste
+        return "[Paste]"
+    else
+        return ""
+    endif
+endfunction
+
+:set number
+set laststatus=2
+set statusline=%-2n "buffer number
+set statusline+=%<
+set statusline+=\ %f "file path
+set statusline+=\ %r " readonly
+set statusline+=\ %{PasteStatus()}
+set statusline+=\ %h " help
+set statusline+=\ %m " modified
+set statusline+=\ %q " quickfix/location list
+set statusline+=%= " switch to right side
+set statusline+=%{gutentags#statusline()} " tags status
+set statusline+=%5l " line number (with 5 places reserved from the left)
+set statusline+=- "separator
+set statusline+=%-4c%V " column number padded with 3 decimal places
+set statusline+=\ %P " percentage
+
+" }}}
     " common typos {{{
     :iabbr teh the
     :iabbr taht that
@@ -434,7 +458,6 @@ vnoremap <Down>  <nop>
     " Switch syntax highlighting on, when the terminal has colors Also
     " switch on highlighting the last used search pattern.
     :syntax on
-    :nohl
 
 
 
