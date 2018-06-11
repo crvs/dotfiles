@@ -112,7 +112,8 @@ macro index <f4> \
 " "search"
 
 # Sync & Auth Macros ---------------------------------------------
-macro index,pager,compose <f12> "!offlineimap 1>& /dev/null & <enter>" "fetch IMAP"
+macro index,pager,compose G "!offlineimap -f INBOX 1>& /dev/null & <enter>:echo \"fetching inbox\"<enter>" "fetch INBOX with IMAP"
+macro index,pager,compose <f12> "!offlineimap 1>& /dev/null & <enter>:echo \"fetching all mail\"<enter>" "fetch IMAP"
 
 # # Address book
 # set alias_file       = ~/.dotfiles/mail/aliases
