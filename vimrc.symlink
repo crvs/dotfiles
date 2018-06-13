@@ -452,7 +452,7 @@ set statusline+=\ %P " percentage
 
     " In many terminal emulators the mouse works just fine, thus enable
     " it.
-    :set mouse=a
+    "":set mouse=a
 
 
     " Switch syntax highlighting on, when the terminal has colors Also
