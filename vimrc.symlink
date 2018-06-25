@@ -476,7 +476,7 @@ let g:ale_lint_on_text_changed=0
 let g:ale_lint_on_insert_leave=1
 "fast reload quickfix
 nnoremap <leader>qr :cfile<cr>
-set path+=**
+" set path+=** " not such a great idea after all
 
 augroup Markdown_
     autocmd!
