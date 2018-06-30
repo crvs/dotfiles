@@ -122,6 +122,8 @@ alias nbr2mp4="/opt/nbr2_mp4/nbr2mp4"
 
 function mkcd { mkdir $@ 2>& /dev/null || let EXIT_STATUS=$? ; cd $@ ; return $EXIT_STATUS }
 
+# timetrap
+alias tt='timetrap'
 # todotxt
 alias todotxt="todo.sh"
 function t { if [ $# = 0 ]; then todotxt ls; else todotxt $@; fi }
