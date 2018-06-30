@@ -6,6 +6,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " management
+Plugin 'prettier/vim-prettier'
 Plugin 'gmarik/Vundle.vim'
 " distance arrayPlugin 'vim-scripts/DoxygenToolkit.vim'
 Plugin 'easymotion/vim-easymotion'
@@ -181,9 +182,11 @@ endif
 " tab name {{{
 set title
 function! s:set_title()
-let &titlestring = '[vim] '.expand("%")
+let &titlestring = 'vim:'.expand('%')
+call system('tmux rename-window ' . &titlestring)
 endfunction
-au BufEnter * call <SID>set_title()
+
+au BufReadPost,BufEnter * call <SID>set_title()
 " }}}
 " NERDCommenter {{{
 let NERDRemoveExtraSpaces=1
@@ -229,6 +232,7 @@ let g:netrw_list_hide = '\(^\.\|\~$\)'
 :endfunction
 
 :let g:tmux_navigator_no_mappings = 1
+" change the tmux window name
 
 
 " }}}
