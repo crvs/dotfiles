@@ -3,17 +3,54 @@ SHELL=/usr/bin/zsh
 
 #Path to your oh-my-zsh configuration.
 ZSH=/opt/oh-my-zsh
+if [ -d $ZSH ]; then
+    #ZSH_CUSTOM=$HOME/.dotfiles
 
-#ZSH_CUSTOM=$HOME/.dotfiles
+    # Set name of the theme to load.
+    # Look in ~/.oh-my-zsh/themes/
+    # Optionally, if you set this to "random", it'll load a random theme each
+    # time that oh-my-zsh is loaded.
+    ZSH_THEME="dst" # fancy theme: "agnoster"
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="rgm" # fancy theme: "agnoster"
+    zstyle ':completion:*' menu select
+    setopt completealiases
+    setopt HIST_IGNORE_DUPS
 
-alias mps=/opt/mps/mps
-alias pms=/opt/mps/mps
+    # CASE_SENSITIVE="true" # case sensitive completion
+    # DISABLE_AUTO_UPDATE="true" # disable update prompts
+    # UPDATE_ZSH_DAYS=13 # change how often auto-updates occur
+    # DISABLE_LS_COLORS="true"
+    # DISABLE_AUTO_TITLE="true"
+    # DISABLE_CORRECTION="true" # command autocorrection
+
+    # Uncomment following line if you want red dots to be displayed while waiting for completion
+    COMPLETION_WAITING_DOTS="true"
+
+    # Uncomment following line if you want to disable marking untracked files under
+    # VCS as dirty. This makes repository status check for large repositories much,
+    # much faster.
+    # DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+    # Uncomment following line if you want to  shown in the command execution time stamp
+    # in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
+    # yyyy-mm-dd
+    HIST_STAMPS="mm/dd/yyyy"
+
+    # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+    # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+    # Example format: plugins=(rails git textmate ruby lighthouse)
+    plugins=(ssh-agent \
+        gpg-agent \
+        last-working-dir\
+        cabal \
+        git \
+        archlinux \
+        mercurial \
+        vi-mode \
+        history-substring-search)
+
+    source $ZSH/oh-my-zsh.sh
+fi
 
 # Google Search function
 function search {
@@ -22,59 +59,13 @@ w3m "www.google.com/search?q=$(echo $@ | sed 's/ /+/g')"}
 # command completion
 autoload -U compinit
 compinit
-
-zstyle ':completion:*' menu select
-setopt completealiases
-setopt HIST_IGNORE_DUPS
-
-# CASE_SENSITIVE="true" # case sensitive completion
-# DISABLE_AUTO_UPDATE="true" # disable update prompts
-# UPDATE_ZSH_DAYS=13 # change how often auto-updates occur
-# DISABLE_LS_COLORS="true"
-# DISABLE_AUTO_TITLE="true"
-# DISABLE_CORRECTION="true" # command autocorrection
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment following line if you want to disable marking untracked files under
-# VCS as dirty. This makes repository status check for large repositories much,
-# much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment following line if you want to  shown in the command execution time stamp
-# in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
-# yyyy-mm-dd
-HIST_STAMPS="mm/dd/yyyy"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(ssh-agent \
-    gpg-agent \
-    last-working-dir\
-    cabal \
-    git \
-    archlinux \
-    mercurial \
-    vi-mode \
-    history-substring-search)
-
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 setopt vi
 
 # Default Programs
-nvimers=('marvin' 'cook')
-vimers=('shaggydog')
-if [[ " ${nvimers[*]} " == *`hostname`* ]];
-    then export EDITOR="vim";
-    else export EDITOR="vi";
-fi
-
+export EDITOR="vim";
 export PAGER="less"
-export BROWSER="vivaldi-stable"
+export BROWSER="firefox"
 export MOVPLAY="mplayer"
 export PICVIEW="eog"
 export SNDPLAY="mplayer"
@@ -99,9 +90,6 @@ export PATH=$PATH:$HOME/.dotfiles/bin
 export PATH=$PATH:$HOME/.local/bin
 
 # export MANPATH="/usr/local/man:$MANPATH"
-
-# java classes
-export CLASSPATH=$CLASSPATH:~/.javapackages/algs4.jar
 
 # # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -132,26 +120,6 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     zle -N zle-line-finish
 fi
 
-
-
-# vi mode indicator
-function cabalprompt { if [[ "$(cabal_sandbox_info)" != "" ]] ; then echo $(cabal_sandbox_info)' '; fi }
-PROMPT=$PROMPT'$(cabalprompt)'
-
-alias mutt=neomutt
-
-if [[ -f ~/.dotfiles/java_apps.zsh ]] then
-	source ~/.dotfiles/java_apps.zsh
-fi
-
-#setup ros environment
-#source /opt/ros/indigo/setup.zsh
-
-#source ~/.dotfiles/haskell/completion.zsh
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#source ~/catkin_ws/devel/setup.sh
-
-
 eval 
             fuck () {
                 TF_PREVIOUS=$(fc -ln -1 | tail -n 1);
@@ -168,36 +136,15 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 alias base16="sed -n '4s/^\# \(.*\) scheme .*$/\1/p' ~/.base16_theme"
 
-source /home/crvs/.docker_defaults
-source /home/crvs/.ros_defaults
-
 export LLDB=/usr/bin/lldb
 export HOSTALIASES=~/Sync/hosts
 
-if [[ -f /opt/ros/indigo/setup.zsh ]]
-    then
-    source /opt/ros/indigo/setup.zsh
-    export ROS_HOSTNAME=localhost
-    export ROS_MASTER_URI=http://localhost:11311
-fi
-
-if [[ -d $HOME/catkin_ws/install ]]
-    then
-    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$HOME/catkin_ws/install/
-fi
-
-
 function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc";}
-
 
 export CUDA_HOME="/usr/local/cuda/"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$CUDA_HOME/lib64"
 
 
-# allow docker to use the local Xserver
-
-source ~/.docker_defaults
-source ~/.ros_defaults
 RPS1=$RPS1$CONTAINER_NAME
 
 for f in $(find ~/.dotfiles -name "*.zsh"); do

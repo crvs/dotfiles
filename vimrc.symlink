@@ -69,6 +69,16 @@ call vundle#end()
 filetype plugin indent on
 
 " }}}
+" {{{
+
+" use ag (silver searcher)
+let g:ackprg = "ag --vimgrep"
+
+" don't automatically jump
+cnoreabbrev Ack Ack!
+nnoremap <Leader>a :Ack!<Space>
+
+" }}}
 " {{{ OmniCpp + gutentags
 
 let OmniCpp_MayCompleteDot = 1

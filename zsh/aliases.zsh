@@ -132,6 +132,10 @@ function t { if [ $# = 0 ]; then todotxt ls; else todotxt $@; fi }
 compdef t='todo.sh'
 
 alias py="ipython3"
+alias mutt=neomutt
+
+alias mps=/opt/mps/mps
+alias pms=/opt/mps/mps
 
 # tmuxinator
 source ~/.dotfiles/tmux/tmuxinator.zsh
