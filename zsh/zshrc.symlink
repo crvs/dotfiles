@@ -141,10 +141,6 @@ export HOSTALIASES=~/Sync/hosts
 
 function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc";}
 
-export CUDA_HOME="/usr/local/cuda/"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$CUDA_HOME/lib64"
-
-
 RPS1=$RPS1$CONTAINER_NAME
 
 for f in $(find ~/.dotfiles -name "*.zsh"); do
