@@ -12,9 +12,6 @@ ZSH=/opt/oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="rgm" # fancy theme: "agnoster"
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 alias mps=/opt/mps/mps
 alias pms=/opt/mps/mps
 
@@ -25,6 +22,7 @@ w3m "www.google.com/search?q=$(echo $@ | sed 's/ /+/g')"}
 # command completion
 autoload -U compinit
 compinit
+
 zstyle ':completion:*' menu select
 setopt completealiases
 setopt HIST_IGNORE_DUPS
@@ -86,15 +84,18 @@ export TERM="xterm-256color"
 # File Extesions
 for ext in html org php com net no; do alias -s $ext=$BROWSER; done
 for ext in txt tex; do alias -s $ext=$EDITOR; done
-for exit in png jpg gif; do alias -s $ext=$PICVIEW; done
+for ext in png jpg gif; do alias -s $ext=$PICVIEW; done
 for ext in mpg wmv avi mkv; do alias -s $ext=$MOVPLAY; done
 for ext in wav mp3 ogg; do alias -s $ext=$SNDPLAY; done
 
 
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-export PATH=$PATH:/usr/bin/core_perl
-export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin
-export PATH=$PATH:$HOME/.gem/ruby/2.5.0/bin
+# binary paths under / ; /usr ; /usr/local
+export PATH=/bin:/sbin # root
+export PATH=$PATH:/usr/bin:/usr/sbin:/usr/games # /usr
+export PATH=$PATH:/usr/local/bin:/usr/local/sbin:/usr/local/games # /usr/local
+
+# paths under $HOME
+export PATH=$PATH:$HOME/.dotfiles/bin
 export PATH=$PATH:$HOME/.local/bin
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -131,19 +132,7 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     zle -N zle-line-finish
 fi
 
-export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-export PATH=$PATH:$HOME/.dotfiles/bin # user scripts
-export PATH=$PATH:/opt/ghci-color # ghci with color
-export PATH=$PATH:/opt/misc # misc executables
-export PATH=$PATH:/usr/bin/vendor_perl
 
-
-export PATH=$PATH:$HOME/.cabal/bin:$PATH # haskell binary files
-for build in `ls $HOME/.cabal-sandbox`;
-    do if [[ -d $HOME/.cabal-sandbox/$build/bin ]];
-        then export PATH=$PATH:$HOME/.cabal-sandbox/$build/bin ;
-        fi;
-    done
 
 # vi mode indicator
 function cabalprompt { if [[ "$(cabal_sandbox_info)" != "" ]] ; then echo $(cabal_sandbox_info)' '; fi }
@@ -197,7 +186,6 @@ if [[ -d $HOME/catkin_ws/install ]]
     export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$HOME/catkin_ws/install/
 fi
 
-export PATH=$PATH:/opt/cling/bin:/opt/cling/bin:/opt/ros/indigo/bin:/home/crvs/.cabal/bin:/usr/bin/vendor_perl:/opt/ghci-color:/home/crvs/.dotfiles/bin:/home/crvs/.rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/crvs/.gem/ruby/2.2.0/bin:/home/crvs/.local/bin
 
 function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc";}
 
@@ -205,9 +193,13 @@ function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc"
 export CUDA_HOME="/usr/local/cuda/"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$CUDA_HOME/lib64"
 
-source ~/.aliases
+
 # allow docker to use the local Xserver
 
 source ~/.docker_defaults
 source ~/.ros_defaults
 RPS1=$RPS1$CONTAINER_NAME
+
+for f in $(find ~/.dotfiles -name "*.zsh"); do
+    source $f;
+done

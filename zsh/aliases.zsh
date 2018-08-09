@@ -124,6 +124,8 @@ function mkcd { mkdir $@ 2>& /dev/null || let EXIT_STATUS=$? ; cd $@ ; return $E
 
 # timetrap
 alias tt='timetrap'
+export fpath=(~/.gem/ruby/2.5.0/gems/timetrap-1.15.1/completions/zsh $fpath)
+
 # todotxt
 alias todotxt="todo.sh"
 function t { if [ $# = 0 ]; then todotxt ls; else todotxt $@; fi }
