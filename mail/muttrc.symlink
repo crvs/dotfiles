@@ -133,7 +133,7 @@ macro attach ob \
 <enter-command>unset wait_key<enter>\
 <shell-escape>rm -f /tmp/mutt-attach.html<enter>\
 <save-entry><kill-line>/tmp/mutt-attach.html<enter>\
-<shell-escape>chromium /tmp/mutt-attach.html 1>& /dev/null &<enter>\
+<shell-escape>firefox /tmp/mutt-attach.html 1>& /dev/null &<enter>\
 "
 
 # open picture
