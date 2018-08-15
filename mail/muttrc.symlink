@@ -66,7 +66,7 @@ mailboxes +GMAIL----- \
           +kth/Archives.2018 \
           +kth/Archives.2017 \
           +kth/Archives.2016 \
-          +kth/Trash
+          +kth/Deleted\ Items
 
 bind index J sidebar-next
 bind index K sidebar-prev
