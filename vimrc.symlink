@@ -439,9 +439,11 @@ set statusline+=\ %P " percentage
     ":autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green guifg=black guibg=yellow cterm=NONE
     " better switching between buffers
 
+
     :nmap <silent> <leader>b :bn<cr>
     :nmap <silent> <leader>B :bp<cr>
     :nmap <silent> <leader>d :bd<cr>
+    :nmap <silent> <leader>D :bd!<cr>
 
     " allow to use hidden buffers more liberally
     :set hidden
