@@ -155,8 +155,8 @@ endif
 :nnoremap <silent> <leader>e :e<cr>
 :nnoremap <silent> <leader>ee :e!<cr>
 " fast edit vimrc
-:nnoremap <silent> <leader>ev :vsplit $MYVIMRC<cr>
-:nnoremap <silent> <leader>sv :source $MYVIMRC<cr>
+:nnoremap <silent> <leader>ve :vsplit $MYVIMRC<cr>
+:nnoremap <silent> <leader>vs :source $MYVIMRC<cr>
 
 " nice guides
 
@@ -444,6 +444,8 @@ set statusline+=\ %P " percentage
     :nmap <silent> <leader>B :bp<cr>
     :nmap <silent> <leader>d :bd<cr>
     :nmap <silent> <leader>D :bd!<cr>
+    :nmap          <leader>s :ls<cr>:b
+    :nmap          <leader>S :ls<cr>:bd
 
     " allow to use hidden buffers more liberally
     :set hidden
