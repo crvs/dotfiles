@@ -32,8 +32,12 @@ localfolders = ~/.mail/kth
 
 [Repository gmail-Remote]
 type = Gmail
+serever = imap.gmail.com
 ssl = yes
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+port = 993
+#sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+cert_fingerprint =  4259517cd4e48a289d332ab3f0ab52a366322824
+#starttls = yes
 createfolders = True
 remoteuser = carvas.f
 maxconnections=5

@@ -1,8 +1,7 @@
 #  Call  Urlscan  On  The  Mutt  Pager.  The  Urlscan  Is  Like  Urlview  But  Supplying  Context
 macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
-
-set realname="João Carvalho"
+set realname="J. Frederico Carvalho"
 
 set index_format = "%4C %Z %[%a %b %d %H:%M] %-15.15L %s"
 
@@ -88,6 +87,12 @@ macro index <f3> "c+kth/INBOX<enter>"
 folder-hook +gmail/* "source /home/crvs/.dotfiles/mail/account.gmail"
 folder-hook +ist/* "source /home/crvs/.dotfiles/mail/account.ist"
 folder-hook +kth/* "source /home/crvs/.dotfiles/mail/account.kth"
+
+folder-hook +gmail/* "set my_archive = '=gmail/Archives.'"
+folder-hook +kth/* "set my_archive = '=kth/Archives.'"
+
+folder-hook +gmail/* "macro index s '<save-message>=gmail/Archives.'"
+folder-hook +kth/* "macro index s '<save-message>=kth/Archives.'"
 
 # Message Hooks -------------------------------------------
 # message-hook '!(~g|~G) ~b"^-----BEGIN\ PGP\ (SIGNED\ )?MESSAGE"' "exec check-traditional-pgp"
