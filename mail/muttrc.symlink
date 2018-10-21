@@ -4,7 +4,13 @@ macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
 set realname="João Carvalho"
 
-set index_format = "%4C %Z %[%a %b %d %H:%M] %-15.15L %s"
+set index_format = "%4C %Z %<[d?%[%H:%M]&%<[w?%[%a %d %H:%M]&%<[y?%[%b %d]&%[%b %d %Y]>>> %-15.15L %s"
+
+
+#today:     %[d? %[%H:%M]&?
+#this week: %[w? %[%a %d %H:%M]
+#this year: %[y? %[%b %d]
+#more than:      %[%y %b %d]
 
 #  Stuff  To  Manage  Attachments
 set implicit_autoview
