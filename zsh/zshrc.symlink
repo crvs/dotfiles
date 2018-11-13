@@ -89,6 +89,9 @@ export PATH=$PATH:/usr/local/bin:/usr/local/sbin:/usr/local/games # /usr/local
 export PATH=$HOME/.dotfiles/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 
+#cuda
+export PATH=$PATH:/opt/cuda/bin
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # # Preferred editor for local and remote sessions
@@ -101,8 +104,8 @@ export PATH=$HOME/.local/bin:$PATH
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+## search backwards in history
 typeset -A key
-
 key[Up]=${terminfo[kcuul]}
 key[Down]=${terminfo[kcudl]}
 
@@ -141,7 +144,18 @@ export HOSTALIASES=~/Sync/hosts
 
 function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc";}
 
-RPS1=$RPS1$CONTAINER_NAME
+export RPS1=$RPS1$CONTAINER_NAME
+
+function add_man() {
+    # Add the man directory in this directory to the extra manpages. Use the
+    # name given
+    ln -s $PWD/man $HOME/.man/$1
+}
+
+for f in `ls -1 $HOME/.man`; do
+    export MANPATH=$MANPATH:$HOME/.man/$f
+done
+
 
 for f in $(find ~/.dotfiles -name "*.zsh"); do
     source $f;
