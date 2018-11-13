@@ -123,18 +123,6 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
     zle -N zle-line-finish
 fi
 
-eval 
-            fuck () {
-                TF_PREVIOUS=$(fc -ln -1 | tail -n 1);
-                TF_CMD=$(
-                    TF_ALIAS=fuck
-                    TF_SHELL_ALIASES=$(alias)
-                    PYTHONIOENCODING=utf-8
-                    thefuck $TF_PREVIOUS THEFUCK_ARGUMENT_PLACEHOLDER $*
-                ) && eval $TF_CMD;
-                test -n "$TF_CMD" && print -s $TF_CMD
-            }
-        
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 alias base16="sed -n '4s/^\# \(.*\) scheme .*$/\1/p' ~/.base16_theme"
