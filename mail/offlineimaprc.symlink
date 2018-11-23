@@ -2,7 +2,7 @@
 
 [general]
 pythonfile = ~/.offlineimap.py
-accounts = gmail,kth
+accounts = kth,gmail
 ui = ttyui
 
 [Account gmail]
