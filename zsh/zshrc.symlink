@@ -145,6 +145,6 @@ for f in `ls -1 $HOME/.man`; do
 done
 
 
-for f in $(find ~/.dotfiles -name "*.zsh"); do
+for f in $(find ~/.dotfiles -name "*.zsh" | grep -v "oh-my-zsh"); do
     source $f;
 done
