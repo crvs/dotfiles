@@ -2,7 +2,12 @@
 SHELL=/usr/bin/zsh
 
 #Path to your oh-my-zsh configuration.
-ZSH=/opt/oh-my-zsh
+if [ -d $HOME/.dotfiles/oh-my-zsh ]; then
+    ZSH=$HOME/.dotfiles/oh-my-zsh
+else
+    ZSH=/opt/oh-my-zsh
+fi
+
 if [ -d $ZSH ]; then
     #ZSH_CUSTOM=$HOME/.dotfiles
 
@@ -93,13 +98,6 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:/opt/cuda/bin
 
 # export MANPATH="/usr/local/man:$MANPATH"
-
-# # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
