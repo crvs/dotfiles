@@ -141,6 +141,6 @@ alias pms=/opt/mps/mps
 source ~/.dotfiles/tmux/tmuxinator.zsh
 alias mux='tmuxinator'
 #alias vim=nvim
-alias vim='vim --servername VIM'
+#alias vim='vim --servername VIM'
 compdef mux='tmuxinator'
 
