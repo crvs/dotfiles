@@ -4,8 +4,11 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'felipec/notmuch-vim'
+Plugin 'guyzmo/notmuch-abook'
 
 " management
+Plugin 'vim-utils/vim-man'
 Plugin 'prettier/vim-prettier'
 Plugin 'gmarik/Vundle.vim'
 " distance arrayPlugin 'vim-scripts/DoxygenToolkit.vim'
@@ -19,7 +22,6 @@ Plugin 'mileszs/ack.vim'
 Plugin 'Raimondi/delimitMate'
 
 Plugin 'abaldwin88/roamer.vim'
-Plugin 'w0rp/ale'
 
 " ide style
 Plugin 'mbbill/undotree'
@@ -34,6 +36,9 @@ Plugin 'tpope/vim-fugitive'
 
 " text objects (think around/inside-obj)
 Plugin 'kana/vim-textobj-user'
+
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " latex
 Plugin 'lervag/vimtex'
@@ -60,7 +65,7 @@ Plugin 'kshenoy/vim-signature'
 
 Plugin 'rhysd/vim-clang-format'
 
-Plugin 'tmhedberg/matchit'
+" Plugin 'tmhedberg/matchit'
 
 " Plugin 'vim-scripts/gnupg.vim.git'
 Plugin 'vim-scripts/OmniCppComplete.git'
@@ -69,15 +74,16 @@ call vundle#end()
 filetype plugin indent on
 
 " }}}
-" {{{
-
-" use ag (silver searcher)
+" UltiSnips {{{
+let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
+"}}}
+" Ack {{{
+" use silver searcher (ag)
 let g:ackprg = "ag --vimgrep"
 
 " don't automatically jump
 cnoreabbrev Ack Ack!
 nnoremap <Leader>a :Ack!<Space>
-
 " }}}
 " {{{ OmniCpp + gutentags
 
@@ -97,7 +103,6 @@ endfunction
 "for omnicompletion cpp files should be run into ctags with
 " ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
 " }}}
-
 " {{{ fix colors
 
 set termguicolors
@@ -182,6 +187,12 @@ endif
 
 " }}}
 :nnoremap <silent> <f3> :UndotreeToggle<cr>
+
+" {{{ copy and paste
+vnoremap <c-c> "*y:let @+=@*<CR>
+" make the selection register a clone of the copy register
+nnoremap  <c-p> "+P
+" }}}
 
 :nnoremap <silent> <f4> :Tagbar<cr>
 :nnoremap <silent> <f4>p :TagbarTogglePause<cr>
@@ -489,9 +500,6 @@ set statusline+=\ %P " percentage
 
     :set complete=.,w,b,u,t,i,kspell
     " }}}
-"linting options (ALE)
-let g:ale_lint_on_text_changed=0
-let g:ale_lint_on_insert_leave=1
 "fast reload quickfix
 nnoremap <leader>qr :cfile<cr>
 " set path+=** " not such a great idea after all
@@ -536,4 +544,5 @@ set background=dark
 :set scrolloff=5
 
 :let g:notes_directories = ['~/.vim-notes']
+:let g:notes_suffix = '.md'
 :set makeprg='cbuild'
