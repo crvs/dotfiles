@@ -26,8 +26,10 @@ unset MPW_ASKPASS
 rm $TEMP
 
 if [ ! $INCORRECT ]; then
+    notify-send "failed to copy password"
     exit 1
 else
+    notify-send "copied password to $PSITE ($PUSER)"
     sleep 30
     echo "" | xclip
 fi
