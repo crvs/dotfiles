@@ -1,1 +1,0 @@
-    inet 130.237.218.70/24 brd 130.237.218.255 scope global eth0
