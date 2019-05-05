@@ -34,7 +34,6 @@ Plugin 'tpope/vim-fugitive'
 " text objects (think around/inside-obj)
 Plugin 'kana/vim-textobj-user'
 
-Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
 " latex
