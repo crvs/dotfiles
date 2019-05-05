@@ -98,7 +98,7 @@ export PATH=$PATH:/opt/cuda/bin
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='vim'
 # fi
 
 # Compilation flags
@@ -134,6 +134,7 @@ function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc"
 
 export RPS1=$RPS1$CONTAINER_NAME
 
+# extra man pages!
 function add_man() {
     # Add the man directory in this directory to the extra manpages. Use the
     # name given
@@ -148,3 +149,15 @@ done
 for f in $(find ~/.dotfiles -name "*.zsh"); do
     source $f;
 done
+
+# colored MAN pages
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+
+# ncurses client for mpd
+alias mus=ncmpcpp

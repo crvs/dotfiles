@@ -12,14 +12,10 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'xolox/vim-notes'
 Plugin 'xolox/vim-misc'
-"Plugin 'roxma/nvim-completion-manager'
 Plugin 'kana/vim-niceblock'
 
 Plugin 'mileszs/ack.vim'
 Plugin 'Raimondi/delimitMate'
-
-Plugin 'abaldwin88/roamer.vim'
-Plugin 'w0rp/ale'
 
 " ide style
 Plugin 'mbbill/undotree'
@@ -65,10 +61,18 @@ Plugin 'tmhedberg/matchit'
 " Plugin 'vim-scripts/gnupg.vim.git'
 Plugin 'vim-scripts/OmniCppComplete.git'
 
+Plugin 'sirver/ultisnips'
 call vundle#end()
-filetype plugin indent on
+filetype plugin indent off
 
 " }}}
+
+" Ultisnips {{{
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+" }}}
+
 " {{{
 
 " use ag (silver searcher)
@@ -100,11 +104,11 @@ endfunction
 
 " {{{ fix colors
 
-set termguicolors
-if filereadable(expand("~/.vimrc_background"))
-    "let base16colorspace=256
-    source ~/.vimrc_background
-endif
+"set termguicolors
+" if filereadable(expand("~/.vimrc_background"))
+"     let base16colorspace=256
+"     source ~/.vimrc_background
+" endif
 
 "let &t_8f = "[28;2;%lu;%lu;%lum"
 "let &t_8b = "[48;2;%lu;%lu;%lum"
@@ -536,4 +540,4 @@ set background=dark
 :set scrolloff=5
 
 :let g:notes_directories = ['~/.vim-notes']
-:set makeprg='cbuild'
+:set makeprg='make'
