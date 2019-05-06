@@ -10,7 +10,7 @@ color index_author  green            default ".*"
 color index_flags   brightblue       default ".*"
 # color object foreground background [regexp]
 color normal        default          default # normal text
-color indicator     magenta          default  # actual message
+#color indicator     magenta          default  # actual message
 color tree          brightmagenta    default # thread arrows
 color status        default          default #brightgreen      brightblue    # status line
 color error         red              default # errors
