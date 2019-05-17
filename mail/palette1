@@ -12,17 +12,17 @@ color index_flags   brightblue       default ".*"
 color normal        default          default # normal text
 #color indicator     magenta          default  # actual message
 color tree          brightmagenta    default # thread arrows
-color status        default          default #brightgreen      brightblue    # status line
+color status        default          default # brightgreen  brightblue    # status line
 color error         red              default # errors
 color message       red              default # info messages
 color signature     red              default # signature
 color attachment    green            default # MIME attachments
 color search        brightyellow     default # search matches
-color tilde         brightmagenta    default # ~ at bottom of msg
+color tilde         brightmagenta    default # ~ at bottom of message
 color markers       red              default # + at beginning of wrapped lines
 color hdrdefault    brightblue       default # default header lines
-color bold          brightred        default # hiliting bold patterns in body
-color underline     brightgreen      default # hiliting underlined patternsin body
+color bold          brightred        default # highlighting bold patterns in body
+color underline     brightgreen      default # highlighting underlined patternsin body
 color quoted        brightblue       default # quoted text
 color quoted1       magenta          default
 color quoted2       red              default
