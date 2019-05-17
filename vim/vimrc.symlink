@@ -23,6 +23,7 @@ Plugin 'Raimondi/delimitMate'
 " ide style
 Plugin 'mbbill/undotree'
 Plugin 'scrooloose/nerdcommenter.git'
+Plugin 'gilligan/vim-lldb'
 
 " tags
 Plugin 'majutsushi/tagbar'
@@ -40,6 +41,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'lervag/vimtex'
 
 Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim'
 
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
@@ -71,21 +73,214 @@ call vundle#end()
 filetype plugin indent off
 
 " }}}
+" encoding issues {{{
 
-" Ultisnips {{{
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
-"}}}
+set encoding=utf-8			" target 'default' encoding
+scriptencoding utf-8			" encoding of _this_ script
+set fileencoding=utf-8			" encoding of the file to save
+set fileencodings=utf-8,ucs-bom,prc	" possible encodings
+
+" }}}
+" indentation,colorcolumn,wrapping,list {{{
+
+" color column functions {{{{
+function! s:setcolumn()
+	set colorcolumn=80
+endfunction
+
+function! s:setendbar()
+	let &colorcolumn=join(range(80,10000),",")
+endfunction
+"}}}}
+command! Col call <SID>setcolumn()
+command! Bar call <SID>setendbar()
+
+set list
+set listchars=tab:│ ,trail:♮,extends:>,precedes:<,nbsp:¯
+
+set noexpandtab
+set tabstop=8
+set shiftwidth=0
+
+set linebreak      " break lines at text width
+set breakat= "default: breakat=" ^I!@*-+;:,./?"
+" in C/C++ do not break lines on - or . because of member functions
+" do not break on member functions in python
+autocmd BufEnter *.c,*.cpp,*.h,*.hpp :setlocal breakat=" ^I(){}@*+:,/"<cr>
+autocmd BufEnter *.py :setlocal breakat=" ^I!@*-+;:,/?()[]{}"
+
+set breakindent		" indent wrapped lines
+set breakindentopt=min:20 " minimum amount of characters in indented continuation
+set showbreak=› 	" character to show on indented lines
+
+set smartindent
+" }}}
+" backups {{{
+set history=1000      " lines of commandd history to keep
+set undodir=~/.tmp/undo//
+set directory=~/.tmp/swap//
+set backupdir=~/.tmp/backup//
+set backup " keep a backup file (restore to previous version)
+set undofile      " keep an undo file (undo changes after closing)
+set noswapfile
+" }}}
+" {{{ copy and paste
+vnoremap <c-c> "*y:let @+=@*<CR>
+" make the selection register a clone of the copy register
+nnoremap  <c-p> "+P
+" paste from clipboard to next/prev line
+" uses vim unimpaired
+nmap <leader>p "*]p
+nmap <leader>P "*[p
+" }}}
+" wildmenu {{{
+set wildmenu
+set wildmode=list:longest,full
+
+set wildignore+=.hg,.git,.svn
+set wildignore+=*.aux,*.out,*.toc,*.log
+set wildignore+=*.o,*.obj,*.so
+set wildignore+=*~,*.un~
+set wildignore+=*.pyc
+" }}}
+" Tagbar {{{
+:nnoremap <silent> <f4> :Tagbar<cr>
+:nnoremap <silent> <f4>p :TagbarTogglePause<cr>
+" }}}
+" Undotree {{{
+:nnoremap <silent> <f3> :UndotreeToggle<cr>
+:inoremap <silent> <f3>  <esc>:UndotreeToggle<cr>
+" }}}
 " Ack {{{
 " use silver searcher (ag)
 let g:ackprg = "ag --vimgrep"
 
 " don't automatically jump
 cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack!<Space>
 " }}}
+" make {{{
+set makeprg='make'
+autocmd BufEnter Makefile,makefile :setlocal noexpandtab
+" }}}
+" tmux navigation config {{{
+function! s:Free_c_keys()
+   if mapcheck('<C-Right>', 'n') != ':TmuxNavigateRight<cr>'
+       nnoremap <silent> <C-Right> :TmuxNavigateRight<cr>
+   endif
+   if mapcheck('<C-Up>', 'n') != ':TmuxNavigateUp<cr>'
+       nnoremap <silent> <C-Up> :TmuxNavigateUp<cr>
+   endif
+   if mapcheck('<C-Down>', 'n') != ':TmuxNavigateDown<cr>'
+       nnoremap <silent> <C-Down> :TmuxNavigateDown<cr>
+   endif
+   if mapcheck('<C-Left>', 'n') != ':TmuxNavigateLeft<cr>'
+       nnoremap <silent> <C-Left> :TmuxNavigateLeft<cr>
+   endif
+   if mapcheck('<c-K>', 'n') != ':TmuxNavigateUp<cr>'
+      nnoremap <silent> <c-K> :TmuxNavigateUp<cr>
+   endif
+   if mapcheck('<c-J>', 'n') != ':TmuxNavigateDown<cr>'
+      nnoremap <silent> <c-J> :TmuxNavigateDown<cr>
+   endif
+   if mapcheck('<c-L>', 'n') != ':TmuxNavigateRight<cr>'
+      nnoremap <silent> <c-L> :TmuxNavigateRight<cr>
+   endif
+   if mapcheck('<c-H>', 'n') != ':TmuxNavigateLeft<cr>'
+      nnoremap <silent> <c-H> :TmuxNavigateLeft<cr>
+   endif
+   if mapcheck('<c-/>', 'n') != ':TmuxNavigatePrevious<cr>'
+      nnoremap <silent> <c-/> :TmuxNavigatePrevious<cr>
+   endif
+endfunction
+let g:tmux_navigator_no_mappings = 1
+call <sid>Free_c_keys()
+" }}}
+" Goyo and Limelight {{{
+nnoremap <silent> <f5> :Goyo<cr>
+nnoremap <silent> <f6> :Limelight .3<cr>
+" }}}
+" fast edit vimrc {{{
+nnoremap <silent> <leader>ve :vsplit $MYVIMRC<cr>
+nnoremap <silent> <leader>vs :source $MYVIMRC<cr>
+" }}}
+" NERDCommenter {{{
+let NERDRemoveExtraSpaces=1
+let NERDTrimTrailingWhitespaces=1
+let NERDSpaceDelims=1
+let NERDRemoveAltComs=1
+" }}}
+" window title {{{
+set title
+function! s:set_title()
+	let &titlestring = 'vim:'.expand('%')
+	call system('tmux rename-window ' . &titlestring)
+endfunction
+autocmd BufNew,BufReadPost,BufEnter * call <SID>set_title()
+" }}}
+" LaTeX (vimtex) {{{
+set conceallevel=0
+if !exists('g:ycm_semantic_triggers')
+let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers.tex = [
+\ 're!\\[A-Za-z]*cite[A-Za-z]*(\[[^]]*\]){0,2}{[^}]*',
+\ 're!\\[A-Za-z]*ref({[^}]*|range{([^,{}]*(}{)?))',
+\ 're!\\hyperref\[[^]]*',
+\ 're!\\includegraphics\*?(\[[^]]*\]){0,2}{[^}]*',
+\ 're!\\(include(only)?|input){[^}]*',
+\ 're!\\\a*(gls|Gls|GLS)(pl)?\a*(\s*\[[^]]*\]){0,2}\s*\{[^}]*',
+\ 're!\\includepdf(\s*\[[^]]*\])?\s*\{[^}]*',
+\ 're!\\includestandalone(\s*\[[^]]*\])?\s*\{[^}]*',
+\ ]
+
+let g:vimtex_complete_recursive_bib=1
+let g:vimtex_labels_enable=1
+let g:vimtex_view_general_viewer="zathura"
+let g:tex_flavor="latex"
+let g:Tex_DefaultTargetFormat="pdf"
+let g:Tex_MultipleCompileFormats="pdf,dvi"
+
+nnoremap <localleader>lt :<c-u>Unite vimtex_toc<cr>
+nnoremap <localleader>ly :<c-u>Unite vimtex_labels<cr>
+
+" }}}
+" Ultisnips {{{
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
+"}}}
+" difference to swapfile {{{
+" Convenient command to see the difference between the current buffer
+" and the file it was loaded from, thus the changes you made.  Only
+" define it when not defined already.
+if !exists(":DiffOrig")
+command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+	\ | wincmd p | diffthis
+endif
+" }}}
+" buffer navigation {{{
+nmap <silent> <leader>b :bn<cr>
+nmap <silent> <leader>B :bp<cr>
+nmap <silent> <leader>d :bd<cr>
+nmap <silent> <leader>D :bd!<cr>
+nmap          <leader>s :ls<cr>:b
+" }}}
+" highlighting and searching {{{
+set hlsearch
+set incsearch
+nnoremap n nzz
+nnoremap N Nzz
+autocmd ColorScheme * :highlight Search ctermfg=none ctermbg=none cterm=reverse
+
+nnoremap <silent> <leader>h :execute 'match Search /<c-r><c-w>/'<cr>
+nnoremap <silent> <leader>h<space> :execute 'match Search /<c-r><c-w>/'<cr>
+nnoremap <silent> <leader>H :execute 'call matchadd( "Search" , "<c-r><c-w>")'<cr>
+vnoremap <silent> <leader>h y:nohl<cr>:match Search /\M"/<cr>
+vnoremap <silent> <leader>H y:call matchadd( "Search" , "\M"")<cr>
+nnoremap <silent> <leader>* :Ack! /\<<c-r><c-w>\>/<cr>
+nnoremap <silent> <leader>ct :cd %:h<cr>:! ctags -R .<cr>
+"}}}
 " {{{ OmniCpp + gutentags
 
 let OmniCpp_MayCompleteDot = 1
@@ -105,22 +300,11 @@ endfunction
 " ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
 " }}}
 " {{{ fix colors
-
 "set termguicolors
 if filereadable(expand("~/.vimrc_background"))
     let base16colorspace=256
     source ~/.vimrc_background
 endif
-
-"let &t_8f = "[28;2;%lu;%lu;%lum"
-"let &t_8b = "[48;2;%lu;%lu;%lum"
-
-" }}}
-" Goyo {{{
-
-:nnoremap <silent> <f5> :Goyo<cr>
-:inoremap <silent> <f5> <esc>:Goyo<cr>a
-
 " }}}
 " todo.txt {{{
 
@@ -139,325 +323,48 @@ endif
 :augroup END
 
 " }}}
-" pasting {{{
-" paste from clipboard to next/prev line
-" needs vim unimpaired
-:nmap <leader>p "*]p
-:nmap <leader>P "*[p
+" force save {{{
+cmap w!! w !sudo tee % > /dev/null<cr>
+" }}}
+" vim notes {{{
+let g:notes_directories = ['~/.vim-notes']
+let g:notes_suffix = '.md'
 " }}}
 "misc defaults {{{
 
-:cmap '' '<,'>
+cmap '' '<,'>
 
-:nnoremap <silent> <Leader>vs :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>Ljzt:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
+let mapleader=','
+set foldmethod=marker
 
-:let mapleader=','
-:set foldmethod=marker
+" keep 5 lines visible under the cursor
+set scrolloff=5
 
-" temp folder and files
-:set dir=/tmp
-
-" reopen the current file
-:nnoremap <silent> <leader>e :e<cr>
-:nnoremap <silent> <leader>ee :e!<cr>
-" fast edit vimrc
-:nnoremap <silent> <leader>ve :vsplit $MYVIMRC<cr>
-:nnoremap <silent> <leader>vs :source $MYVIMRC<cr>
-
-" nice guides
-
-:autocmd VimResized * :normal <c-w>=
-" }}}
-" keep 10 lines visible under the cursor {{{
-
-" }}}
-"parenthesis and matchings {{{
-:nnoremap <leader>" ciW"<esc>pa"<esc>
-:nnoremap <leader>' ciW'<esc>pa'<esc>
-:nnoremap <leader>( ciW(<esc>pa)<esc>
-:nnoremap <leader>[ ciW[<esc>pa]<esc>
-:nnoremap <leader>{ ciW{<esc>pa}<esc>
-:nnoremap <leader>< ciW<<esc>pa><esc>:
-
-:vnoremap <leader>" c"<esc>pa"<esc>
-:vnoremap <leader>' c'<esc>pa'<esc>
-:vnoremap <leader>( c(<esc>pa)<esc>
-:vnoremap <leader>[ c[<esc>pa]<esc>
-:vnoremap <leader>{ c{<esc>pa}<esc>
-:vnoremap <leader>< c<<esc>pa><esc>
-
-" }}}
-:nnoremap <silent> <f3> :UndotreeToggle<cr>
-
-" {{{ copy and paste
-vnoremap <c-c> "*y:let @+=@*<CR>
-" make the selection register a clone of the copy register
-nnoremap  <c-p> "+P
-" }}}
-
-:nnoremap <silent> <f4> :Tagbar<cr>
-:nnoremap <silent> <f4>p :TagbarTogglePause<cr>
-" tags {{{
-"let g:easytags_file = "./tags"
-"let g:easytags_async = 1
-" }}}
-" tab name {{{
-set title
-function! s:set_title()
-let &titlestring = 'vim:'.expand('%')
-call system('tmux rename-window ' . &titlestring)
-endfunction
-
-au BufReadPost,BufEnter * call <SID>set_title()
-" }}}
-" NERDCommenter {{{
-let NERDRemoveExtraSpaces=1
-let NERDTrimTrailingWhitespaces=1
-let NERDSpaceDelims=1
-let NERDRemoveAltComs=1
-" }}}
 " netrw (file manager) {{{
 nnoremap <f2> :Lexplore<cr>
 let g:netrw_list_hide = '\(^\.\|\~$\)'
 " }}}
-" overrides {{{
-
-
-:function! s:Free_c_keys()
-:   if mapcheck('<C-Right>', 'n') != ':TmuxNavigateRight<cr>'
-:       nnoremap <silent> <C-Right> :TmuxNavigateRight<cr>
-:   endif
-:   if mapcheck('<C-Up>', 'n') != ':TmuxNavigateUp<cr>'
-:       nnoremap <silent> <C-Up> :TmuxNavigateUp<cr>
-:   endif
-:   if mapcheck('<C-Down>', 'n') != ':TmuxNavigateDown<cr>'
-:       nnoremap <silent> <C-Down> :TmuxNavigateDown<cr>
-:   endif
-:   if mapcheck('<C-Left>', 'n') != ':TmuxNavigateLeft<cr>'
-:       nnoremap <silent> <C-Left> :TmuxNavigateLeft<cr>
-:   endif
-:   if mapcheck('<c-K>', 'n') != ':TmuxNavigateUp<cr>'
-:      nnoremap <silent> <c-K> :TmuxNavigateUp<cr>
-:   endif
-:   if mapcheck('<c-J>', 'n') != ':TmuxNavigateDown<cr>'
-:      nnoremap <silent> <c-J> :TmuxNavigateDown<cr>
-:   endif
-:   if mapcheck('<c-L>', 'n') != ':TmuxNavigateRight<cr>'
-:      nnoremap <silent> <c-L> :TmuxNavigateRight<cr>
-:   endif
-:   if mapcheck('<c-H>', 'n') != ':TmuxNavigateLeft<cr>'
-:      nnoremap <silent> <c-H> :TmuxNavigateLeft<cr>
-:   endif
-:   if mapcheck('<c-/>', 'n') != ':TmuxNavigatePrevious<cr>'
-:      nnoremap <silent> <c-/> :TmuxNavigatePrevious<cr>
-:   endif
-:endfunction
-
-:let g:tmux_navigator_no_mappings = 1
-" change the tmux window name
-
-
-" }}}
-" make {{{
-
-" for scripts
-:autocmd BufRead *.sh,*.py :nmap <silent> <leader>ll :! ./%<cr>
-
-" for makefiles
-:autocmd BufRead *.c,*.cpp,*.h,*.hpp nmap <silent> <leader>ll :make<cr>
-
-" }}}
 " gvim {{{
-:if  has("gui_running")
-:    set guioptions=''
-:endif
-
+if  has("gui_running")
+    set guioptions=''
+endif
 " }}}
-"   Clangformat {{{
-:let g:clang_format#style_options = {
-            \ 'AllowShortIfStatementsOnASingleLine' : 'true',
-            \ 'ColumnLimit' : '80',
-            \ 'TabWidth' : '4',
-            \ 'Standard' : 'C++11',
-            \ 'SpacesInAngles' : 'true',
-            \ }
+" Search {{{
+":autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
 
-:let g:clang_format#filetype_style_options = {
-            \   'cpp' : {'Standard' : 'C++11'}
-            \ }
-
-:let g:clang_format#command='clang-format'
-
-:nnoremap <silent> <leader>S :Startify<cr>
-:autocmd BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <leader>f :ClangFormat<cr>
-
-"   }}}
-"   Undotree {{{
-:nnoremap <silent> <f3> :UndotreeToggle<cr>
-:inoremap <silent> <f3>  <esc>:UndotreeToggle<cr>
-
+nnoremap <silent> j gj
+nnoremap <silent> k gk
 " }}}
-" LaTeX {{{
-set conceallevel=0
-if !exists('g:ycm_semantic_triggers')
-    let g:ycm_semantic_triggers = {}
-  endif
-  let g:ycm_semantic_triggers.tex = [
-        \ 're!\\[A-Za-z]*cite[A-Za-z]*(\[[^]]*\]){0,2}{[^}]*',
-        \ 're!\\[A-Za-z]*ref({[^}]*|range{([^,{}]*(}{)?))',
-        \ 're!\\hyperref\[[^]]*',
-        \ 're!\\includegraphics\*?(\[[^]]*\]){0,2}{[^}]*',
-        \ 're!\\(include(only)?|input){[^}]*',
-        \ 're!\\\a*(gls|Gls|GLS)(pl)?\a*(\s*\[[^]]*\]){0,2}\s*\{[^}]*',
-        \ 're!\\includepdf(\s*\[[^]]*\])?\s*\{[^}]*',
-        \ 're!\\includestandalone(\s*\[[^]]*\])?\s*\{[^}]*',
-        \ ]
-
-    :let g:vimtex_complete_recursive_bib=1
-    :let g:vimtex_labels_enable=1
-    :let g:vimtex_view_general_viewer='evince'
-    ":let g:vimtex_view_general_viewer='xpdf'
-    :let g:tex_flavor="latex"
-    :let g:Tex_DefaultTargetFormat='pdf'
-    ":let g:vimtex_latexmk_options=' -synctex=0 '
-    :let g:Tex_MultipleCompileFormats='pdf,dvi'
-    ":let g:Tex_ViewRule_pdf='setsid xpdf 2>& /dev/null'
-    ":let g:Tex_ViewRule_pdf='setsid evince 2>& /dev/null'
-    ":let g:Tex_ViewRule_pdf='setsid zathura 2>& /dev/null'
-
-
-
-"    :function s:last_changed_header()
-"    :   let l:del_reg = @"
-"    :   g/^% Last Change:/normal f:  D
-"    :   normal "=strftime("%a %b %d %I:%M %p %Y %Z")p''
-"    :   let @" = l:del_reg
-"    :endfunction
-
-
-    :augroup my_tex_group
-    :   autocmd!
-    :   autocmd BufRead *.tex :let g:Tex_CompileRule_pdf="pdflatex -interaction=nonstopmode -file-line-error-style $* 1>& /dev/null"
-    :   autocmd BufRead *.tex :let Tex_FoldedEnvironments="verbatim,comment,eq,gather,align,figure,table,thebibliography,keywords,abstract,titlepage,eq,theorem,corollary,lemma,algorithm,proof,IEEEproof,remark,definition,tikzpicture"
-    " :   autocmd BufWritePre *.tex :silent:call s:last_changed_header()
-    :augroup END
-
-    "" fast compile
-    ":autocmd BufRead *.tex :nnoremap <silent> ZM :w<CR>:call Tex_RunLaTeX()<CR>
-    " easy comment
-    ":autocmd BufEnter *.tex :nnoremap <silent> <leader>c I%<esc>
-    ":autocmd BufEnter *.tex :vnoremap <silent> <leader>c norm I%<esc>
-    ":autocmd BufLeave *.tex :nunmap <leader>c
-    ":autocmd BufLeave *.tex :vunmap <leader>c
-    " open pdf
-    " :autocmd BufRead *.tex :command! OpenPDF :execute '!setsid zathura 'expand('%:h').'/'.expand('%:r').'.pdf 2>&/dev/null &'
-    " more environments to collapse
-
-
-
-
-    ":autocmd ColorScheme * :highlight Folded cterm=bold ctermbg=none ctermfg=green
-
-    :nnoremap <localleader>lt :<c-u>Unite vimtex_toc<cr>
-    :nnoremap <localleader>ly :<c-u>Unite vimtex_labels<cr>
-
-" }}}
-    " Search {{{
-    :set hlsearch
-    :set incsearch
-    :nnoremap n nzz
-    :nnoremap N Nzz
-    :autocmd ColorScheme * :highlight Search ctermfg=none ctermbg=none cterm=reverse
-    ":autocmd ColorScheme * :highlight Match  ctermfg=black ctermbg=yellow cterm=NONE
-
-    :nnoremap <silent> <leader>h yiw:nohl<cr>:match Search /"/<cr>
-    :nnoremap <silent> <leader>H yiw:call matchadd( "Search" , """)<cr>
-    :vnoremap <silent> <leader>h y:nohl<cr>:match Search /\M"/<cr>
-    :vnoremap <silent> <leader>H y:call matchadd( "Search" , "\M"")<cr>
-    :nnoremap <silent> <leader>* yiw:vimgrep /"/ *<cr>
-    ":nnoremap <silent> <leader>ct :cd %:h<cr>:! ctags -R .<cr>
-
-    " toggle quickfix window
-    :let s:quickfix = 0
-    :nnoremap <silent> <leader>q :call <sid>toggle_things("quickfix window","s:quickfix",":copen",":cclose")<cr>
-
-    " toggle location window
-    :let s:location = 0
-    :nnoremap <silent> <leader>L :call <sid>toggle_things("location window","s:location",":lopen",":lclose")<cr>
-
-    :nnoremap <silent> j gj
-    :nnoremap <silent> k gk
-    " }}}
-" removing arrows {{{
-" normal mode
-nnoremap <Left>  <nop>
-nnoremap <Right> <nop>
-nnoremap <Up>    <nop>
-nnoremap <Down>  <nop>
-
-" insert mode
-inoremap <Left>  <nop>
-inoremap <Right> <nop>
-inoremap <Up>    <nop>
-inoremap <Down>  <nop>
-
-" visual mode
-vnoremap <Left>  <nop>
-vnoremap <Right> <nop>
-vnoremap <Up>    <nop>
-vnoremap <Down>  <nop>
-" }}}
-    " vim calendar options for google calendar {{{
-    " :let g:calendar_time_zone=+0060
-
-    :let g:calendar_week_number=1
-    :let g:calendar_google_calendar=1
-    :let g:calendar_google_task=1
-
-    " }}}
 " statusbar {{{
-":set rnu "show numbering relative to the current line
-
-function! PasteStatus()
-    if &paste
-        return "[Paste]"
-    else
-        return ""
-    endif
-endfunction
-
-:set number
-set laststatus=2
-set statusline=%-2n "buffer number
-set statusline+=%<
-set statusline+=\ %f "file path
-set statusline+=\ %r " readonly
-set statusline+=\ %{PasteStatus()}
-set statusline+=\ %h " help
-set statusline+=\ %m " modified
-set statusline+=\ %q " quickfix/location list
-set statusline+=%= " switch to right side
-set statusline+=%{gutentags#statusline()} " tags status
-set statusline+=%5l " line number (with 5 places reserved from the left)
-set statusline+=- "separator
-set statusline+=%-4c%V " column number padded with 3 decimal places
-set statusline+=\ %P " percentage
-
+set laststatus=1
 " }}}
     " common typos {{{
     :iabbr teh the
     :iabbr taht that
 
-    ":autocmd ColorScheme * :highlight SpellBad ctermfg=black ctermbg=green guifg=black guibg=yellow cterm=NONE
     " better switching between buffers
 
 
-    :nmap <silent> <leader>b :bn<cr>
-    :nmap <silent> <leader>B :bp<cr>
-    :nmap <silent> <leader>d :bd<cr>
-    :nmap <silent> <leader>D :bd!<cr>
-    :nmap          <leader>s :ls<cr>:b
-    :nmap          <leader>S :ls<cr>:bd
 
     " allow to use hidden buffers more liberally
     :set hidden
@@ -466,12 +373,6 @@ set statusline+=\ %P " percentage
     " allow backspacing over everything in insert mode
     ":set backspace=indent,eol,start
 
-    :set backup        " keep a backup file (restore to previous version)
-    :set undofile      " keep an undo file (undo changes after closing)
-    :set backupdir=~/.vimtmp,.
-    :set undodir=~/.vimtmp,.
-    :set directory=~/.vimtmp,.
-    :set history=50      " keep 50 lines of command line history
     :set ruler       " show the cursor position all the time
     :set showcmd     " display incomplete commands
 
@@ -490,60 +391,15 @@ set statusline+=\ %P " percentage
     :syntax on
 
 
-
-    " Convenient command to see the difference between the current buffer
-    " and the file it was loaded from, thus the changes you made.  Only
-    " define it when not defined already.
-    :if !exists(":DiffOrig")
-    command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-                \ | wincmd p | diffthis
-    :endif
-
     :set complete=.,w,b,u,t,i,kspell
     " }}}
-"fast reload quickfix
-nnoremap <leader>qr :cfile<cr>
 " set path+=** " not such a great idea after all
-
-augroup Markdown_
-    autocmd!
-    let g:markdown_autocomp = 0
-    function! Toggle_compile()
-        if g:markdown_autocomp
-            autocmd! Markdown_autocomp
-            let g:markdown_autocomp = 0
-            echom "stoping markdown autocompilation"
-        else
-            augroup Markdown_autocomp
-                autocmd BufWritePost *.md silent execute "Dispatch !pandoc '%' -o '%:r'.pdf 1>& /dev/null &"
-                let g:markdown_autocomp = 1
-            augroup END
-            echom "started markdown autocompilation"
-        endif
-    endfunction
-
-    autocmd FileType markdown :nnoremap <silent> <leader>lv :Dispatch !setsid evince %:r.pdf &<cr>
-    autocmd FileType markdown :nnoremap <leader>ll :call Toggle_compile()<cr>
-    autocmd FileType markdown :syntax clear MarkdownError
-augroup END
 
 set background=dark
 
-" Force save
-:cmap w!! w !sudo tee % > /dev/null<cr>
 
-:set tabstop=4 shiftwidth=4 expandtab
-:set smartindent
-:set showbreak=>\ "begin broken line
-:set linebreak
-:call <sid>Free_c_keys()
 
-:hi SpellBad term=bold,underline cterm=bold,underline
+hi SpellBad term=bold,underline cterm=bold,underline
 
-:set listchars=eol:�,tab:>\ ,trail:*,extends:>,precedes:<,nbsp:_
-:set list
-:set scrolloff=5
-
-:let g:notes_directories = ['~/.vim-notes']
-:let g:notes_suffix = '.md'
-:set makeprg='make'
+set number
+" vim: textwidth=80:colorcolumn=80
