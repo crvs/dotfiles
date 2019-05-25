@@ -75,67 +75,78 @@ function getprg()
 }
 
 url=$1; shift
+ext=${url/*\.}
+img_exts="jpg gif png JPG GIF PNG tiff TIFF jpeg JPEG"
+video_sites="youtu\.?be"
 
-type=${url%%:*}
+if [[ "${img_exts}" =~ "${ext}" ]]; then
+    (setsid feh ${url} 2>&1 ) 1> /dev/null &
+elif [[ "${url}" =~ ${video_sites} ]]; then
+    (setsid mpv ${url} 2>&1 ) 1> /dev/null &
+else
 
-if [ "$url" = "$type" ]; then
-    type=${url%%.*}
-    case $type in
-    www|web|www[1-9])
-	type=http
-	;;
-    esac
-    url=$type://$url
-fi
+    type=${url%%:*}
 
-if [ "$type" = "ftp" ]; then
-    filename=${url##*/}
-    if [ $filename ]; then
-    	echo "Is \"$filename\" a file? (y/N)";
-    	read x
-    	case $x in 
-    	y|Y)
-        	type=file
-		;;
-    	*)
-    		;;
-    	esac
+    if [ "$url" = "$type" ]; then
+        type=${url%%.*}
+        case $type in
+        www|web|www[1-9])
+        type=http
+        ;;
+        esac
+        url=$type://$url
     fi
-fi
 
-case $type in
-https)
-    prg=`getprg $https_prgs`
-    ;;
-http)
-    prg=`getprg $http_prgs`
-    ;;
-ftp)
-    prg=`getprg $ftp_prgs`
-    ;;
-mailto)
-    prg=`getprg $mailto_prgs`
-    ;;
-gopher)
-    prg=`getprg $gopher_prgs`
-    ;;
-file)
-    prg=`getprg $file_prgs`
-    ;;
-*)
-    echo "Unknown URL type.  Please report URL and viewer to"
-    echo "urlview@packages.debian.org."
-    echo -n "Press enter to continue.."; read x
-    exit
-    ;;
-esac
+    if [ "$type" = "ftp" ]; then
+        filename=${url##*/}
+        if [ $filename ]; then
+            echo "Is \"$filename\" a file? (y/N)";
+            read x
+            case $x in 
+            y|Y)
+                type=file
+            ;;
+            *)
+                ;;
+            esac
+        fi
+    fi
 
-if [ -n "$prg" ]; then
-   if [ "${prg%:*}" = "P" ]; then
-    nohup ${prg#*:} $url 2>/dev/null 1>/dev/null &
-   elif [ "${prg%:*}" = "X" ]; then
-    ${prg#*:} $url 2>/dev/null &
-   else
-    $prg $url
-   fi
+
+    case $type in
+    https)
+        prg=`getprg $https_prgs`
+        ;;
+    http)
+        prg=`getprg $http_prgs`
+        ;;
+    ftp)
+        prg=`getprg $ftp_prgs`
+        ;;
+    mailto)
+        prg=`getprg $mailto_prgs`
+        ;;
+    gopher)
+        prg=`getprg $gopher_prgs`
+        ;;
+    file)
+        prg=`getprg $file_prgs`
+        ;;
+    *)
+        echo "Unknown URL type.  Please report URL and viewer to"
+        echo "urlview@packages.debian.org."
+        echo -n "Press enter to continue.."; read x
+        exit
+        ;;
+    esac
+
+    if [ -n "$prg" ]; then
+       if [ "${prg%:*}" = "P" ]; then
+        nohup ${prg#*:} $url 2>/dev/null 1>/dev/null &
+       elif [ "${prg%:*}" = "X" ]; then
+        ${prg#*:} $url 2>/dev/null &
+       else
+        $prg $url
+       fi
+    fi
 fi
