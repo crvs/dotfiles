@@ -1,0 +1,18 @@
+mod4 + shift + b
+	/home/crvs/.dotfiles/bin/bluetoothconnector.sh
+mod4 + shift + z
+	slock systemctl suspend -i
+
+# audio
+XF86AudioRaiseVolume
+	/home/crvs/.dotfiles/bin/changevolume.sh up
+XF86AudioLowerVolume
+	/home/crvs/.dotfiles/bin/changevolume.sh down
+XF86AudioMute
+	/home/crvs/.dotfiles/bin/changevolume.sh mute
+
+# surfing
+mod4 + g
+	dmenu | xargs surf -p
+mod4 + shift + g
+	/home/crvs/.dotfiles/bin/bookmark
