@@ -1,9 +1,26 @@
+super + shift + p
+	passmenu
+super + shift + g
+	([ -f ~/.searchhistory ] && cat ~/.searchhistory || echo)  | dmenu -l 10 -p "search: " | tee -a ~/.searchhistory  | xargs surfraw -browser=surf duckduckgo
+super + shift + z
+	slock
+super + shift + x
+	slock systemctl suspend
+super + g
+	cat ~/.surf/bookmarks | dmenu -l 10 -p "bookmark: " | xargs surf
+
+# handling transparency
+alt + shift + t
+	compton-trans -c +5
+alt + t
+	compton-trans -c -5
+super + alt + t
+	compton-trans -c 100
+
 mod4 + shift + b
 	/home/crvs/.dotfiles/bin/bluetoothconnector.sh
-mod4 + shift + z
-	slock systemctl suspend -i
 
-# audio
+# audio output volume
 XF86AudioRaiseVolume
 	/home/crvs/.dotfiles/bin/changevolume.sh up
 XF86AudioLowerVolume
@@ -11,8 +28,11 @@ XF86AudioLowerVolume
 XF86AudioMute
 	/home/crvs/.dotfiles/bin/changevolume.sh mute
 
-# surfing
-mod4 + g
-	dmenu | xargs surf -p
-mod4 + shift + g
-	/home/crvs/.dotfiles/bin/bookmark
+# mpd/mpc controls
+XF86AudioPrev
+	mpc prev
+XF86AudioNext
+	mpc next
+XF86AudioPlay
+	mpc toggle
+
