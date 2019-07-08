@@ -20,29 +20,49 @@ postsynchook = notmuch new
 [Repository gmail-Local]
 type = Maildir
 localfolders = ~/.mail/gmail
+folderfilter = lambda foldername: foldername not in [
+        '[Gmail]','[Gmail]/Important']
 nametrans = lambda folder: {'Drafts':  '[Gmail]/Drafts',
                             'Sent':    '[Gmail]/Sent Mail',
-                            'Trash':   '[Gmail]/Trash',
-                            'Archive': '[Gmail]/All Mail'
+                            'Flagged': '[Gmail]/Starred',
+                            'Trash':   '[Gmail]/Bin',
+                            'Spam':    '[Gmail]/Spam',
+                            'Archive': '[Gmail]/All Mail',
                             }.get(folder,folder)
 
 [Repository kth-Local]
 type = Maildir
 localfolders = ~/.mail/kth
+nametrans = lambda folder: {'Junk' : 'Junk E-Mail',
+                            'Trash': 'Deleted Items',
+                            'Sent' : 'Sent Items',
+                            }.get(folder,folder)
+folderfilter = lambda foldername: foldername not in [
+        'Archives',
+        'Calendar',
+        'Contacts',
+        'Journal',
+        'Notes',
+        'Sent Messages',
+        'Tasks',
+        'Waiting']
 
 [Repository gmail-Remote]
 type = Gmail
-serever = imap.gmail.com
+server = imap.gmail.com
 ssl = yes
-cert_fingerprint =  4259517cd4e48a289d332ab3f0ab52a366322824
+cert_fingerprint =4259517cd4e48a289d332ab3f0ab52a366322824
 #sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 createfolders = True
 remoteuser = carvas.f
 maxconnections=5
-remotepasseval = get_pass("~/.email-keys/gmail.gpg")
+remotepasseval = get_pass("Email/gmail")
+folderfilter = lambda foldername: foldername not in ['[Gmail]','[Gmail]/Important']
 nametrans = lambda folder: {'[Gmail]/Drafts':    'Drafts',
                             '[Gmail]/Sent Mail': 'Sent',
-                            '[Gmail]/Trash':     'Trash',
+                            '[Gmail]/Bin':     'Trash',
+                            '[Gmail]/Spam':     'Spam',
+                            '[Gmail]/Starred':     'Flagged',
                             '[Gmail]/All Mail':  'Archive'
                             }.get(folder,folder)
 
@@ -53,8 +73,20 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 createfolders = False
 remotehost = webmail.kth.se
 remoteuser = jfpbdc
-remotepasseval = get_pass("~/.email-keys/kth.gpg")
+remotepasseval = get_pass("Email/kth")
+folderfilter = lambda foldername: foldername not in [
+        'Archives',
+        'Calendar',
+        'Contacts',
+        'Journal',
+        'Notes',
+        'Sent Messages',
+        'Tasks',
+        'Waiting']
+nametrans = lambda folder : { 'Junk E-Mail'   : 'Junk',
+                              'Deleted Items' : 'Trash',
+                              'Sent Items'    : 'Sent',
+                            }.get(folder,folder)
 # for some reason calendar is grossly misshandled by kth
 # (or so it seems)
-folderfilter = lambda foldername: foldername not in ['Calendar']
 
