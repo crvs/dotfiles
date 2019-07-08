@@ -58,14 +58,16 @@ mailboxes +KTH------- \
           +kth/INBOX \
           +kth/Drafts \
           +kth/Sent \
+          +kth/Archives.2019 \
+          +kth/Archives.2018 \
           +kth/Archives.TA-DB18HT \
           +kth/Archives.TA-AI18 \
-          +kth/Archives.2018 \
-          +kth/Deleted\ Items \
+          +kth/Trash\
           +GMAIL----- \
           +gmail/INBOX \
           +gmail/Drafts \
           +gmail/Sent \
+          +gmail/Archives.2019 \
           +gmail/Archives.2018 \
           +gmail/Archives.RB\'19 \
           +gmail/Trash \
@@ -101,7 +103,8 @@ folder-hook +kth/* "macro index s '<save-message>=kth/Archives.'"
 # Message Hooks -------------------------------------------
 # message-hook '!(~g|~G) ~b"^-----BEGIN\ PGP\ (SIGNED\ )?MESSAGE"' "exec check-traditional-pgp"
 source ~/.dotfiles/mail/gpg.rc
-set pgp_sign_as=0x527A4CB5 # key id
+set pgp_sign_as=0x87A4E5B4A5A4D262D8DD16F542ED9708AF6D231C
+set pgp_use_gpg_agent=yes
 set pgp_auto_decode=yes
 set pgp_timeout=1800
 set pgp_replyencrypt=yes
@@ -120,8 +123,8 @@ macro index <f4> \
 " "search"
 
 # Sync & Auth Macros ---------------------------------------------
-macro index,pager,compose G "!offlineimap -f INBOX 1>& /dev/null & <enter>:echo \"fetching inbox\"<enter>" "fetch INBOX with IMAP"
-macro index,pager,compose <f12> "!offlineimap 1>& /dev/null & <enter>:echo \"fetching all mail\"<enter>" "fetch IMAP"
+macro index,pager,compose zg "!fetchinbox.sh<enter>:echo \"fetching inbox\"<enter>" "fetch INBOX with IMAP"
+macro index,pager,compose zG "!fetchmail.sh<enter>:echo \"fetching all mail\"<enter>" "fetch IMAP"
 
 # # Address book
 # set alias_file       = ~/.dotfiles/mail/aliases
