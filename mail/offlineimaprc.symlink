@@ -20,8 +20,7 @@ postsynchook = notmuch new
 [Repository gmail-Local]
 type = Maildir
 localfolders = ~/.mail/gmail
-folderfilter = lambda foldername: foldername not in [
-        '[Gmail]','[Gmail]/Important']
+folderfilter = lambda foldername: foldername not in ['[Gmail]','[Gmail]/Important']
 nametrans = lambda folder: {'Drafts':  '[Gmail]/Drafts',
                             'Sent':    '[Gmail]/Sent Mail',
                             'Flagged': '[Gmail]/Starred',
