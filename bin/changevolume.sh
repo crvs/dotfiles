@@ -13,3 +13,5 @@ for i in $INDICES; do
 		pactl set-sink-volume $i -5%
 	fi
 done
+
+[ -f /tmp/barsh_id ] && kill -12 $( cat /tmp/barsh_id )
