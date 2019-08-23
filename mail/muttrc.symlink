@@ -109,6 +109,7 @@ set pgp_auto_decode=yes
 set pgp_timeout=1800
 set pgp_replyencrypt=yes
 set pgp_replysign=yes
+set pgp_use_gpg_agent=yes
 set pgp_replysignencrypted=yes
 
 set duplicate_threads=yes
