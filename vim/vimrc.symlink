@@ -4,22 +4,27 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-"Plugin 'felipec/notmuch-vim'
-"Plugin 'guyzmo/notmuch-abook'
-"
-"" management
+Plugin 'felipec/notmuch-vim'
+Plugin 'guyzmo/notmuch-abook'
+
+" colorschemes
+Plugin 'chriskempson/base16-vim'
+
+" management
 Plugin 'vim-utils/vim-man'
 Plugin 'prettier/vim-prettier'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'xolox/vim-notes'
 Plugin 'xolox/vim-misc'
+Plugin 'jamessan/vim-gnupg'
 
 Plugin 'mileszs/ack.vim'
 Plugin 'Raimondi/delimitMate'
 
 "" ide style
 Plugin 'mbbill/undotree'
+Plugin 'scrooloose/nerdtree.git'
 Plugin 'scrooloose/nerdcommenter.git'
 "Plugin 'gilligan/vim-lldb'     " BREAK THINGS
 
@@ -32,9 +37,8 @@ Plugin 'tpope/vim-fugitive'
 
 " custom objects (around/inside)
 Plugin 'kana/vim-textobj-user'
-Plugin 'honza/vim-snippets'
-"
-"" latex
+
+" latex
 Plugin 'lervag/vimtex'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
@@ -48,14 +52,12 @@ Plugin 'Shougo/unite.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gioele/vim-autoswap.git'
 
-"Plugin 'haya14busa/incsearch.vim'
-"Plugin 'kshenoy/vim-signature'
-
+Plugin 'kshenoy/vim-signature'
 Plugin 'vim-scripts/OmniCppComplete.git'
-"Plugin 'sirver/ultisnips'
 
-" colors
-Plugin 'chriskempson/base16-vim'
+"  snippets
+" Plugin 'sirver/ultisnips'
+" Plugin 'honza/vim-snippets'
 
 Plugin 'tmhedberg/matchit'
 Plugin 'vim-scripts/DoxygenToolkit.vim'
@@ -69,11 +71,11 @@ filetype plugin on
 filetype indent off
 " }}}
 " fix colors {{{
-"if filereadable(expand("~/.vimrc_background"))
-"    let base16colorspace=256
-"    source ~/.vimrc_background
-"endif
-"set background=dark
+if filereadable(expand("~/.vimrc_background"))
+    let base16colorspace=256
+    source ~/.vimrc_background
+endif
+set background=dark
 " }}}
 " misc defaults {{{
 let localmapleader='\'
@@ -113,9 +115,10 @@ command! Bar call <SID>setendbar()
 set list
 set listchars=tab:│ ,trail:♮,extends:>,precedes:<,nbsp:¯
 
-set noexpandtab
-set tabstop=8
-set shiftwidth=0
+set noexpandtab		" use tabs, not spaces
+set tabstop=8		" tab width for indentation
+set softtabstop=8	" python seems to use this
+set shiftwidth=8	" tab width for reindentation
 
 set linebreak      " break lines at text width
 set breakat= "default: breakat=" ^I!@*-+;:,./?"
@@ -245,14 +248,15 @@ let g:ycm_semantic_triggers.tex = [
 \ ]
 
 let g:vimtex_complete_recursive_bib=1
+let g:vimtex_quickfix_enabled=1
 let g:vimtex_labels_enable=1
 let g:vimtex_view_general_viewer="zathura"
 let g:tex_flavor="latex"
 let g:Tex_DefaultTargetFormat="pdf"
 let g:Tex_MultipleCompileFormats="pdf,dvi"
 
-nnoremap <localleader>lt :<c-u>Unite vimtex_toc<cr>
-nnoremap <localleader>ly :<c-u>Unite vimtex_labels<cr>
+"nnoremap <localleader>lt :<c-u>Unite vimtex_toc<cr>
+"nnoremap <localleader>ly :<c-u>Unite vimtex_labels<cr>
 
 " }}}
 "" Ultisnips {{{
@@ -342,6 +346,10 @@ function! TagOptions()
     endif
 endfunction
 " }}}
+" vim notes {{{
+let g:notes_directories = ['~/.vim-notes']
+let g:notes_suffix = '.md'
+" }}}
 
 " select region registers
 cmap '' '<,'>
@@ -379,5 +387,13 @@ endif
 " }}}
 
 set complete=.,w,b,u,t,i,kspell
+" set path+=** " not such a great idea after all
+let g:notmuch_reader = 'mutt -f %s '
+let g:notmuch_sendmail = 'msmtp '
+let g:notmuch_html_converter = "w3m --dump"
+
+" Haskell {{{
+autocmd BufEnter *.hs :setlocal et ts=4 sts=4 sw=4
+" }}}
 
 " vim: textwidth=80:colorcolumn=80
