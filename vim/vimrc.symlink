@@ -5,12 +5,13 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'felipec/notmuch-vim'
-Plugin 'guyzmo/notmuch-abook'
+"Plugin 'guyzmo/notmuch-abook'
 
 " colorschemes
 Plugin 'chriskempson/base16-vim'
 
 " management
+Plugin 'coyotebush/vim-pweave'
 Plugin 'vim-utils/vim-man'
 Plugin 'prettier/vim-prettier'
 Plugin 'gmarik/Vundle.vim'
@@ -54,12 +55,15 @@ Plugin 'gioele/vim-autoswap.git'
 
 Plugin 'kshenoy/vim-signature'
 Plugin 'vim-scripts/OmniCppComplete.git'
+Plugin 'vim-scripts/hlint.git'
 
 "  snippets
-" Plugin 'sirver/ultisnips'
-" Plugin 'honza/vim-snippets'
+Plugin 'garbas/vim-snipmate'
+Plugin 'tomtom/tlib_vim'
+Plugin 'MarcWeber/vim-addon-mw-utils.git'
+Plugin 'honza/vim-snippets'
 
-Plugin 'tmhedberg/matchit'
+"Plugin 'tmhedberg/matchit'
 Plugin 'vim-scripts/DoxygenToolkit.vim'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'vim-scripts/gnupg.vim.git'
@@ -90,8 +94,11 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 " }}}
 " fast edit vimrc {{{
+nnoremap <silent> <leader>vi :VundleInstall<cr>
+nnoremap <silent> <leader>vu :VundleUpdate<cr>
 nnoremap <silent> <leader>ve :vsplit $MYVIMRC<cr>
 nnoremap <silent> <leader>vs :source $MYVIMRC<cr>
+au BufWritePost $MYVIMRC :source $MYVIMRC
 " }}}
 " encoding issues {{{
 set encoding=utf-8			" displayed encoding
@@ -162,12 +169,13 @@ set wildignore+=*~,*.un~
 set wildignore+=*.pyc
 " }}}
 " Tagbar {{{
-:nnoremap <silent> <f4> :Tagbar<cr>
-:nnoremap <silent> <f4>p :TagbarTogglePause<cr>
+:nnoremap <silent> <leader>]] :Tagbar<cr>
+:nnoremap <silent> <leader>]  :TagbarTogglePause<cr>
 " }}}
 " Undotree {{{
-:nnoremap <silent> <f3> :UndotreeToggle<cr>
-:inoremap <silent> <f3>  <esc>:UndotreeToggle<cr>
+:nnoremap <silent> <leader>> :UndotreeToggle<cr>
+:nnoremap <silent> <leader>/ :NERDTreeToggle<cr>
+
 " }}}
 " Ack {{{
 " use silver searcher (ag)
@@ -260,9 +268,12 @@ let g:Tex_MultipleCompileFormats="pdf,dvi"
 
 " }}}
 "" Ultisnips {{{
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<tab>"
-"let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+
+"let g:UltiSnipsUsePythonVersion=2
+"let g:UltiSnipsExpandTrigger="<c-i>"
+"let g:UltiSnipsJumpForwardTrigger="<c-i>"
+"let g:UltiSnipsJumpBackwardTrigger="<s-c-i>"
 "let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
 ""}}}
 " difference to swapfile {{{
@@ -392,8 +403,20 @@ let g:notmuch_reader = 'mutt -f %s '
 let g:notmuch_sendmail = 'msmtp '
 let g:notmuch_html_converter = "w3m --dump"
 
+autocmd BufEnter *.pmd :nnoremap <silent> <leader>m :Dispatch pweave %<cr>
+
+
+nnoremap <f2> :NERDTreeToggle<cr>
+
+" {{{ markdown
+syn region math start=/\$\$/ end=/\$\$/
+syn match math '\$[^$].\{-}\$'
+hi link math Statement
+" }}}
+
 " Haskell {{{
 autocmd BufEnter *.hs :setlocal et ts=4 sts=4 sw=4
 " }}}
+
 
 " vim: textwidth=80:colorcolumn=80
