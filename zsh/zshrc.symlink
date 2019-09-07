@@ -46,8 +46,6 @@ if [ -d $ZSH ]; then
     # Example format: plugins=(rails git textmate ruby lighthouse)
     plugins=(ssh-agent \
         gpg-agent \
-        last-working-dir\
-        cabal \
         git-prompt \
         archlinux \
         mercurial \
@@ -69,6 +67,7 @@ function search {
 w3m "www.google.com/search?q=$(echo $@ | sed 's/ /+/g')"}
 
 # command completion
+fpath=(~/.dotfiles/zshcomp $fpath)
 autoload -U compinit
 compinit
 # User configuration
@@ -175,4 +174,41 @@ export TZ='Europe/Stockholm'
 
 # ncurses client for mpd
 alias mus=ncmpcpp
+
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+
+# pip zsh completion start
+function _pip_completion {
+  local words cword
+  read -Ac words
+  read -cn cword
+  reply=( $( COMP_WORDS="$words[*]" \
+             COMP_CWORD=$(( cword-1 )) \
+             PIP_AUTO_COMPLETE=1 $words[1] ) )
+}
+compctl -K _pip_completion pip
+# pip zsh completion end
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+if [ -d /opt/anaconda ]; then
+	__conda_setup="$('/opt/anaconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	if [ $? -eq 0 ]; then
+	    eval "$__conda_setup"
+	else
+	    if [ -f "/opt/anaconda/etc/profile.d/conda.sh" ]; then
+		. "/opt/anaconda/etc/profile.d/conda.sh"
+	    else
+		export PATH="/opt/anaconda/bin:$PATH"
+	    fi
+	fi
+fi
+
+export TERMINFO=/usr/lib/terminfo
+
+# export PATH=$(stack path | awk '/^bin-path: */ {print $2}')
+
+unset __conda_setup
+# <<< conda initialize <<<
+
