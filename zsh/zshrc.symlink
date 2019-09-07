@@ -15,7 +15,7 @@ if [ -d $ZSH ]; then
     # Look in ~/.oh-my-zsh/themes/
     # Optionally, if you set this to "random", it'll load a random theme each
     # time that oh-my-zsh is loaded.
-    ZSH_THEME="dst" # fancy theme: "agnoster"
+    ZSH_THEME="agnoster" # fancy theme: "agnoster"
 
     zstyle ':completion:*' menu select
     setopt completealiases
@@ -46,13 +46,20 @@ if [ -d $ZSH ]; then
     # Example format: plugins=(rails git textmate ruby lighthouse)
     plugins=(ssh-agent \
         gpg-agent \
-        git \
+        git-prompt \
         archlinux \
         mercurial \
+	fzf \
         vi-mode \
-        history-substring-search)
+        history-substring-search \
+	emoji)
 
     source $ZSH/oh-my-zsh.sh
+    for p in $plugins; do
+	source $ZSH/plugins/$p/*.plugin.zsh
+    done
+
+
 fi
 
 # Google Search function
@@ -129,7 +136,7 @@ export HOSTALIASES=~/Sync/hosts
 
 function resource() {rehash; source ~/.zshrc; echo "rehashed and reloaded zshrc";}
 
-export RPS1=$RPS1$CONTAINER_NAME
+#export RPS1=$RPS1$CONTAINER_NAME
 
 # extra man pages!
 function add_man() {
@@ -142,10 +149,17 @@ for f in `ls -1 $HOME/.man`; do
     export MANPATH=$MANPATH:$HOME/.man/$f
 done
 
+# completions
+for f in $(find $HOME/.config/zsh_autocomp/ -name "*.zsh"); do
+	source $f
+done
 
-for f in $(find ~/.dotfiles -name "*.zsh" | grep -v "oh-my-zsh"); do
+for f in $(find $HOME/.dotfiles -name "*.zsh" | grep -v "oh-my-zsh"); do
     source $f;
 done
+
+#fzf
+source /usr/share/fzf/key-bindings.zsh
 
 # colored MAN pages
 export LESS_TERMCAP_mb=$'\e[1;32m'
@@ -156,8 +170,12 @@ export LESS_TERMCAP_so=$'\e[01;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
+export TZ='Europe/Stockholm'
+
 # ncurses client for mpd
 alias mus=ncmpcpp
+
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 
 # pip zsh completion start
 function _pip_completion {
@@ -174,15 +192,17 @@ compctl -K _pip_completion pip
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/anaconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/anaconda/etc/profile.d/conda.sh" ]; then
-        . "/opt/anaconda/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/anaconda/bin:$PATH"
-    fi
+if [ -d /opt/anaconda ]; then
+	__conda_setup="$('/opt/anaconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	if [ $? -eq 0 ]; then
+	    eval "$__conda_setup"
+	else
+	    if [ -f "/opt/anaconda/etc/profile.d/conda.sh" ]; then
+		. "/opt/anaconda/etc/profile.d/conda.sh"
+	    else
+		export PATH="/opt/anaconda/bin:$PATH"
+	    fi
+	fi
 fi
 
 export TERMINFO=/usr/lib/terminfo
