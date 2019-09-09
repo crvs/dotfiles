@@ -4,76 +4,99 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'felipec/notmuch-vim'
-"Plugin 'guyzmo/notmuch-abook'
-
-" colorschemes
-Plugin 'chriskempson/base16-vim'
-
-" management
-Plugin 'coyotebush/vim-pweave'
-Plugin 'vim-utils/vim-man'
-Plugin 'prettier/vim-prettier'
-Plugin 'gmarik/Vundle.vim'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'xolox/vim-notes'
-Plugin 'xolox/vim-misc'
-Plugin 'jamessan/vim-gnupg'
-
-Plugin 'mileszs/ack.vim'
-Plugin 'Raimondi/delimitMate'
-
-"" ide style
-Plugin 'mbbill/undotree'
-Plugin 'scrooloose/nerdtree.git'
-Plugin 'scrooloose/nerdcommenter.git'
-"Plugin 'gilligan/vim-lldb'     " BREAK THINGS
-
-" tags
-Plugin 'majutsushi/tagbar'
-Plugin 'ludovicchabant/vim-gutentags'
-
-" git
-Plugin 'tpope/vim-fugitive'
-
-" custom objects (around/inside)
-Plugin 'kana/vim-textobj-user'
-
-" latex
-Plugin 'lervag/vimtex'
-Plugin 'junegunn/goyo.vim'
-Plugin 'junegunn/limelight.vim'
-
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-dispatch'
-
-Plugin 'Shougo/unite.vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'gioele/vim-autoswap.git'
-
-Plugin 'kshenoy/vim-signature'
-Plugin 'vim-scripts/OmniCppComplete.git'
-Plugin 'vim-scripts/hlint.git'
-
-"  snippets
-Plugin 'garbas/vim-snipmate'
-Plugin 'tomtom/tlib_vim'
-Plugin 'MarcWeber/vim-addon-mw-utils.git'
-Plugin 'honza/vim-snippets'
-
-"Plugin 'tmhedberg/matchit'
-Plugin 'vim-scripts/DoxygenToolkit.vim'
-Plugin 'rhysd/vim-clang-format'
-Plugin 'vim-scripts/gnupg.vim.git'
-
+Plugin 'gmarik/Vundle.vim'              " plugin management
+Plugin 'chriskempson/base16-vim'        " colorschemes
+Plugin 'godlygeek/tabular'              " aligning text
+Plugin 'coyotebush/vim-pweave'          " python markdown
+Plugin 'vim-utils/vim-man'              " man interface
+Plugin 'easymotion/vim-easymotion'      " assisted jumping
+Plugin 'xolox/vim-notes'                " notetaking
+Plugin 'mileszs/ack.vim'                " grep with better defaults (using ag)
+Plugin 'mbbill/undotree'                " visual undo
+Plugin 'scrooloose/nerdtree'            " file manager
+Plugin 'scrooloose/nerdcommenter'       " keybindings comments
+Plugin 'majutsushi/tagbar'              " show tags in a bar
+Plugin 'ludovicchabant/vim-gutentags'   " auto compile tags
+Plugin 'tpope/vim-fugitive'             " git bindings
+Plugin 'kana/vim-textobj-user'          " custom text objects
+Plugin 'lervag/vimtex'                  " latex
+Plugin 'junegunn/goyo.vim'              " centered interface for writing
+Plugin 'junegunn/limelight.vim'         " dim surrounding text
+Plugin 'xolox/vim-misc'                 " auxiliary function repo
+Plugin 'tpope/vim-unimpaired'           " nice keybindings
+Plugin 'tpope/vim-surround'             " surrounding arguments
+Plugin 'tpope/vim-repeat'               " add repeat functionality
+Plugin 'tpope/vim-dispatch'             " asynchronos execution
+Plugin 'christoomey/vim-tmux-navigator' " seamless tmux / vim navigation
+Plugin 'Shougo/unite.vim'               " like dmenu for vim
+Plugin 'kshenoy/vim-signature'          " handle marks
+Plugin 'vim-scripts/OmniCppComplete'    " omnicompletion for c++
+Plugin 'vim-scripts/hlint'              " haskell linter (compiler)
+Plugin 'tomtom/tlib_vim'                " auxiliary function library (snippets)
+Plugin 'MarcWeber/vim-addon-mw-utils'   " auxiliary functions (snippets)
+Plugin 'garbas/vim-snipmate'            " snippets engine
+Plugin 'honza/vim-snippets'             " snippet files
+Plugin 'vim-scripts/gnupg.vim'          " editing pgp encrypted files
 call vundle#end()
-" restore filetype status
 filetype on
 filetype plugin on 
 filetype indent off
 " }}}
+" misc defaults {{{
+let localmapleader = '\'
+let mapleader      = ','
+syntax on
+set foldmethod=marker           " fold on fold markers '{{{/}}}'
+set scrolloff=5                 " scrolling offset
+set number                      " numbered lines
+set hidden                      " liberal use of hidden buffers
+set ruler                       " show cursor position
+set showcmd                     " display incomplete commands
+set grepprg=grep\ -nH\ $*       " vimgrep options
+set laststatus=0                " status bar display
+set mouse=a                     " enable mouse
+set complete=.,w,b,u,t,i,kspell " autocompletion order
+" backups
+set history=1000              " lines of commandd history to keep
+set backup                    " keep a backup file (restore previous version)
+set backupdir=~/.tmp/backup// " .<fname>~ goes here
+set undofile                  " keep an undo file (undo changes after closing)
+set undodir=~/.tmp/undo//     " undos are saved in
+set noswapfile                " no swapping
+set directory=~/.tmp/swap//   " swaps go here
+" tabs
+set expandtab       " use spaces
+set tabstop=4       " tab width for indentation
+set softtabstop=4   " consistency
+set shiftwidth=4    " consistency
+" encoding
+set encoding=utf-8                  " displayed encoding
+set fileencoding=utf-8              " saved encoding
+set fileencodings=utf-8,ucs-bom,prc " possible encodings
+" wildmenu
+set wildmenu
+set wildmode=list:longest,full
+set wildignore+=.hg,.git,.svn
+set wildignore+=*~,*.un~
+
+set list                                                 " mark text elements
+set listchars=tab:│ ,trail:♮,extends:>,precedes:<,nbsp:¯
+set linebreak                                            " manage automatic line breaking
+set breakat="^I!@*-+;:,./?"
+set breakindent                                          " indent wrapped lines
+set breakindentopt=min:20                                " minimum amount of characters in indented continuation
+set showbreak=›                                          " character to show on indented lines
+set smartindent
+" registers shortcut
+cmap '' '<,'>
+" visual line up/down
+nnoremap <silent> k gk
+nnoremap <silent> j gj
+" }}}
+" tabularize {{{
+vnoremap <leader>t :Tabularize /
+nnoremap <leader>t :Tabularize /
+"}}}
 " fix colors {{{
 if filereadable(expand("~/.vimrc_background"))
     let base16colorspace=256
@@ -81,74 +104,39 @@ if filereadable(expand("~/.vimrc_background"))
 endif
 set background=dark
 " }}}
-" misc defaults {{{
-let localmapleader='\'
-let mapleader=','
-set foldmethod=marker
-set scrolloff=5
-set number
-syntax on
-
-" move between visual lines
-nnoremap <silent> j gj
-nnoremap <silent> k gk
-" }}}
-" fast edit vimrc {{{
+" vimrc management {{{
 nnoremap <silent> <leader>vi :VundleInstall<cr>
 nnoremap <silent> <leader>vu :VundleUpdate<cr>
 nnoremap <silent> <leader>ve :vsplit $MYVIMRC<cr>
 nnoremap <silent> <leader>vs :source $MYVIMRC<cr>
 au BufWritePost $MYVIMRC :source $MYVIMRC
 " }}}
-" encoding issues {{{
-set encoding=utf-8			" displayed encoding
-set fileencoding=utf-8			" saved encoding
-set fileencodings=utf-8,ucs-bom,prc	" possible encodings
-" }}}
-" indentation,colorcolumn,wrapping,list {{{
-
-" color column functions {{{{
+" color column {{{{
 function! s:setcolumn()
-	set colorcolumn=80
+    set colorcolumn=80
 endfunction
 
 function! s:setendbar()
-	let &colorcolumn=join(range(80,10000),",")
+    let &colorcolumn=join(range(80,10000),",")
 endfunction
-"}}}}
 command! Col call <SID>setcolumn()
 command! Bar call <SID>setendbar()
+"}}}}
+" -----------------------------------------------------------------------------
+" --                                                                         --
+" --                              REFACTORING                                --
+" --                                                                         --
+" -----------------------------------------------------------------------------
 
-set list
-set listchars=tab:│ ,trail:♮,extends:>,precedes:<,nbsp:¯
-
-set noexpandtab		" use tabs, not spaces
-set tabstop=8		" tab width for indentation
-set softtabstop=8	" python seems to use this
-set shiftwidth=8	" tab width for reindentation
-
-set linebreak      " break lines at text width
-set breakat= "default: breakat=" ^I!@*-+;:,./?"
 " in C/C++ do not break lines on - or . because of member functions
-" do not break on member functions in python
-autocmd BufEnter *.c,*.cpp,*.h,*.hpp :setlocal breakat=" ^I(){}@*+:,/"<cr>
-autocmd BufEnter *.py :setlocal breakat=" ^I!@*-+;:,/?()[]{}"
+autocmd FileType c,cpp :setlocal breakat=" ^I(){}@*+:,/" 
 
-set breakindent		" indent wrapped lines
-set breakindentopt=min:20 " minimum amount of characters in indented continuation
-set showbreak=› 	" character to show on indented lines
+set wildignore+=*.o,*.obj,*.so " c++ junk files
 
-set smartindent
-" }}}
-" backups {{{
-set history=1000      " lines of commandd history to keep
-set undodir=~/.tmp/undo//
-set directory=~/.tmp/swap//
-set backupdir=~/.tmp/backup//
-set backup " keep a backup file (restore to previous version)
-set undofile      " keep an undo file (undo changes after closing)
-set noswapfile
-" }}}
+" do not break on . functions in python
+autocmd FileType python :setlocal breakat=" ^I!@*-+;:,/?()[]{}"
+set wildignore+=*.pyc " python junk files
+
 " {{{ copy and paste
 vnoremap <c-c> "*y:let @+=@*<CR>
 " make the selection register a clone of the copy register
@@ -158,15 +146,6 @@ nnoremap  <c-p> "+P
 nmap <leader>p "*]p
 nmap <leader>P "*[p
 " }}}
-" wildmenu {{{
-set wildmenu
-set wildmode=list:longest,full
-
-set wildignore+=.hg,.git,.svn
-set wildignore+=*.aux,*.out,*.toc,*.log
-set wildignore+=*.o,*.obj,*.so
-set wildignore+=*~,*.un~
-set wildignore+=*.pyc
 " }}}
 " Tagbar {{{
 :nnoremap <silent> <leader>]] :Tagbar<cr>
@@ -234,26 +213,16 @@ let NERDRemoveAltComs=1
 " window title {{{
 set title
 function! s:set_title()
-	let &titlestring = 'vim:'.expand('%')
-	call system('tmux rename-window ' . &titlestring)
+if ( $TMUX != "" )
+    let &titlestring = 'vim:'.expand('%')
+    call system('tmux rename-window ' . &titlestring)
+endif
 endfunction
 autocmd BufNew,BufReadPost,BufEnter * call <SID>set_title()
 " }}}
 " LaTeX (vimtex) {{{
 set conceallevel=0
-if !exists('g:ycm_semantic_triggers')
-let g:ycm_semantic_triggers = {}
-endif
-let g:ycm_semantic_triggers.tex = [
-\ 're!\\[A-Za-z]*cite[A-Za-z]*(\[[^]]*\]){0,2}{[^}]*',
-\ 're!\\[A-Za-z]*ref({[^}]*|range{([^,{}]*(}{)?))',
-\ 're!\\hyperref\[[^]]*',
-\ 're!\\includegraphics\*?(\[[^]]*\]){0,2}{[^}]*',
-\ 're!\\(include(only)?|input){[^}]*',
-\ 're!\\\a*(gls|Gls|GLS)(pl)?\a*(\s*\[[^]]*\]){0,2}\s*\{[^}]*',
-\ 're!\\includepdf(\s*\[[^]]*\])?\s*\{[^}]*',
-\ 're!\\includestandalone(\s*\[[^]]*\])?\s*\{[^}]*',
-\ ]
+set wildignore+=*.aux,*.out,*.toc,*.log " tex junk files
 
 let g:vimtex_complete_recursive_bib=1
 let g:vimtex_quickfix_enabled=1
@@ -263,34 +232,24 @@ let g:tex_flavor="latex"
 let g:Tex_DefaultTargetFormat="pdf"
 let g:Tex_MultipleCompileFormats="pdf,dvi"
 
-"nnoremap <localleader>lt :<c-u>Unite vimtex_toc<cr>
-"nnoremap <localleader>ly :<c-u>Unite vimtex_labels<cr>
+nnoremap <localleader>lt :<c-u>Unite vimtex_toc<cr>
+nnoremap <localleader>ly :<c-u>Unite vimtex_labels<cr>
 
 " }}}
-"" Ultisnips {{{
-
-
-"let g:UltiSnipsUsePythonVersion=2
-"let g:UltiSnipsExpandTrigger="<c-i>"
-"let g:UltiSnipsJumpForwardTrigger="<c-i>"
-"let g:UltiSnipsJumpBackwardTrigger="<s-c-i>"
-"let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
-""}}}
 " difference to swapfile {{{
 " Convenient command to see the difference between the current buffer
 " and the file it was loaded from, thus the changes you made.  Only
 " define it when not defined already.
 if !exists(":DiffOrig")
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-	\ | wincmd p | diffthis
+    \ | wincmd p | diffthis
 endif
 " }}}
 " buffer navigation {{{
-nmap <silent> <leader>b :bn<cr>
-nmap <silent> <leader>B :bp<cr>
-nmap <silent> <leader>d :bd<cr>
-nmap <silent> <leader>D :bd!<cr>
-nmap <silent> <leader>s :ls<cr>:b
+nmap <silent> <leader>bn :bn<cr>
+nmap <silent> <leader>bp :bp<cr>
+nmap <silent> <leader>bd :bd<cr>
+nmap <silent> <leader>bl :Unite buffer<cr>
 " }}}
 " highlighting and searching {{{
 set hlsearch
@@ -321,23 +280,23 @@ command! OpenTodo :execute ':e '. g:todo_txt_todo
 
 " mini todo.txt syntax
 function! s:set_todo_syntax()
-	" dates
-	syn match Function display /^[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\} /
-	syn match Statement display /\<due\:[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}[ \n]/
-	" tags and context
-	syn match Special display /@\w\+[ \n]/
-	syn match String display /+\w\+[ \n]/
-	" priority symbols
-	syn match Underlined display /(A)/
-	syn match SpecialChar display /([B-Z]) /
+    " dates
+    syn match Function display /^[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\} /
+    syn match Statement display /\<due\:[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}[ \n]/
+    " tags and context
+    syn match Special display /@\w\+[ \n]/
+    syn match String display /+\w\+[ \n]/
+    " priority symbols
+    syn match Underlined display /(A)/
+    syn match SpecialChar display /([B-Z]) /
 endfunction
 
 augroup my_todo_txt
-	autocmd!
-	autocmd BufEnter,BufRead todo.txt :nmap <buffer> <leader>at $F@i <esc>BE dwi +
-	autocmd BufEnter,BufRead todo.txt :nmap <buffer> <leader>ac $a @
-	autocmd BufEnter,BufRead todo.txt :nmap <buffer> <leader>ad $a due:
-	autocmd BufEnter,BufRead todo.txt :call <SID>set_todo_syntax()
+    autocmd!
+    autocmd BufEnter,BufRead todo.txt :nmap <buffer> <leader>at $F@i <esc>BE dwi +
+    autocmd BufEnter,BufRead todo.txt :nmap <buffer> <leader>ac $a @
+    autocmd BufEnter,BufRead todo.txt :nmap <buffer> <leader>ad $a due:
+    autocmd BufEnter,BufRead todo.txt :call <SID>set_todo_syntax()
 augroup END
 " }}}
 " {{{ OmniCpp + gutentags
@@ -363,7 +322,6 @@ let g:notes_suffix = '.md'
 " }}}
 
 " select region registers
-cmap '' '<,'>
 
 " vim notes
 let g:notes_directories = ['~/.vim-notes']
@@ -373,12 +331,6 @@ let g:notes_suffix = '.md'
 iabbr teh the
 iabbr taht that
 
-set grepprg=grep\ -nH\ $*    " vimgrep options
-set hidden       " liberal use of hidden buffers
-set ruler        " show cursor position
-set showcmd      " display incomplete commands
-set laststatus=0 " status bar display
-set mouse=a      " enable mouse
 
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break
@@ -391,22 +343,22 @@ cmap w!! w !sudo tee % > /dev/null<cr>
 
 " gvim options
 if  has("gui_running")
-	set guioptions=''
+    set guioptions=''
 endif
 
 
 " }}}
 
-set complete=.,w,b,u,t,i,kspell
 " set path+=** " not such a great idea after all
-let g:notmuch_reader = 'mutt -f %s '
-let g:notmuch_sendmail = 'msmtp '
+let g:notmuch_reader         = 'mutt -f %s '
+let g:notmuch_sendmail       = 'msmtp '
 let g:notmuch_html_converter = "w3m --dump"
 
-autocmd BufEnter *.pmd :nnoremap <silent> <leader>m :Dispatch pweave %<cr>
-
+" include files from the current directory
+autocmd BufEnter *.pmd :nnoremap <silent> <leader>m :Dispatch PYTHONPATH=%:h:$PYTHONPATH pweave %<cr>
 
 nnoremap <f2> :NERDTreeToggle<cr>
+
 
 " {{{ markdown
 syn region math start=/\$\$/ end=/\$\$/
