@@ -1,19 +1,29 @@
-au BufEnter *.pmd,*py :let b:repl='ipython'
-au BufEnter *.hs,*.lhs :let b:repl='stack ghci'
+" NOTE: this only works with ipython > 7.0 as ipython around version 6
+" starts behaving weirdly when it comes to pasting in things due to
+" autoindent being the default (and virtually impossible to disable from
+" what I could find)
+au BufEnter *.pmd,*py :let b:repllang='python'
+au BufEnter *.pmd,*py :let b:replcmd='ipython --profile=vim'
 
-au FileType sh :let b:repl='sh'
+au BufEnter *.hs,*.lhs :let b:repllang='haskell'
+au BufEnter *.hs,*.lhs :let b:replcmd='stack ghci'
+
+au FileType sh :let b:repllang='sh'
+au FileType sh :let b:replcmd='sh'
+
+au BufEnter * :let b:repl=0
 
 function! SheBang()
 	execute(':normal 0/#!\zs.*/<cr>"rygn')
-	let b:repl=@r
+	let b:replcmd=@r
 endfunction
 
 function! StartRepl()
 	let l:cur_win = win_getid()
-	if exists('b:repl')
-		execute "vertical terminal " . b:repl
-		let b:repl=term_list()[0]
+	if exists('b:replcmd')
+		execute "vertical terminal " . b:replcmd
 		call win_gotoid(l:cur_win)
+		let b:repl=term_list()[0]
 		call MapKeys()
 	else
 		echom "buffer has no defined repl"
@@ -21,11 +31,11 @@ function! StartRepl()
 endfunction
 
 function! RunBlock(str)
-	if b:repl ==? 'stack ghci'
+	if b:repllang ==? 'haskell'
 		return ':{'.a:str.':}'
-	elseif b:repl ==? 'ipython'
+	elseif b:repllang ==? 'python'
 		return a:str.''
-	elseif b:repl ==? 'sh'
+	elseif b:repllang ==? 'sh'
 		return a:str.''
 	else
 		echom "buffer has no defined repl"
@@ -33,11 +43,11 @@ function! RunBlock(str)
 endfunction
 
 function! RunFile(str)
-	if b:repl ==? 'stack ghci'
+	if b:repllang ==? 'haskell'
 		return ':l ' .a:str.''
-	elseif b:repl ==? 'ipython'
+	elseif b:repllang ==? 'python'
 		return '%run '.a:str.''
-	elseif b:repl ==? 'sh'
+	elseif b:repllang ==? 'sh'
 		return 'b:repl '.a:str.''
 	else
 		echom "buffer has no defined repl"
