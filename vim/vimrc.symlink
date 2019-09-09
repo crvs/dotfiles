@@ -354,7 +354,8 @@ let g:notmuch_reader         = 'mutt -f %s '
 let g:notmuch_sendmail       = 'msmtp '
 let g:notmuch_html_converter = "w3m --dump"
 
-autocmd BufEnter *.pmd :nnoremap <silent> <leader>m :Dispatch pweave %<cr>
+" include files from the current directory
+autocmd BufEnter *.pmd :nnoremap <silent> <leader>m :Dispatch PYTHONPATH=%:h:$PYTHONPATH pweave %<cr>
 
 nnoremap <f2> :NERDTreeToggle<cr>
 
