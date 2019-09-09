@@ -1,0 +1,16 @@
+snippet eq
+	instance Eq ${1:Type} where
+		(==) ${2:Type x} = ${3:code}
+snippet show
+	instance Show ${1:Type} where
+		show ${2:Type x} = ${3:code}
+snippet ord
+	instance Ord ${1:Type} where
+		compare ${2:Type x} ${3:Type x}= ${3:code}
+snippet functor
+	instance Functor ${1:F} where
+		fmap f ${2:(F x)} = ${3:code}
+snippet monad
+	instance Monad ${1:M} where
+		return x = ${2:more code}
+		(>>=) ${3:M x} f = ${4:code}
