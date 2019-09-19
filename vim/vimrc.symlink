@@ -11,6 +11,7 @@ Plugin 'coyotebush/vim-pweave'          " python markdown
 Plugin 'vim-utils/vim-man'              " man interface
 Plugin 'easymotion/vim-easymotion'      " assisted jumping
 Plugin 'xolox/vim-notes'                " notetaking
+Plugin 'jceb/vim-orgmode'               " emacs style note taking
 Plugin 'mileszs/ack.vim'                " grep with better defaults (using ag)
 Plugin 'mbbill/undotree'                " visual undo
 Plugin 'scrooloose/nerdtree'            " file manager
