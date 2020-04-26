@@ -1,0 +1,24 @@
+#!/bin/sh
+
+args=`echo "$*" | sed 's/[^ ]*\( \|$\)//'`
+
+printusage () {
+    cat << EOF
+usage:
+    $0 [audio|sound|screen|video] [filename.format]
+EOF
+}
+
+case $1 in
+audio|sound)
+    record_audio.sh $args
+    ;;
+screen|video)
+    record_screen.sh $args
+    ;;
+*)
+    printusage
+    exit 1
+    ;;
+esac
+
